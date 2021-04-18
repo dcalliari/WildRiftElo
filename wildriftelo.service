@@ -1,0 +1,16 @@
+[Unit]
+Description=BodeDotEXE
+Wants=network-online.target
+After=network-online.target systemd-networkd-wait-online.service
+
+StartLimitIntervalSec=500
+StartLimitBurst=5
+
+[Service]
+Type=idle
+ExecStart=/usr/bin/python3 /home/pi/tbodedotexe/bot.py
+Restart=on-failure
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target
