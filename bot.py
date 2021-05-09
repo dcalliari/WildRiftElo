@@ -16,17 +16,16 @@ TMI_TOKEN = os.environ.get('TMI_TOKEN')
 CLIENT_ID = os.environ.get('CLIENT_ID')
 BOT_NICK = os.environ.get('BOT_NICK')
 BOT_PREFIX = os.environ.get('BOT_PREFIX')
-CHANNEL = os.environ.get('CHANNEL')
+CHANNEL = ['1bode','wildriftelo', 'bodedotexe']
 CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 
-JSON_FILE = str(os.path.dirname(os.path.realpath(__file__))) + '/data.json'
 
 bot = commands.Bot(
     irc_token=TMI_TOKEN,
     client_id=CLIENT_ID,
     nick=BOT_NICK,
     prefix=BOT_PREFIX,
-    initial_channels=[CHANNEL]
+    initial_channels=CHANNEL
 )
 
 client = Client(
@@ -49,7 +48,7 @@ async def event_message(ctx):
 
 @bot.command(name='elo')
 async def command_elo(ctx):
-    print(ctx.content.split(' ')[1:])
+    CHANNEL = ctx.channel.name.lower()
     if ctx.content.split(' ')[1:] != []:
         if(ctx.author.is_mod) or (ctx.author == CHANNEL):
             command_string = ctx.content
@@ -59,18 +58,19 @@ async def command_elo(ctx):
                 elo = str(command_string)
             except ValueError:
                 elo = 'Ferro'
-            update_value('elo', elo)
-            await ctx.send(f'Elo mudou pra {elo}')
+            update_value('elo', elo, CHANNEL)
+            await ctx.send_me(f'Elo mudou pra {elo}')
 
     else:
-        elo = get_elo()
-        div = get_div()
-        lp = get_lp()
-        await ctx.send_me(f'{elo} {div} ({lp} LP )')
+        elo = get_elo(CHANNEL)
+        div = get_div(CHANNEL)
+        lp = get_lp(CHANNEL)
+        await ctx.send_me(f'{elo} {div} ({lp} PdL)')
 
 
 @bot.command(name='div')
 async def command_add(ctx):
+    CHANNEL = ctx.channel.name.lower()
     if(ctx.author.is_mod) or (ctx.author == CHANNEL):
 
         command_string = ctx.content
@@ -80,11 +80,12 @@ async def command_add(ctx):
             div = int(command_string)
         except ValueError:
             div = 0
-        update_value('div', div)
+        update_value('div', div, CHANNEL)
         await ctx.send(f'Divisão mudou pra {div}')
 
 @bot.command(name='pdl')
 async def command_add(ctx):
+    CHANNEL = ctx.channel.name.lower()
     if(ctx.author.is_mod) or (ctx.author == CHANNEL):
 
         command_string = ctx.content
@@ -94,29 +95,35 @@ async def command_add(ctx):
             lp = int(command_string)
         except ValueError:
             lp = 0
-        update_value('lp', lp)
-        await ctx.send(f'PDL mudou pra {lp}')
+        update_value('lp', lp, CHANNEL)
+        elo = get_elo(CHANNEL)
+        div = get_div(CHANNEL)
+        await ctx.send_me(f'{elo} {div} ({lp} PdL)')
 
 
-def get_elo():
+def get_elo(channel):
+    JSON_FILE = str(os.path.dirname(os.path.realpath(__file__))) + f'/channeldata/{channel}.json'
     with open(JSON_FILE) as json_file:
         data = json.load(json_file)
         return data['elo']
 
 
-def get_div():
+def get_div(channel):
+    JSON_FILE = str(os.path.dirname(os.path.realpath(__file__))) + f'/channeldata/{channel}.json'
     with open(JSON_FILE) as json_file:
         data = json.load(json_file)
         return data['div']
 
 
-def get_lp():
+def get_lp(channel):
+    JSON_FILE = str(os.path.dirname(os.path.realpath(__file__))) + f'/channeldata/{channel}.json'
     with open(JSON_FILE) as json_file:
         data = json.load(json_file)
         return data['lp']
 
 
-def update_value(key, value):
+def update_value(key, value, channel):
+    JSON_FILE = str(os.path.dirname(os.path.realpath(__file__))) + f'/channeldata/{channel}.json'
     data = None
     with open(JSON_FILE) as json_file:
         data = json.load(json_file)
