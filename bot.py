@@ -65,7 +65,8 @@ async def command_elo(ctx):
         elo = get_elo('', CHANNEL)
         div = get_div('', CHANNEL)
         pdl = get_pdl('', CHANNEL)
-        await ctx.send_me(f'{elo} {div} ({pdl} PdL)')
+        drt = get_drt('', CHANNEL)
+        await ctx.send_me(f'{elo} {div} ({pdl} {drt})')
 
 
 @bot.command(name='div')
@@ -99,7 +100,8 @@ async def command_add(ctx):
         update_value('pdl', pdl, CHANNEL)
         elo = get_elo('', CHANNEL)
         div = get_div('', CHANNEL)
-        await ctx.send_me(f'{elo} {div} ({pdl} PdL)')
+        drt = get_drt('', CHANNEL)
+        await ctx.send_me(f'{elo} {div} ({pdl} {drt})')
 
 
 @bot.command(name='elo1')
@@ -121,7 +123,8 @@ async def command_elo(ctx):
         elo = get_elo('1', CHANNEL)
         div = get_div('1', CHANNEL)
         pdl = get_pdl('1', CHANNEL)
-        await ctx.send_me(f'{elo} {div} ({pdl} PdL)')
+        drt = get_drt('1', CHANNEL)
+        await ctx.send_me(f'{elo} {div} ({pdl} {drt})')
 
 
 @bot.command(name='div1')
@@ -155,7 +158,8 @@ async def command_add(ctx):
         update_value('pdl1', pdl, CHANNEL)
         elo = get_elo('1', CHANNEL)
         div = get_div('1', CHANNEL)
-        await ctx.send_me(f'{elo} {div} ({pdl} PdL)')
+        drt = get_drt('1', CHANNEL)
+        await ctx.send_me(f'{elo} {div} ({pdl} {drt})')
 
 
 @bot.command(name='elo2')
@@ -177,7 +181,8 @@ async def command_elo(ctx):
         elo = get_elo('2', CHANNEL)
         div = get_div('2', CHANNEL)
         pdl = get_pdl('2', CHANNEL)
-        await ctx.send_me(f'{elo} {div} ({pdl} PdL)')
+        drt = get_drt('2', CHANNEL)
+        await ctx.send_me(f'{elo} {div} ({pdl} {drt})')
 
 
 @bot.command(name='div2')
@@ -211,7 +216,9 @@ async def command_add(ctx):
         update_value('pdl2', pdl, CHANNEL)
         elo = get_elo('2', CHANNEL)
         div = get_div('2', CHANNEL)
-        await ctx.send_me(f'{elo} {div} ({pdl} PdL)')
+        drt = get_drt('2', CHANNEL)
+        await ctx.send_me(f'{elo} {div} ({pdl} {drt})')
+
 
 @bot.command(name='elo3')
 async def command_elo(ctx):
@@ -232,7 +239,8 @@ async def command_elo(ctx):
         elo = get_elo('3', CHANNEL)
         div = get_div('3', CHANNEL)
         pdl = get_pdl('3', CHANNEL)
-        await ctx.send_me(f'{elo} {div} ({pdl} PdL)')
+        drt = get_drt('3', CHANNEL)
+        await ctx.send_me(f'{elo} {div} ({pdl} {drt})')
 
 
 @bot.command(name='div3')
@@ -266,7 +274,24 @@ async def command_add(ctx):
         update_value('pdl3', pdl, CHANNEL)
         elo = get_elo('3', CHANNEL)
         div = get_div('3', CHANNEL)
-        await ctx.send_me(f'{elo} {div} ({pdl} PdL)')
+        drt = get_drt('3', CHANNEL)
+        await ctx.send_me(f'{elo} {div} ({pdl} {drt})')
+
+
+def get_drt(ac, channel):
+    JSON_FILE = str(os.path.dirname(os.path.realpath(__file__))
+                    ) + f'/channeldata/{channel}.json'
+    with open(JSON_FILE) as json_file:
+        data = json.load(json_file)
+        cmd = data[f'elo{ac}'].lower()
+        print(cmd)
+        if cmd == 'ferro' or cmd == 'iron' or cmd == 'prata' or cmd == 'silver' or cmd == 'ouro' or cmd == 'gold' or cmd == 'plat' or cmd == 'platina' or cmd == 'platinum' or cmd == 'esmeralda' or cmd == 'emerald':
+            drt = 'DoritosChip '
+            print('if')
+        else:
+            drt = 'PdL'
+            print('else')
+        return drt
 
 
 def get_elo(ac, channel):
