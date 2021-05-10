@@ -284,13 +284,10 @@ def get_drt(ac, channel):
     with open(JSON_FILE) as json_file:
         data = json.load(json_file)
         cmd = data[f'elo{ac}'].lower()
-        print(cmd)
         if cmd == 'ferro' or cmd == 'iron' or cmd == 'prata' or cmd == 'silver' or cmd == 'ouro' or cmd == 'gold' or cmd == 'plat' or cmd == 'platina' or cmd == 'platinum' or cmd == 'esmeralda' or cmd == 'emerald':
             drt = 'DoritosChip '
-            print('if')
         else:
             drt = 'PdL'
-            print('else')
         return drt
 
 
