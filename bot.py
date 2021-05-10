@@ -127,6 +127,52 @@ async def command_elo(ctx):
         await ctx.send_me(f'{elo} {div} ({pdl} {drt})')
 
 
+@bot.command(name='smurf')
+async def command_elo(ctx):
+    CHANNEL = ctx.channel.name.lower()
+    if ctx.content.split(' ')[1:] != []:
+        if(ctx.author.is_mod) or (ctx.author == CHANNEL):
+            command_string = ctx.content
+            command_string = command_string.replace('!smurf', '').strip()
+            elo = 'Ferro'
+            try:
+                elo = str(command_string)
+            except ValueError:
+                elo = 'Ferro'
+            update_value('elo1', elo, CHANNEL)
+            await ctx.send_me(f'Elo mudou pra {elo}')
+
+    else:
+        elo = get_elo('1', CHANNEL)
+        div = get_div('1', CHANNEL)
+        pdl = get_pdl('1', CHANNEL)
+        drt = get_drt('1', CHANNEL)
+        await ctx.send_me(f'{elo} {div} ({pdl} {drt})')
+
+
+@bot.command(name='elosmurf')
+async def command_elo(ctx):
+    CHANNEL = ctx.channel.name.lower()
+    if ctx.content.split(' ')[1:] != []:
+        if(ctx.author.is_mod) or (ctx.author == CHANNEL):
+            command_string = ctx.content
+            command_string = command_string.replace('!elosmurf', '').strip()
+            elo = 'Ferro'
+            try:
+                elo = str(command_string)
+            except ValueError:
+                elo = 'Ferro'
+            update_value('elo1', elo, CHANNEL)
+            await ctx.send_me(f'Elo mudou pra {elo}')
+
+    else:
+        elo = get_elo('1', CHANNEL)
+        div = get_div('1', CHANNEL)
+        pdl = get_pdl('1', CHANNEL)
+        drt = get_drt('1', CHANNEL)
+        await ctx.send_me(f'{elo} {div} ({pdl} {drt})')
+
+
 @bot.command(name='div1')
 async def command_add(ctx):
     CHANNEL = ctx.channel.name.lower()
