@@ -53,7 +53,7 @@ async def command_elo(ctx):
     div = get_div('', CHANNEL)
     elo1 = get_elo('1', CHANNEL)
     div1 = get_div('1', CHANNEL)
-    await ctx.send_me(f'Main: {elo} {div} Smurf: {elo1} {div1}')
+    await ctx.send_me(f'Main: {elo} {div} | Smurf: {elo1} {div1}')
 
 @bot.command(name='elo')
 async def command_elo(ctx):
