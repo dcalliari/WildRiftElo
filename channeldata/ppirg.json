@@ -1,14 +1,14 @@
 {
-    "div": 2,
-    "div1": 1,
+    "div": 4,
+    "div1": 2,
     "div2": 3,
     "div3": 4,
-    "elo": "Diamante",
+    "elo": "Platina",
     "elo1": "Esmeralda",
     "elo2": "Smurf2",
     "elo3": "Smurf3",
-    "pdl": 21,
-    "pdl1": 5,
+    "pdl": 3,
+    "pdl1": 0,
     "pdl2": 0,
     "pdl3": 0
 }
