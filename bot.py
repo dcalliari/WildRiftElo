@@ -57,6 +57,23 @@ async def command_elo(ctx):
     conta1 = get_conta('1', CHANNEL)
     await ctx.send_me(f'{conta}: {elo} {div} | {conta1}: {elo1} {div1}')
 
+
+@bot.command(name='conta')
+async def command_conta(ctx):
+    CHANNEL = ctx.channel.name.lower()
+    if ctx.content.split(' ')[1:] != []:
+        if(ctx.author.is_mod) or (ctx.author == CHANNEL):
+            command_string = ctx.content
+            command_string = command_string.replace('!conta', '').strip()
+            conta = 'Main'
+            try:
+                conta = str(command_string)
+            except ValueError:
+                conta = 'Main'
+            update_value('conta', conta, CHANNEL)
+            await ctx.send_me(f'Nome da conta atualizado para: {conta}')
+
+
 @bot.command(name='elo')
 async def command_elo(ctx):
     CHANNEL = ctx.channel.name.lower()
@@ -117,6 +134,22 @@ async def command_add(ctx):
         drt = get_drt('', CHANNEL)
         conta = get_conta('', CHANNEL)
         await ctx.send_me(f'{conta}: {elo} {div} ({pdl} {drt})')
+
+
+@bot.command(name='conta1')
+async def command_conta(ctx):
+    CHANNEL = ctx.channel.name.lower()
+    if ctx.content.split(' ')[1:] != []:
+        if(ctx.author.is_mod) or (ctx.author == CHANNEL):
+            command_string = ctx.content
+            command_string = command_string.replace('!conta1', '').strip()
+            conta = 'Smurf'
+            try:
+                conta = str(command_string)
+            except ValueError:
+                conta = 'Smurf'
+            update_value('conta1', conta, CHANNEL)
+            await ctx.send_me(f'Nome da conta1 atualizado para: {conta}')
 
 
 @bot.command(name='elo1')
@@ -231,6 +264,22 @@ async def command_add(ctx):
         await ctx.send_me(f'{conta}: {elo} {div} ({pdl} {drt})')
 
 
+@bot.command(name='conta2')
+async def command_conta(ctx):
+    CHANNEL = ctx.channel.name.lower()
+    if ctx.content.split(' ')[1:] != []:
+        if(ctx.author.is_mod) or (ctx.author == CHANNEL):
+            command_string = ctx.content
+            command_string = command_string.replace('!conta2', '').strip()
+            conta = 'Smurf'
+            try:
+                conta = str(command_string)
+            except ValueError:
+                conta = 'Smurf'
+            update_value('conta2', conta, CHANNEL)
+            await ctx.send_me(f'Nome da conta2 atualizado para: {conta}')
+
+
 @bot.command(name='elo2')
 async def command_elo(ctx):
     CHANNEL = ctx.channel.name.lower()
@@ -291,6 +340,22 @@ async def command_add(ctx):
         drt = get_drt('2', CHANNEL)
         conta = get_conta('2', CHANNEL)
         await ctx.send_me(f'{conta}: {elo} {div} ({pdl} {drt})')
+
+
+@bot.command(name='conta3')
+async def command_conta(ctx):
+    CHANNEL = ctx.channel.name.lower()
+    if ctx.content.split(' ')[1:] != []:
+        if(ctx.author.is_mod) or (ctx.author == CHANNEL):
+            command_string = ctx.content
+            command_string = command_string.replace('!conta3', '').strip()
+            conta = 'Smurf'
+            try:
+                conta = str(command_string)
+            except ValueError:
+                conta = 'Smurf'
+            update_value('conta3', conta, CHANNEL)
+            await ctx.send_me(f'Nome da conta3 atualizado para: {conta}')
 
 
 @bot.command(name='elo3')
@@ -375,12 +440,14 @@ def get_elo(ac, channel):
         data = json.load(json_file)
         return data[f'elo{ac}']
 
+
 def get_conta(ac, channel):
     JSON_FILE = str(os.path.dirname(os.path.realpath(__file__))
                     ) + f'/channeldata/{channel}.json'
     with open(JSON_FILE) as json_file:
         data = json.load(json_file)
         return data[f'conta{ac}']
+
 
 def get_div(ac, channel):
     JSON_FILE = str(os.path.dirname(os.path.realpath(__file__))
