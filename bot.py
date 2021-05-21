@@ -51,9 +51,11 @@ async def command_elo(ctx):
     CHANNEL = ctx.channel.name.lower()
     elo = get_elo('', CHANNEL)
     div = get_div('', CHANNEL)
+    conta = get_conta('', CHANNEL)
     elo1 = get_elo('1', CHANNEL)
     div1 = get_div('1', CHANNEL)
-    await ctx.send_me(f'Main: {elo} {div} | Smurf: {elo1} {div1}')
+    conta1 = get_conta('1', CHANNEL)
+    await ctx.send_me(f'{conta}: {elo} {div} | {conta1}: {elo1} {div1}')
 
 @bot.command(name='elo')
 async def command_elo(ctx):
@@ -68,14 +70,16 @@ async def command_elo(ctx):
             except ValueError:
                 elo = 'Ferro'
             update_value('elo', elo, CHANNEL)
-            await ctx.send_me(f'Elo mudou pra {elo}')
+            conta = get_conta('', CHANNEL)
+            await ctx.send_me(f'Elo da {conta} atualizado para {elo}')
 
     else:
         elo = get_elo('', CHANNEL)
         div = get_div('', CHANNEL)
         pdl = get_pdl('', CHANNEL)
         drt = get_drt('', CHANNEL)
-        await ctx.send_me(f'{elo} {div} ({pdl} {drt})')
+        conta = get_conta('', CHANNEL)
+        await ctx.send_me(f'{conta}: {elo} {div} ({pdl} {drt})')
 
 
 @bot.command(name='div')
@@ -91,7 +95,8 @@ async def command_add(ctx):
         except ValueError:
             div = 0
         update_value('div', div, CHANNEL)
-        await ctx.send_me(f'Divisão mudou pra {div}')
+        conta = get_conta('', CHANNEL)
+        await ctx.send_me(f'Divisão da {conta} atualizada para {div}')
 
 
 @bot.command(name='pdl')
@@ -110,7 +115,8 @@ async def command_add(ctx):
         elo = get_elo('', CHANNEL)
         div = get_div('', CHANNEL)
         drt = get_drt('', CHANNEL)
-        await ctx.send_me(f'{elo} {div} ({pdl} {drt})')
+        conta = get_conta('', CHANNEL)
+        await ctx.send_me(f'{conta}: {elo} {div} ({pdl} {drt})')
 
 
 @bot.command(name='elo1')
@@ -126,14 +132,16 @@ async def command_elo(ctx):
             except ValueError:
                 elo = 'Ferro'
             update_value('elo1', elo, CHANNEL)
-            await ctx.send_me(f'Elo mudou pra {elo}')
+            conta = get_conta('1', CHANNEL)
+            await ctx.send_me(f'Elo da {conta} atualizado para {elo}')
 
     else:
         elo = get_elo('1', CHANNEL)
         div = get_div('1', CHANNEL)
         pdl = get_pdl('1', CHANNEL)
         drt = get_drt('1', CHANNEL)
-        await ctx.send_me(f'{elo} {div} ({pdl} {drt})')
+        conta = get_conta('1', CHANNEL)
+        await ctx.send_me(f'{conta}: {elo} {div} ({pdl} {drt})')
 
 
 @bot.command(name='smurf')
@@ -149,14 +157,16 @@ async def command_elo(ctx):
             except ValueError:
                 elo = 'Ferro'
             update_value('elo1', elo, CHANNEL)
-            await ctx.send_me(f'Elo mudou pra {elo}')
+            conta = get_conta('1', CHANNEL)
+            await ctx.send_me(f'Elo da {conta} atualizado para {elo}')
 
     else:
         elo = get_elo('1', CHANNEL)
         div = get_div('1', CHANNEL)
         pdl = get_pdl('1', CHANNEL)
         drt = get_drt('1', CHANNEL)
-        await ctx.send_me(f'{elo} {div} ({pdl} {drt})')
+        conta = get_conta('1', CHANNEL)
+        await ctx.send_me(f'{conta}: {elo} {div} ({pdl} {drt})')
 
 
 @bot.command(name='elosmurf')
@@ -172,14 +182,16 @@ async def command_elo(ctx):
             except ValueError:
                 elo = 'Ferro'
             update_value('elo1', elo, CHANNEL)
-            await ctx.send_me(f'Elo mudou pra {elo}')
+            conta = get_conta('1', CHANNEL)
+            await ctx.send_me(f'Elo da {conta} atualizado para {elo}')
 
     else:
         elo = get_elo('1', CHANNEL)
         div = get_div('1', CHANNEL)
         pdl = get_pdl('1', CHANNEL)
         drt = get_drt('1', CHANNEL)
-        await ctx.send_me(f'{elo} {div} ({pdl} {drt})')
+        conta = get_conta('1', CHANNEL)
+        await ctx.send_me(f'{conta}: {elo} {div} ({pdl} {drt})')
 
 
 @bot.command(name='div1')
@@ -195,7 +207,8 @@ async def command_add(ctx):
         except ValueError:
             div = 0
         update_value('div1', div, CHANNEL)
-        await ctx.send_me(f'Divisão mudou pra {div}')
+        conta = get_conta('1', CHANNEL)
+        await ctx.send_me(f'Divisão da {conta} atualizada para {div}')
 
 
 @bot.command(name='pdl1')
@@ -214,7 +227,8 @@ async def command_add(ctx):
         elo = get_elo('1', CHANNEL)
         div = get_div('1', CHANNEL)
         drt = get_drt('1', CHANNEL)
-        await ctx.send_me(f'{elo} {div} ({pdl} {drt})')
+        conta = get_conta('1', CHANNEL)
+        await ctx.send_me(f'{conta}: {elo} {div} ({pdl} {drt})')
 
 
 @bot.command(name='elo2')
@@ -230,14 +244,16 @@ async def command_elo(ctx):
             except ValueError:
                 elo = 'Ferro'
             update_value('elo2', elo, CHANNEL)
-            await ctx.send_me(f'Elo mudou pra {elo}')
+            conta = get_conta('2', CHANNEL)
+            await ctx.send_me(f'Elo da {conta} atualizado para {elo}')
 
     else:
         elo = get_elo('2', CHANNEL)
         div = get_div('2', CHANNEL)
         pdl = get_pdl('2', CHANNEL)
         drt = get_drt('2', CHANNEL)
-        await ctx.send_me(f'{elo} {div} ({pdl} {drt})')
+        conta = get_conta('2', CHANNEL)
+        await ctx.send_me(f'{conta}: {elo} {div} ({pdl} {drt})')
 
 
 @bot.command(name='div2')
@@ -253,7 +269,8 @@ async def command_add(ctx):
         except ValueError:
             div = 0
         update_value('div2', div, CHANNEL)
-        await ctx.send_me(f'Divisão mudou pra {div}')
+        conta = get_conta('2', CHANNEL)
+        await ctx.send_me(f'Divisão da {conta} atualizada para {div}')
 
 
 @bot.command(name='pdl2')
@@ -272,7 +289,8 @@ async def command_add(ctx):
         elo = get_elo('2', CHANNEL)
         div = get_div('2', CHANNEL)
         drt = get_drt('2', CHANNEL)
-        await ctx.send_me(f'{elo} {div} ({pdl} {drt})')
+        conta = get_conta('2', CHANNEL)
+        await ctx.send_me(f'{conta}: {elo} {div} ({pdl} {drt})')
 
 
 @bot.command(name='elo3')
@@ -288,14 +306,16 @@ async def command_elo(ctx):
             except ValueError:
                 elo = 'Ferro'
             update_value('elo3', elo, CHANNEL)
-            await ctx.send_me(f'Elo mudou pra {elo}')
+            conta = get_conta('3', CHANNEL)
+            await ctx.send_me(f'Elo da {conta} atualizado para {elo}')
 
     else:
         elo = get_elo('3', CHANNEL)
         div = get_div('3', CHANNEL)
         pdl = get_pdl('3', CHANNEL)
         drt = get_drt('3', CHANNEL)
-        await ctx.send_me(f'{elo} {div} ({pdl} {drt})')
+        conta = get_conta('3', CHANNEL)
+        await ctx.send_me(f'{conta}: {elo} {div} ({pdl} {drt})')
 
 
 @bot.command(name='div3')
@@ -311,7 +331,8 @@ async def command_add(ctx):
         except ValueError:
             div = 0
         update_value('div3', div, CHANNEL)
-        await ctx.send_me(f'Divisão mudou pra {div}')
+        conta = get_conta('3', CHANNEL)
+        await ctx.send_me(f'Divisão da {conta} atualizada para {div}')
 
 
 @bot.command(name='pdl3')
@@ -330,7 +351,8 @@ async def command_add(ctx):
         elo = get_elo('3', CHANNEL)
         div = get_div('3', CHANNEL)
         drt = get_drt('3', CHANNEL)
-        await ctx.send_me(f'{elo} {div} ({pdl} {drt})')
+        conta = get_conta('3', CHANNEL)
+        await ctx.send_me(f'{conta}: {elo} {div} ({pdl} {drt})')
 
 
 def get_drt(ac, channel):
@@ -353,6 +375,12 @@ def get_elo(ac, channel):
         data = json.load(json_file)
         return data[f'elo{ac}']
 
+def get_conta(ac, channel):
+    JSON_FILE = str(os.path.dirname(os.path.realpath(__file__))
+                    ) + f'/channeldata/{channel}.json'
+    with open(JSON_FILE) as json_file:
+        data = json.load(json_file)
+        return data[f'conta{ac}']
 
 def get_div(ac, channel):
     JSON_FILE = str(os.path.dirname(os.path.realpath(__file__))
