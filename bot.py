@@ -1,3 +1,4 @@
+import io
 import os
 import json
 import unidecode
@@ -16,8 +17,29 @@ TMI_TOKEN = os.environ.get('TMI_TOKEN')
 CLIENT_ID = os.environ.get('CLIENT_ID')
 BOT_NICK = os.environ.get('BOT_NICK')
 BOT_PREFIX = os.environ.get('BOT_PREFIX')
-CHANNEL = json.loads(os.environ['CHANNEL'])
 CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
+
+
+def get_channel():
+    JSON_FILE = str(os.path.dirname(
+        os.path.realpath(__file__))) + '/channels.json'
+    with open(JSON_FILE) as json_file:
+        data = json.load(json_file)
+        global CHAN
+        CHAN = data['CHANNEL']
+    return CHAN
+
+
+def update_channel(value):
+    JSON_FILE = str(os.path.dirname(os.path.realpath(__file__))
+                    ) + f'/channels.json'
+    data = None
+    with open(JSON_FILE) as json_file:
+        data = json.load(json_file)
+    if data is not None:
+        data['CHANNEL'] = value
+    with open(JSON_FILE, 'w') as json_file:
+        json.dump(data, json_file, sort_keys=True, indent=4)
 
 
 bot = commands.Bot(
@@ -25,7 +47,7 @@ bot = commands.Bot(
     client_id=CLIENT_ID,
     nick=BOT_NICK,
     prefix=BOT_PREFIX,
-    initial_channels=CHANNEL
+    initial_channels=get_channel()
 )
 
 client = Client(
@@ -44,6 +66,35 @@ async def event_message(ctx):
     if ctx.author.name.lower() == BOT_NICK.lower():
         return
     await bot.handle_commands(ctx)
+
+
+@bot.command(name='entrar')
+async def command_join(ctx):
+    AUTHOR = ctx.author.name.lower()
+    if ctx.channel.name.lower() == BOT_NICK.lower():
+        CONTA = f'#{AUTHOR}'
+        if CONTA in CHAN:
+            await ctx.send_me(f'Bot JÁ ESTÁ no canal {ctx.author.name}')
+        else:
+            CHAN.append(f'#{AUTHOR}')
+            update_channel(CHAN)
+            file_check(AUTHOR)
+            await bot.join_channels(CHAN)
+            await ctx.send_me(f'Bot ENTROU no canal {ctx.author.name}')
+
+
+@bot.command(name='sair')
+async def command_join(ctx):
+    AUTHOR = ctx.author.name.lower()
+    if ctx.channel.name.lower() == BOT_NICK.lower():
+        CONTA = f'#{AUTHOR}'
+        if CONTA in CHAN:
+            CHAN.remove(f'#{AUTHOR}')
+            update_channel(CHAN)
+            await bot.part_channels([AUTHOR])
+            await ctx.send_me(F'Bot SAIU do canal {ctx.author.name}')
+        else:
+            await ctx.send_me(F'Bot NÃO ESTÁ no canal {ctx.author.name}')
 
 
 @bot.command(name='elos')
@@ -475,6 +526,16 @@ def update_value(key, value, channel):
         data[key] = value
     with open(JSON_FILE, 'w') as json_file:
         json.dump(data, json_file, sort_keys=True, indent=4)
+
+
+def file_check(channel):
+    JSON_FILE = str(os.path.dirname(os.path.realpath(__file__))
+                    ) + f'/channeldata/{channel}.json'
+    if os.path.isfile(JSON_FILE) and os.access(JSON_FILE, os.R_OK):
+        return True
+    else:
+        with io.open(os.path.join(JSON_FILE), 'w') as json_file:
+            json_file.write(json.dumps({}))
 
 
 if __name__ == "__main__":
