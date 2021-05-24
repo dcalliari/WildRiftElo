@@ -70,7 +70,10 @@ async def event_message(ctx):
 
 @bot.command(name='tutorial')
 async def command_tutorial(ctx):
-    await ctx.send_me('Como adicionar o bot e configurar em seu canal: https://imgur.com/gallery/zl1T2CY')
+    if ctx.channel.name.lower() == BOT_NICK.lower():
+        await ctx.send_me('Como adicionar o bot e configurar em seu canal: https://imgur.com/a/zl1T2CY')
+    else:
+        await ctx.send_me('Envie !tutorial no chat do WildRiftElo')
 
 
 @bot.command(name='entrar')
