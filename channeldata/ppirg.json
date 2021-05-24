@@ -1,5 +1,5 @@
 {
-    "div": 4,
+    "div": 3,
     "div1": 2,
     "div2": 3,
     "div3": 4,
@@ -7,7 +7,7 @@
     "elo1": "Esmeralda",
     "elo2": "Smurf2",
     "elo3": "Smurf3",
-    "pdl": 3,
+    "pdl": 1,
     "pdl1": 0,
     "pdl2": 0,
     "pdl3": 0
