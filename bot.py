@@ -67,6 +67,9 @@ async def event_message(ctx):
         return
     await bot.handle_commands(ctx)
 
+@bot.command(name='tutorial')
+async def command_tutorial(ctx):
+    await ctx.send_me('Como adicionar o bot e configurar em seu canal: https://imgur.com/gallery/zl1T2CY')
 
 @bot.command(name='entrar')
 async def command_join(ctx):
