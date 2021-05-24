@@ -118,7 +118,7 @@ async def command_elo(ctx):
 async def command_conta(ctx):
     CHANNEL = ctx.channel.name.lower()
     if ctx.content.split(' ')[1:] != []:
-        if(ctx.author.is_mod) or (ctx.author == CHANNEL):
+        if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
             command_string = ctx.content
             command_string = command_string.replace('!conta', '').strip()
             conta = 'Conta'
@@ -135,7 +135,7 @@ async def command_conta(ctx):
 async def command_elo(ctx):
     CHANNEL = ctx.channel.name.lower()
     if ctx.content.split(' ')[1:] != []:
-        if(ctx.author.is_mod) or (ctx.author == CHANNEL):
+        if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
             command_string = ctx.content
             command_string = command_string.replace('!elo', '').strip()
             elo = 'Ferro'
@@ -160,7 +160,7 @@ async def command_elo(ctx):
 @bot.command(name='div')
 async def command_add(ctx):
     CHANNEL = ctx.channel.name.lower()
-    if(ctx.author.is_mod) or (ctx.author == CHANNEL):
+    if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
         command_string = ctx.content
         command_string = command_string.replace('!div', '').strip()
         div = 0
@@ -177,7 +177,7 @@ async def command_add(ctx):
 @bot.command(name='pdl')
 async def command_add(ctx):
     CHANNEL = ctx.channel.name.lower()
-    if(ctx.author.is_mod) or (ctx.author == CHANNEL):
+    if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
         command_string = ctx.content
         command_string = command_string.replace('!pdl', '').strip()
         try:
@@ -226,7 +226,7 @@ async def command_add(ctx):
 async def command_conta(ctx):
     CHANNEL = ctx.channel.name.lower()
     if ctx.content.split(' ')[1:] != []:
-        if(ctx.author.is_mod) or (ctx.author == CHANNEL):
+        if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
             command_string = ctx.content
             command_string = command_string.replace('!conta1', '').strip()
             conta = 'Conta1'
@@ -243,7 +243,7 @@ async def command_conta(ctx):
 async def command_elo(ctx):
     CHANNEL = ctx.channel.name.lower()
     if ctx.content.split(' ')[1:] != []:
-        if(ctx.author.is_mod) or (ctx.author == CHANNEL):
+        if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
             command_string = ctx.content
             command_string = command_string.replace('!elo1', '').strip()
             elo = 'Ferro'
@@ -269,7 +269,7 @@ async def command_elo(ctx):
 async def command_elo(ctx):
     CHANNEL = ctx.channel.name.lower()
     if ctx.content.split(' ')[1:] != []:
-        if(ctx.author.is_mod) or (ctx.author == CHANNEL):
+        if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
             command_string = ctx.content
             command_string = command_string.replace('!smurf', '').strip()
             elo = 'Ferro'
@@ -295,7 +295,7 @@ async def command_elo(ctx):
 async def command_elo(ctx):
     CHANNEL = ctx.channel.name.lower()
     if ctx.content.split(' ')[1:] != []:
-        if(ctx.author.is_mod) or (ctx.author == CHANNEL):
+        if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
             command_string = ctx.content
             command_string = command_string.replace('!elosmurf', '').strip()
             elo = 'Ferro'
@@ -320,7 +320,7 @@ async def command_elo(ctx):
 @bot.command(name='div1')
 async def command_add(ctx):
     CHANNEL = ctx.channel.name.lower()
-    if(ctx.author.is_mod) or (ctx.author == CHANNEL):
+    if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
         command_string = ctx.content
         command_string = command_string.replace('!div1', '').strip()
         div = 0
@@ -337,7 +337,7 @@ async def command_add(ctx):
 @bot.command(name='pdl1')
 async def command_add(ctx):
     CHANNEL = ctx.channel.name.lower()
-    if(ctx.author.is_mod) or (ctx.author == CHANNEL):
+    if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
         command_string = ctx.content
         command_string = command_string.replace('!pdl1', '').strip()
         try:
@@ -385,7 +385,7 @@ async def command_add(ctx):
 async def command_conta(ctx):
     CHANNEL = ctx.channel.name.lower()
     if ctx.content.split(' ')[1:] != []:
-        if(ctx.author.is_mod) or (ctx.author == CHANNEL):
+        if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
             command_string = ctx.content
             command_string = command_string.replace('!conta2', '').strip()
             conta = 'Conta2'
@@ -401,7 +401,7 @@ async def command_conta(ctx):
 async def command_elo(ctx):
     CHANNEL = ctx.channel.name.lower()
     if ctx.content.split(' ')[1:] != []:
-        if(ctx.author.is_mod) or (ctx.author == CHANNEL):
+        if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
             command_string = ctx.content
             command_string = command_string.replace('!elo2', '').strip()
             elo = 'Ferro'
@@ -426,7 +426,7 @@ async def command_elo(ctx):
 @bot.command(name='div2')
 async def command_add(ctx):
     CHANNEL = ctx.channel.name.lower()
-    if(ctx.author.is_mod) or (ctx.author == CHANNEL):
+    if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
         command_string = ctx.content
         command_string = command_string.replace('!div2', '').strip()
         div = 0
@@ -443,7 +443,7 @@ async def command_add(ctx):
 @bot.command(name='pdl2')
 async def command_add(ctx):
     CHANNEL = ctx.channel.name.lower()
-    if(ctx.author.is_mod) or (ctx.author == CHANNEL):
+    if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
         command_string = ctx.content
         command_string = command_string.replace('!pdl2', '').strip()
         try:
@@ -492,7 +492,7 @@ async def command_add(ctx):
 async def command_conta(ctx):
     CHANNEL = ctx.channel.name.lower()
     if ctx.content.split(' ')[1:] != []:
-        if(ctx.author.is_mod) or (ctx.author == CHANNEL):
+        if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
             command_string = ctx.content
             command_string = command_string.replace('!conta3', '').strip()
             conta = 'Conta3'
@@ -509,7 +509,7 @@ async def command_conta(ctx):
 async def command_elo(ctx):
     CHANNEL = ctx.channel.name.lower()
     if ctx.content.split(' ')[1:] != []:
-        if(ctx.author.is_mod) or (ctx.author == CHANNEL):
+        if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
             command_string = ctx.content
             command_string = command_string.replace('!elo3', '').strip()
             elo = 'Ferro'
@@ -534,7 +534,7 @@ async def command_elo(ctx):
 @bot.command(name='div3')
 async def command_add(ctx):
     CHANNEL = ctx.channel.name.lower()
-    if(ctx.author.is_mod) or (ctx.author == CHANNEL):
+    if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
         command_string = ctx.content
         command_string = command_string.replace('!div3', '').strip()
         div = 0
@@ -551,7 +551,7 @@ async def command_add(ctx):
 @bot.command(name='pdl3')
 async def command_add(ctx):
     CHANNEL = ctx.channel.name.lower()
-    if(ctx.author.is_mod) or (ctx.author == CHANNEL):
+    if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
         command_string = ctx.content
         command_string = command_string.replace('!pdl3', '').strip()
         try:
