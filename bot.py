@@ -1,11 +1,9 @@
 import io
 import os
 import json
-import unidecode
 
-from pathlib import Path
 from dotenv import load_dotenv
-from os.path import join, dirname
+from os.path import join
 from twitchio.ext import commands
 from twitchio.client import Client
 
@@ -110,13 +108,25 @@ async def command_join(ctx):
 @bot.command(name='elos')
 async def command_elo(ctx):
     CHANNEL = ctx.channel.name.lower()
-    elo = get_elo('', CHANNEL)
-    div = get_div('', CHANNEL)
-    conta = get_conta('', CHANNEL)
-    elo1 = get_elo('1', CHANNEL)
-    div1 = get_div('1', CHANNEL)
-    conta1 = get_conta('1', CHANNEL)
-    await ctx.send_me(f'{conta}: {elo} {div} | {conta1}: {elo1} {div1}')
+    try:
+        elo = get_elo('', CHANNEL)
+        div = get_div('', CHANNEL)
+        conta = get_conta('', CHANNEL)
+        elo1 = get_elo('1', CHANNEL)
+        div1 = get_div('1', CHANNEL)
+        conta1 = get_conta('1', CHANNEL)
+        await ctx.send_me(f'{conta}: {elo} {div} | {conta1}: {elo1} {div1}')
+    except KeyError:
+        try:
+            elo = get_elo('1', CHANNEL)
+            div = get_div('1', CHANNEL)
+            conta = get_conta('1', CHANNEL)
+            elo1 = get_elo('2', CHANNEL)
+            div1 = get_div('2', CHANNEL)
+            conta1 = get_conta('2', CHANNEL)
+            await ctx.send_me(f'{conta}: {elo} {div} | {conta1}: {elo1} {div1}')
+        except KeyError:
+            await ctx.send_me('Você precisa armazenar pelo menos duas contas')
 
 
 @bot.command(name='conta')
@@ -386,6 +396,7 @@ async def command_add(ctx):
             conta = get_conta('1', CHANNEL)
         await ctx.send_me(f'{conta}: {elo} {div} ({pdl} {drt})')
 
+
 @bot.command(name='conta2')
 async def command_conta(ctx):
     CHANNEL = ctx.channel.name.lower()
@@ -401,6 +412,7 @@ async def command_conta(ctx):
                 return
             update_value('conta2', conta, CHANNEL)
             await ctx.send_me(f'Nome da conta2 atualizado para: {conta}')
+
 
 @bot.command(name='elo2')
 async def command_elo(ctx):
