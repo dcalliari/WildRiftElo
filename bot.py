@@ -65,6 +65,8 @@ async def event_message(ctx):
         return
     if ctx.content == 'nbzaBuxin':
         await ctx.channel.send_me('nbzaBuxin')
+    if ctx.content == 'tatxinBau':
+        await ctx.channel.send_me('tatxinBau')
     await bot.handle_commands(ctx)
 
 
