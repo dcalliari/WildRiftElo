@@ -63,9 +63,18 @@ async def event_ready():
 async def event_message(ctx):
     if ctx.author.name.lower() == BOT_NICK.lower():
         return
-    if ctx.content == 'nbzaBuxin':
+    content = ctx.content.split()
+    nbza = 0
+    for i in content:
+        if i == 'nbzaBuxin':
+            nbza += 1
+    if nbza != 0:
         await ctx.channel.send_me('nbzaBuxin')
-    if ctx.content == 'tatxinBau':
+    tatxin = 0
+    for i in content:
+        if i == 'tatxinBau':
+            tatxin += 1
+    if tatxin != 0:
         await ctx.channel.send_me('tatxinBau')
     await bot.handle_commands(ctx)
 
