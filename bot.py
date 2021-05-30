@@ -19,8 +19,7 @@ CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 
 
 def get_channel():
-    JSON_FILE = str(os.path.dirname(
-        os.path.realpath(__file__))) + '/channels.json'
+    JSON_FILE = str(dir_path) + '/channels.json'
     with open(JSON_FILE) as json_file:
         data = json.load(json_file)
         global CHAN
@@ -29,8 +28,7 @@ def get_channel():
 
 
 def update_channel(value):
-    JSON_FILE = str(os.path.dirname(os.path.realpath(__file__))
-                    ) + f'/channels.json'
+    JSON_FILE = str(dir_path) + '/channels.json'
     data = None
     with open(JSON_FILE) as json_file:
         data = json.load(json_file)
@@ -628,8 +626,7 @@ dorito = {'drt': ['ferro', 'iron', 'bronze', 'prata', 'silver', 'ouro',
 
 
 def get_drt(ac, channel):
-    JSON_FILE = str(os.path.dirname(os.path.realpath(__file__))
-                    ) + f'/channeldata/{channel}.json'
+    JSON_FILE = str(dir_path) + f'/channeldata/{channel}.json'
     with open(JSON_FILE) as json_file:
         data = json.load(json_file)
         cmd = data[f'elo{ac}'].lower()
@@ -641,40 +638,35 @@ def get_drt(ac, channel):
 
 
 def get_elo(ac, channel):
-    JSON_FILE = str(os.path.dirname(os.path.realpath(__file__))
-                    ) + f'/channeldata/{channel}.json'
+    JSON_FILE = str(dir_path) + f'/channeldata/{channel}.json'
     with open(JSON_FILE) as json_file:
         data = json.load(json_file)
         return data[f'elo{ac}']
 
 
 def get_conta(ac, channel):
-    JSON_FILE = str(os.path.dirname(os.path.realpath(__file__))
-                    ) + f'/channeldata/{channel}.json'
+    JSON_FILE = str(dir_path) + f'/channeldata/{channel}.json'
     with open(JSON_FILE) as json_file:
         data = json.load(json_file)
         return data[f'conta{ac}']
 
 
 def get_div(ac, channel):
-    JSON_FILE = str(os.path.dirname(os.path.realpath(__file__))
-                    ) + f'/channeldata/{channel}.json'
+    JSON_FILE = str(dir_path) + f'/channeldata/{channel}.json'
     with open(JSON_FILE) as json_file:
         data = json.load(json_file)
         return data[f'div{ac}']
 
 
 def get_pdl(ac, channel):
-    JSON_FILE = str(os.path.dirname(os.path.realpath(__file__))
-                    ) + f'/channeldata/{channel}.json'
+    JSON_FILE = str(dir_path) + f'/channeldata/{channel}.json'
     with open(JSON_FILE) as json_file:
         data = json.load(json_file)
         return data[f'pdl{ac}']
 
 
 def update_value(key, value, channel):
-    JSON_FILE = str(os.path.dirname(os.path.realpath(__file__))
-                    ) + f'/channeldata/{channel}.json'
+    JSON_FILE = str(dir_path) + f'/channeldata/{channel}.json'
     data = None
     with open(JSON_FILE) as json_file:
         data = json.load(json_file)
@@ -685,8 +677,7 @@ def update_value(key, value, channel):
 
 
 def file_check(channel):
-    JSON_FILE = str(os.path.dirname(os.path.realpath(__file__))
-                    ) + f'/channeldata/{channel}.json'
+    JSON_FILE = str(dir_path) + f'/channeldata/{channel}.json'
     if os.path.isfile(JSON_FILE) and os.access(JSON_FILE, os.R_OK):
         return True
     else:
