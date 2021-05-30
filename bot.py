@@ -623,6 +623,9 @@ async def command_add(ctx):
             conta = get_conta('3', CHANNEL)
         await ctx.send_me(f'{conta}: {elo} {div} ({pdl} {drt})')
 
+dorito = {'drt': ['ferro', 'iron', 'bronze', 'prata', 'silver', 'ouro',
+                  'gold', 'plat', 'platinum', 'platina', 'esmeralda', 'emerald']}
+
 
 def get_drt(ac, channel):
     JSON_FILE = str(os.path.dirname(os.path.realpath(__file__))
@@ -630,7 +633,7 @@ def get_drt(ac, channel):
     with open(JSON_FILE) as json_file:
         data = json.load(json_file)
         cmd = data[f'elo{ac}'].lower()
-        if cmd == 'ferro' or cmd == 'iron' or cmd == 'bronze' or cmd == 'prata' or cmd == 'silver' or cmd == 'ouro' or cmd == 'gold' or cmd == 'plat' or cmd == 'platina' or cmd == 'platinum' or cmd == 'esmeralda' or cmd == 'emerald':
+        if cmd in dorito['drt']:
             drt = 'DoritosChip '
         else:
             drt = 'PdL'
