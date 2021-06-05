@@ -88,6 +88,8 @@ async def command_tutorial(ctx):
 @bot.command(name='entrar')
 async def command_join(ctx):
     AUTHOR = ctx.author.name.lower()
+    if AUTHOR == '1bode':
+        AUTHOR = ctx.content.split()[1]
     if ctx.channel.name.lower() == BOT_NICK.lower():
         CONTA = f'#{AUTHOR}'
         if CONTA in CHAN:
@@ -103,6 +105,8 @@ async def command_join(ctx):
 @bot.command(name='sair')
 async def command_join(ctx):
     AUTHOR = ctx.author.name.lower()
+    if AUTHOR == '1bode':
+        AUTHOR = ctx.content.split()[1]
     if ctx.channel.name.lower() == BOT_NICK.lower():
         CONTA = f'#{AUTHOR}'
         if CONTA in CHAN:
