@@ -1,7 +1,7 @@
 # WildRiftElo (Twitch Chat Bot based on BodeDotEXE)
 ## Setup and Run
 
-Requires Python `3.7.3`.
+Requires Python `3.9`.
 
 Install necessary packages (locally):
 
@@ -20,12 +20,18 @@ Open `.env` and insert the following fields:
 
 | Field          | Explanation                                                           |
 |----------------|-----------------------------------------------------------------------|
-| `TMI_TOKEN`    | OAuth Token with `oauth:` as a prefix                                 |
-| `CLIENT_ID`    | Client ID obtained from Twitch's Developer site                       |
-| `CLIENT_SECRET`| Client SECRET obtained from Twitch's Developer site                   |
-| `BOT_NICK`     | Twitch name of the Bot                                                | 
-| `BOT_PREFIX`   | Prefix for commands the bot should listen to (set to `!` per default) |
-| `CHANNEL`      | The name of the your Twitch channel you want the bot to run at        |
+| `TOKEN`        | Access Token obtained from [here](https://twitchtokengenerator.com/)  |
+| `BOT_NICK`     | Twitch name of the Bot                                                |
+| `BOT_PREFIX`   | Prefix for commands the bot should listen to (set to `!` per default) |
+
+Copy `channels.json.sample` to `channels.json`
+
+```
+cp channels.json.sample channels.json
+
+```
+
+Open `channels.json` and follow the instructions:
 
 Start Bot:
 

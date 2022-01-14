@@ -1,6 +1,5 @@
-import io
 import os
-import json
+import mod
 
 from dotenv import load_dotenv
 from os.path import join
@@ -11,80 +10,62 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 dotenv_path = join(dir_path, '.env')
 load_dotenv(dotenv_path)
 
-TMI_TOKEN = os.environ.get('TMI_TOKEN')
-CLIENT_ID = os.environ.get('CLIENT_ID')
+PREFIX = os.environ.get('BOT_PREFIX')
+TOKEN = os.environ.get('TOKEN')
+CHANNELS = mod.get_channel()
 BOT_NICK = os.environ.get('BOT_NICK')
-BOT_PREFIX = os.environ.get('BOT_PREFIX')
-CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
-
-
-def get_channel():
-    JSON_FILE = str(dir_path) + '/channels.json'
-    with open(JSON_FILE) as json_file:
-        data = json.load(json_file)
-        global CHAN
-        CHAN = data['CHANNEL']
-    return CHAN
-
-
-def update_channel(value):
-    JSON_FILE = str(dir_path) + '/channels.json'
-    data = None
-    with open(JSON_FILE) as json_file:
-        data = json.load(json_file)
-    if data is not None:
-        data['CHANNEL'] = value
-    with open(JSON_FILE, 'w') as json_file:
-        json.dump(data, json_file, sort_keys=True, indent=4)
 
 
 bot = commands.Bot(
-    irc_token=TMI_TOKEN,
-    nick=BOT_NICK,
-    prefix=BOT_PREFIX,
-    token=CLIENT_SECRET,
-    initial_channels=get_channel()
+    prefix=PREFIX,
+    token=TOKEN,
+    initial_channels=CHANNELS,
+    heartbeat=30.0
 )
 
 client = Client(
-    token=CLIENT_SECRET
+    token=TOKEN,
+    heartbeat=30.0
 )
 
 
-@bot.event
+@bot.event()
 async def event_ready():
     print(f"{BOT_NICK} ta online!")
 
 
-@bot.event
-async def event_message(ctx):
-    if ctx.author.name.lower() == BOT_NICK.lower():
+@bot.event()
+async def event_message(message):
+    try:
+        autor = message.author.name
+    except AttributeError:
         return
-#    content = ctx.message.content.split()
-#    nbza = 0
-#    for i in content:
-#        if i == 'nbzaBuxin':
-#            nbza += 1
-#    if nbza != 0:
-#        await ctx.channel.send('nbzaBuxin')
-#    tatxin = 0
-#    for i in content:
-#        if i == 'tatxinBau':
-#            tatxin += 1
-#    if tatxin != 0:
-#        await ctx.channel.send('tatxinBau')
-    await bot.handle_commands(ctx)
+    if autor.lower() == BOT_NICK.lower():
+        return
+    CHANNEL = message.channel.name
+    msg = message.content
+    time = message.timestamp.strftime('%H:%M:%S')
+    print(f'#{CHANNEL} {time} {autor}: {msg}')
 
 
-@bot.command(name='tutorial')
+@bot.command(name="update")
+async def update(ctx):
+    if ctx.author.name == 'bodedotexe' or ctx.author.name == '1bode':
+        os.system("git pull")
+        print("Atualizando e reiniciando...")
+        os.system("python3 bot.py")
+        exit()
+
+
+@bot.command(name='tutorial', aliases=['tuto'])
 async def command_tutorial(ctx):
     if ctx.channel.name.lower() == BOT_NICK.lower():
-        await ctx.send('Como adicionar o bot e configurar em seu canal: https://imgur.com/a/zl1T2CY')
+        await ctx.channel.send('/me Como adicionar o bot e configurar em seu canal: https://imgur.com/a/zl1T2CY')
     else:
-        await ctx.send(f'Envie !tutorial no chat do {BOT_NICK}')
+        await ctx.channel.send(f'/me Envie !tutorial no chat do {BOT_NICK}')
 
 
-@bot.command(name='entrar')
+@bot.command(name='entrar', aliases=['join'])
 async def command_join(ctx):
     AUTHOR = ctx.author.name.lower()
     if AUTHOR == '1bode':
@@ -94,17 +75,17 @@ async def command_join(ctx):
             pass
     if ctx.channel.name.lower() == BOT_NICK.lower():
         CONTA = f'#{AUTHOR}'
-        if CONTA in CHAN:
-            await ctx.send(f'Bot JÁ ESTÁ no canal {ctx.author.name}')
+        if CONTA in CHANNELS:
+            await ctx.channel.send(f'/me Bot JÁ ESTÁ no canal {ctx.author.name}')
         else:
-            CHAN.append(f'#{AUTHOR}')
-            update_channel(CHAN)
-            file_check(AUTHOR)
-            await bot.join_channels(CHAN)
-            await ctx.send(f'Bot ENTROU no canal {ctx.author.name}')
+            CHANNELS.append(f'#{AUTHOR}')
+            mod.update_channel(CHANNELS)
+            mod.file_check(AUTHOR)
+            await bot.join_channels(CHANNELS)
+            await ctx.channel.send(f'/me Bot ENTROU no canal {ctx.author.name}')
 
 
-@bot.command(name='sair')
+@bot.command(name='sair', aliases=['leave'])
 async def command_join(ctx):
     AUTHOR = ctx.author.name.lower()
     if AUTHOR == '1bode':
@@ -114,146 +95,150 @@ async def command_join(ctx):
             pass
     if ctx.channel.name.lower() == BOT_NICK.lower():
         CONTA = f'#{AUTHOR}'
-        if CONTA in CHAN:
-            CHAN.remove(f'#{AUTHOR}')
-            update_channel(CHAN)
-            await bot.part_channels([AUTHOR])
-            await ctx.send(F'Bot SAIU do canal {ctx.author.name}')
+        if CONTA in CHANNELS:
+            CHANNELS.remove(f'#{AUTHOR}')
+            mod.update_channel(CHANNELS)
+            await ctx.channel.send(F'Bot SAIU do canal {ctx.author.name}')
         else:
-            await ctx.send(F'Bot NÃO ESTÁ no canal {ctx.author.name}')
+            await ctx.channel.send(F'Bot NÃO ESTÁ no canal {ctx.author.name}')
 
 
 @bot.command(name='elos')
 async def command_elo(ctx):
     CHANNEL = ctx.channel.name.lower()
     try:
-        elo = get_elo('', CHANNEL)
-        div = get_div('', CHANNEL)
-        conta = get_conta('', CHANNEL)
-        elo1 = get_elo('1', CHANNEL)
-        div1 = get_div('1', CHANNEL)
-        conta1 = get_conta('1', CHANNEL)
-        elo2 = get_elo('2', CHANNEL)
-        div2 = get_div('2', CHANNEL)
-        conta2 = get_conta('2', CHANNEL)
-        elo3 = get_elo('3', CHANNEL)
-        div3 = get_div('3', CHANNEL)
-        conta3 = get_conta('3', CHANNEL)
-        await ctx.send(f'{conta}: {elo} {div} | {conta1}: {elo1} {div1} | {conta2}: {elo2} {div2} | {conta3}: {elo3} {div3}')
+        elo = mod.get_elo('', CHANNEL)
+        div = mod.get_div('', CHANNEL)
+        conta = mod.get_conta('', CHANNEL)
+        elo1 = mod.get_elo('1', CHANNEL)
+        div1 = mod.get_div('1', CHANNEL)
+        conta1 = mod.get_conta('1', CHANNEL)
+        elo2 = mod.get_elo('2', CHANNEL)
+        div2 = mod.get_div('2', CHANNEL)
+        conta2 = mod.get_conta('2', CHANNEL)
+        elo3 = mod.get_elo('3', CHANNEL)
+        div3 = mod.get_div('3', CHANNEL)
+        conta3 = mod.get_conta('3', CHANNEL)
+        await ctx.channel.send(f'/me {conta}: {elo} {div} | {conta1}: {elo1} {div1} | {conta2}: {elo2} {div2} | {conta3}: {elo3} {div3}')
     except KeyError:
         try:
-            elo = get_elo('', CHANNEL)
-            div = get_div('', CHANNEL)
-            conta = get_conta('', CHANNEL)
-            elo1 = get_elo('1', CHANNEL)
-            div1 = get_div('1', CHANNEL)
-            conta1 = get_conta('1', CHANNEL)
-            elo2 = get_elo('2', CHANNEL)
-            div2 = get_div('2', CHANNEL)
-            conta2 = get_conta('2', CHANNEL)
-            await ctx.send(f'{conta}: {elo} {div} | {conta1}: {elo1} {div1} | {conta2}: {elo2} {div2}')
+            elo = mod.get_elo('', CHANNEL)
+            div = mod.get_div('', CHANNEL)
+            conta = mod.get_conta('', CHANNEL)
+            elo1 = mod.get_elo('1', CHANNEL)
+            div1 = mod.get_div('1', CHANNEL)
+            conta1 = mod.get_conta('1', CHANNEL)
+            elo2 = mod.get_elo('2', CHANNEL)
+            div2 = mod.get_div('2', CHANNEL)
+            conta2 = mod.get_conta('2', CHANNEL)
+            await ctx.channel.send(f'/me {conta}: {elo} {div} | {conta1}: {elo1} {div1} | {conta2}: {elo2} {div2}')
         except KeyError:
             try:
-                elo = get_elo('', CHANNEL)
-                div = get_div('', CHANNEL)
-                conta = get_conta('', CHANNEL)
-                elo1 = get_elo('1', CHANNEL)
-                div1 = get_div('1', CHANNEL)
-                conta1 = get_conta('1', CHANNEL)
-                await ctx.send(f'{conta}: {elo} {div} | {conta1}: {elo1} {div1}')
+                elo = mod.get_elo('', CHANNEL)
+                div = mod.get_div('', CHANNEL)
+                conta = mod.get_conta('', CHANNEL)
+                elo1 = mod.get_elo('1', CHANNEL)
+                div1 = mod.get_div('1', CHANNEL)
+                conta1 = mod.get_conta('1', CHANNEL)
+                await ctx.channel.send(f'/me {conta}: {elo} {div} | {conta1}: {elo1} {div1}')
             except KeyError:
                 try:
-                    elo1 = get_elo('1', CHANNEL)
-                    div1 = get_div('1', CHANNEL)
-                    conta1 = get_conta('1', CHANNEL)
-                    elo2 = get_elo('2', CHANNEL)
-                    div2 = get_div('2', CHANNEL)
-                    conta2 = get_conta('2', CHANNEL)
-                    elo3 = get_elo('3', CHANNEL)
-                    div3 = get_div('3', CHANNEL)
-                    conta3 = get_conta('3', CHANNEL)
-                    await ctx.send(f'{conta1}: {elo1} {div1} | {conta2}: {elo2} {div2} | {conta3}: {elo3} {div3}')
+                    elo1 = mod.get_elo('1', CHANNEL)
+                    div1 = mod.get_div('1', CHANNEL)
+                    conta1 = mod.get_conta('1', CHANNEL)
+                    elo2 = mod.get_elo('2', CHANNEL)
+                    div2 = mod.get_div('2', CHANNEL)
+                    conta2 = mod.get_conta('2', CHANNEL)
+                    elo3 = mod.get_elo('3', CHANNEL)
+                    div3 = mod.get_div('3', CHANNEL)
+                    conta3 = mod.get_conta('3', CHANNEL)
+                    await ctx.channel.send(f'/me {conta1}: {elo1} {div1} | {conta2}: {elo2} {div2} | {conta3}: {elo3} {div3}')
                 except KeyError:
                     try:
-                        elo1 = get_elo('1', CHANNEL)
-                        div1 = get_div('1', CHANNEL)
-                        conta1 = get_conta('1', CHANNEL)
-                        elo2 = get_elo('2', CHANNEL)
-                        div2 = get_div('2', CHANNEL)
-                        conta2 = get_conta('2', CHANNEL)
-                        await ctx.send(f'{conta1}: {elo1} {div1} | {conta2}: {elo2} {div2}')
+                        elo1 = mod.get_elo('1', CHANNEL)
+                        div1 = mod.get_div('1', CHANNEL)
+                        conta1 = mod.get_conta('1', CHANNEL)
+                        elo2 = mod.get_elo('2', CHANNEL)
+                        div2 = mod.get_div('2', CHANNEL)
+                        conta2 = mod.get_conta('2', CHANNEL)
+                        await ctx.channel.send(f'/me {conta1}: {elo1} {div1} | {conta2}: {elo2} {div2}')
                     except KeyError:
-                        await ctx.send('Você precisa armazenar pelo menos duas contas')
+                        await ctx.channel.send('/me Você precisa configurar pelo menos duas contas.')
 
 
-@bot.command(name='conta')
+@bot.command(name='conta', aliases=['conta1', 'conta2', 'conta3', 'smurf', 'elosmurf'])
 async def command_conta(ctx):
     CHANNEL = ctx.channel.name.lower()
+    ac = ctx.message.content.split(' ', 1)[0][-1]
+    ac = '' if ac == 'a' else ac
+    ac = 1 if ac == 'f' else ac
     if ctx.message.content.split(' ')[1:] != []:
         if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
-            command_string = ctx.message.content
-            command_string = command_string.replace('!conta', '').strip()
-            conta = 'Conta'
+            command_string = ctx.message.content.split(' ', 1)[1:][0]
+            conta = f'Conta{ac}'
             try:
                 conta = str(command_string)
             except ValueError:
-                await ctx.send('Valor inválido')
+                await ctx.channel.send('/me Valor inválido')
                 return
-            update_value('conta', conta, CHANNEL)
-            await ctx.send(f'Nome da conta atualizado para: {conta}')
+            mod.update_value(f'conta{ac}', conta, CHANNEL)
+            await ctx.channel.send(f'/me Nome da conta{ac} atualizado para: {conta}')
 
 
-@bot.command(name='elo')
+@bot.command(name='elo', aliases=['elo1', 'elo2', 'elo3'])
 async def command_elo(ctx):
     CHANNEL = ctx.channel.name.lower()
+    ac = ctx.message.content.split(' ', 1)[0][-1]
+    ac = '' if ac == 'o' else ac
     if ctx.message.content.split(' ')[1:] != []:
         if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
-            command_string = ctx.message.content
-            command_string = command_string.replace('!elo', '').strip()
+            command_string = ctx.message.content.split(' ', 1)[1:][0]
             elo = 'Ferro'
             try:
                 elo = str(command_string)
             except ValueError:
-                await ctx.send('Valor inválido')
+                await ctx.channel.send('/me Valor inválido')
                 return
-            update_value('elo', elo, CHANNEL)
-            conta = get_conta('', CHANNEL)
-            await ctx.send(f'Elo da {conta} atualizado para {elo}')
+            mod.update_value(f'elo{ac}', elo, CHANNEL)
+            conta = mod.get_conta(ac, CHANNEL)
+            await ctx.channel.send(f'/me Elo de "{conta}" atualizado para {elo}')
 
     else:
-        elo = get_elo('', CHANNEL)
-        div = get_div('', CHANNEL)
-        pdl = get_pdl('', CHANNEL)
-        drt = get_drt('', CHANNEL)
-        conta = get_conta('', CHANNEL)
-        await ctx.send(f'{conta}: {elo} {div} ({pdl} {drt})')
+        elo = mod.get_elo(ac, CHANNEL)
+        div = mod.get_div(ac, CHANNEL)
+        pdl = mod.get_pdl(ac, CHANNEL)
+        drt = mod.get_drt(ac, CHANNEL)
+        conta = mod.get_conta(ac, CHANNEL)
+        await ctx.channel.send(f'/me {conta}: {elo} {div} ({pdl} {drt})')
 
 
-@bot.command(name='div')
+@bot.command(name='div', aliases=['div1', 'div2', 'div3'])
 async def command_add(ctx):
     CHANNEL = ctx.channel.name.lower()
+    ac = ctx.message.content.split(' ', 1)[0][-1]
+    ac = '' if ac == 'v' else ac
     if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
-        command_string = ctx.message.content
-        command_string = command_string.replace('!div', '').strip()
+        command_string = ctx.message.content.split(' ', 1)[1:][0]
         div = 0
         try:
             div = int(command_string)
         except ValueError:
-            await ctx.send('Valor inválido')
+            await ctx.channel.send('/me Valor inválido')
             return
-        update_value('div', div, CHANNEL)
-        conta = get_conta('', CHANNEL)
-        await ctx.send(f'Divisão da {conta} atualizada para {div}')
+        mod.update_value(f'div{ac}', div, CHANNEL)
+        conta = mod.get_conta(ac, CHANNEL)
+        await ctx.channel.send(f'/me Divisão de "{conta}" atualizada para {div}')
 
 
-@bot.command(name='pdl')
+@bot.command(name='pdl', aliases=['pdl1', 'pdl2', 'pdl3'])
 async def command_add(ctx):
     CHANNEL = ctx.channel.name.lower()
+    ac = ctx.message.content.split(' ', 1)[0][-1]
+    ac = '' if ac == 'l' else ac
     if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
-        command_string = ctx.message.content
-        command_string = command_string.replace('!pdl', '').strip()
+        command_string = ctx.message.content.split(' ', 1)[1:][0]
         try:
-            pdl = get_pdl('', CHANNEL)
+            pdl = mod.get_pdl(ac, CHANNEL)
         except KeyError:
             pdl = 0
         if command_string.startswith('+'):
@@ -261,476 +246,37 @@ async def command_add(ctx):
             try:
                 pdl += int(val)
             except ValueError:
-                await ctx.send('Valor inválido')
+                await ctx.channel.send('/me Valor inválido')
                 return
-            update_value('pdl', pdl, CHANNEL)
-            elo = get_elo('', CHANNEL)
-            div = get_div('', CHANNEL)
-            drt = get_drt('', CHANNEL)
-            conta = get_conta('', CHANNEL)
+            mod.update_value(f'pdl{ac}', pdl, CHANNEL)
+            elo = mod.get_elo(ac, CHANNEL)
+            div = mod.get_div(ac, CHANNEL)
+            drt = mod.get_drt(ac, CHANNEL)
+            conta = mod.get_conta(ac, CHANNEL)
         elif command_string.startswith('-'):
             val = command_string.replace('-', '').strip()
             try:
                 pdl -= int(val)
             except ValueError:
-                await ctx.send('Valor inválido')
+                await ctx.channel.send('/me Valor inválido')
                 return
-            update_value('pdl', pdl, CHANNEL)
-            elo = get_elo('', CHANNEL)
-            div = get_div('', CHANNEL)
-            drt = get_drt('', CHANNEL)
-            conta = get_conta('', CHANNEL)
+            mod.update_value(f'pdl{ac}', pdl, CHANNEL)
+            elo = mod.get_elo(ac, CHANNEL)
+            div = mod.get_div(ac, CHANNEL)
+            drt = mod.get_drt(ac, CHANNEL)
+            conta = mod.get_conta(ac, CHANNEL)
         else:
             try:
                 pdl = int(command_string)
             except ValueError:
-                await ctx.send('Valor inválido')
+                await ctx.channel.send('/me Valor inválido')
                 return
-            update_value('pdl', pdl, CHANNEL)
-            elo = get_elo('', CHANNEL)
-            div = get_div('', CHANNEL)
-            drt = get_drt('', CHANNEL)
-            conta = get_conta('', CHANNEL)
-        await ctx.send(f'{conta}: {elo} {div} ({pdl} {drt})')
-
-
-@bot.command(name='conta1')
-async def command_conta(ctx):
-    CHANNEL = ctx.channel.name.lower()
-    if ctx.message.content.split(' ')[1:] != []:
-        if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
-            command_string = ctx.message.content
-            command_string = command_string.replace('!conta1', '').strip()
-            conta = 'Conta1'
-            try:
-                conta = str(command_string)
-            except ValueError:
-                await ctx.send('Valor inválido')
-                return
-            update_value('conta1', conta, CHANNEL)
-            await ctx.send(f'Nome da conta1 atualizado para: {conta}')
-
-
-@bot.command(name='elo1')
-async def command_elo(ctx):
-    CHANNEL = ctx.channel.name.lower()
-    if ctx.message.content.split(' ')[1:] != []:
-        if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
-            command_string = ctx.message.content
-            command_string = command_string.replace('!elo1', '').strip()
-            elo = 'Ferro'
-            try:
-                elo = str(command_string)
-            except ValueError:
-                await ctx.send('Valor inválido')
-                return
-            update_value('elo1', elo, CHANNEL)
-            conta = get_conta('1', CHANNEL)
-            await ctx.send(f'Elo da {conta} atualizado para {elo}')
-
-    else:
-        elo = get_elo('1', CHANNEL)
-        div = get_div('1', CHANNEL)
-        pdl = get_pdl('1', CHANNEL)
-        drt = get_drt('1', CHANNEL)
-        conta = get_conta('1', CHANNEL)
-        await ctx.send(f'{conta}: {elo} {div} ({pdl} {drt})')
-
-
-@bot.command(name='smurf')
-async def command_elo(ctx):
-    CHANNEL = ctx.channel.name.lower()
-    if ctx.message.content.split(' ')[1:] != []:
-        if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
-            command_string = ctx.message.content
-            command_string = command_string.replace('!smurf', '').strip()
-            elo = 'Ferro'
-            try:
-                elo = str(command_string)
-            except ValueError:
-                await ctx.send('Valor inválido')
-                return
-            update_value('elo1', elo, CHANNEL)
-            conta = get_conta('1', CHANNEL)
-            await ctx.send(f'Elo da {conta} atualizado para {elo}')
-
-    else:
-        elo = get_elo('1', CHANNEL)
-        div = get_div('1', CHANNEL)
-        pdl = get_pdl('1', CHANNEL)
-        drt = get_drt('1', CHANNEL)
-        conta = get_conta('1', CHANNEL)
-        await ctx.send(f'{conta}: {elo} {div} ({pdl} {drt})')
-
-
-@bot.command(name='elosmurf')
-async def command_elo(ctx):
-    CHANNEL = ctx.channel.name.lower()
-    if ctx.message.content.split(' ')[1:] != []:
-        if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
-            command_string = ctx.message.content
-            command_string = command_string.replace('!elosmurf', '').strip()
-            elo = 'Ferro'
-            try:
-                elo = str(command_string)
-            except ValueError:
-                await ctx.send('Valor inválido')
-                return
-            update_value('elo1', elo, CHANNEL)
-            conta = get_conta('1', CHANNEL)
-            await ctx.send(f'Elo da {conta} atualizado para {elo}')
-
-    else:
-        elo = get_elo('1', CHANNEL)
-        div = get_div('1', CHANNEL)
-        pdl = get_pdl('1', CHANNEL)
-        drt = get_drt('1', CHANNEL)
-        conta = get_conta('1', CHANNEL)
-        await ctx.send(f'{conta}: {elo} {div} ({pdl} {drt})')
-
-
-@bot.command(name='div1')
-async def command_add(ctx):
-    CHANNEL = ctx.channel.name.lower()
-    if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
-        command_string = ctx.message.content
-        command_string = command_string.replace('!div1', '').strip()
-        div = 0
-        try:
-            div = int(command_string)
-        except ValueError:
-            await ctx.send('Valor inválido')
-            return
-        update_value('div1', div, CHANNEL)
-        conta = get_conta('1', CHANNEL)
-        await ctx.send(f'Divisão da {conta} atualizada para {div}')
-
-
-@bot.command(name='pdl1')
-async def command_add(ctx):
-    CHANNEL = ctx.channel.name.lower()
-    if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
-        command_string = ctx.message.content
-        command_string = command_string.replace('!pdl1', '').strip()
-        try:
-            pdl = get_pdl('1', CHANNEL)
-        except KeyError:
-            pdl = 0
-        if command_string.startswith('+'):
-            val = command_string.replace('+', '').strip()
-            try:
-                pdl += int(val)
-            except ValueError:
-                await ctx.send('Valor inválido')
-                return
-            update_value('pdl1', pdl, CHANNEL)
-            elo = get_elo('1', CHANNEL)
-            div = get_div('1', CHANNEL)
-            drt = get_drt('1', CHANNEL)
-            conta = get_conta('1', CHANNEL)
-        elif command_string.startswith('-'):
-            val = command_string.replace('-', '').strip()
-            try:
-                pdl -= int(val)
-            except ValueError:
-                await ctx.send('Valor inválido')
-                return
-            update_value('pdl1', pdl, CHANNEL)
-            elo = get_elo('1', CHANNEL)
-            div = get_div('1', CHANNEL)
-            drt = get_drt('1', CHANNEL)
-            conta = get_conta('1', CHANNEL)
-        else:
-            try:
-                pdl = int(command_string)
-            except ValueError:
-                await ctx.send('Valor inválido')
-                return
-            update_value('pdl1', pdl, CHANNEL)
-            elo = get_elo('1', CHANNEL)
-            div = get_div('1', CHANNEL)
-            drt = get_drt('1', CHANNEL)
-            conta = get_conta('1', CHANNEL)
-        await ctx.send(f'{conta}: {elo} {div} ({pdl} {drt})')
-
-
-@bot.command(name='conta2')
-async def command_conta(ctx):
-    CHANNEL = ctx.channel.name.lower()
-    if ctx.message.content.split(' ')[1:] != []:
-        if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
-            command_string = ctx.message.content
-            command_string = command_string.replace('!conta2', '').strip()
-            conta = 'Conta2'
-            try:
-                conta = str(command_string)
-            except ValueError:
-                await ctx.send('Valor inválido')
-                return
-            update_value('conta2', conta, CHANNEL)
-            await ctx.send(f'Nome da conta2 atualizado para: {conta}')
-
-
-@bot.command(name='elo2')
-async def command_elo(ctx):
-    CHANNEL = ctx.channel.name.lower()
-    if ctx.message.content.split(' ')[1:] != []:
-        if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
-            command_string = ctx.message.content
-            command_string = command_string.replace('!elo2', '').strip()
-            elo = 'Ferro'
-            try:
-                elo = str(command_string)
-            except ValueError:
-                await ctx.send('Valor inválido')
-                return
-            update_value('elo2', elo, CHANNEL)
-            conta = get_conta('2', CHANNEL)
-            await ctx.send(f'Elo da {conta} atualizado para {elo}')
-
-    else:
-        elo = get_elo('2', CHANNEL)
-        div = get_div('2', CHANNEL)
-        pdl = get_pdl('2', CHANNEL)
-        drt = get_drt('2', CHANNEL)
-        conta = get_conta('2', CHANNEL)
-        await ctx.send(f'{conta}: {elo} {div} ({pdl} {drt})')
-
-
-@bot.command(name='div2')
-async def command_add(ctx):
-    CHANNEL = ctx.channel.name.lower()
-    if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
-        command_string = ctx.message.content
-        command_string = command_string.replace('!div2', '').strip()
-        div = 0
-        try:
-            div = int(command_string)
-        except ValueError:
-            await ctx.send('Valor inválido')
-            return
-        update_value('div2', div, CHANNEL)
-        conta = get_conta('2', CHANNEL)
-        await ctx.send(f'Divisão da {conta} atualizada para {div}')
-
-
-@bot.command(name='pdl2')
-async def command_add(ctx):
-    CHANNEL = ctx.channel.name.lower()
-    if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
-        command_string = ctx.message.content
-        command_string = command_string.replace('!pdl2', '').strip()
-        try:
-            pdl = get_pdl('2', CHANNEL)
-        except KeyError:
-            pdl = 0
-        if command_string.startswith('+'):
-            val = command_string.replace('+', '').strip()
-            try:
-                pdl += int(val)
-            except ValueError:
-                await ctx.send('Valor inválido')
-                return
-            update_value('pdl2', pdl, CHANNEL)
-            elo = get_elo('2', CHANNEL)
-            div = get_div('2', CHANNEL)
-            drt = get_drt('2', CHANNEL)
-            conta = get_conta('2', CHANNEL)
-        elif command_string.startswith('-'):
-            val = command_string.replace('-', '').strip()
-            try:
-                pdl -= int(val)
-            except ValueError:
-                await ctx.send('Valor inválido')
-                return
-            update_value('pdl2', pdl, CHANNEL)
-            elo = get_elo('2', CHANNEL)
-            div = get_div('2', CHANNEL)
-            drt = get_drt('2', CHANNEL)
-            conta = get_conta('2', CHANNEL)
-        else:
-            try:
-                pdl = int(command_string)
-            except ValueError:
-                await ctx.send('Valor inválido')
-                return
-            update_value('pdl2', pdl, CHANNEL)
-            elo = get_elo('2', CHANNEL)
-            div = get_div('2', CHANNEL)
-            drt = get_drt('2', CHANNEL)
-            conta = get_conta('2', CHANNEL)
-        await ctx.send(f'{conta}: {elo} {div} ({pdl} {drt})')
-
-
-@bot.command(name='conta3')
-async def command_conta(ctx):
-    CHANNEL = ctx.channel.name.lower()
-    if ctx.message.content.split(' ')[1:] != []:
-        if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
-            command_string = ctx.message.content
-            command_string = command_string.replace('!conta3', '').strip()
-            conta = 'Conta3'
-            try:
-                conta = str(command_string)
-            except ValueError:
-                await ctx.send('Valor inválido')
-                return
-            update_value('conta3', conta, CHANNEL)
-            await ctx.send(f'Nome da conta3 atualizado para: {conta}')
-
-
-@bot.command(name='elo3')
-async def command_elo(ctx):
-    CHANNEL = ctx.channel.name.lower()
-    if ctx.message.content.split(' ')[1:] != []:
-        if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
-            command_string = ctx.message.content
-            command_string = command_string.replace('!elo3', '').strip()
-            elo = 'Ferro'
-            try:
-                elo = str(command_string)
-            except ValueError:
-                await ctx.send('Valor inválido')
-                return
-            update_value('elo3', elo, CHANNEL)
-            conta = get_conta('3', CHANNEL)
-            await ctx.send(f'Elo da {conta} atualizado para {elo}')
-
-    else:
-        elo = get_elo('3', CHANNEL)
-        div = get_div('3', CHANNEL)
-        pdl = get_pdl('3', CHANNEL)
-        drt = get_drt('3', CHANNEL)
-        conta = get_conta('3', CHANNEL)
-        await ctx.send(f'{conta}: {elo} {div} ({pdl} {drt})')
-
-
-@bot.command(name='div3')
-async def command_add(ctx):
-    CHANNEL = ctx.channel.name.lower()
-    if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
-        command_string = ctx.message.content
-        command_string = command_string.replace('!div3', '').strip()
-        div = 0
-        try:
-            div = int(command_string)
-        except ValueError:
-            await ctx.send('Valor inválido')
-            return
-        update_value('div3', div, CHANNEL)
-        conta = get_conta('3', CHANNEL)
-        await ctx.send(f'Divisão da {conta} atualizada para {div}')
-
-
-@bot.command(name='pdl3')
-async def command_add(ctx):
-    CHANNEL = ctx.channel.name.lower()
-    if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
-        command_string = ctx.message.content
-        command_string = command_string.replace('!pdl3', '').strip()
-        try:
-            pdl = get_pdl('3', CHANNEL)
-        except KeyError:
-            pdl = 0
-        if command_string.startswith('+'):
-            val = command_string.replace('+', '').strip()
-            try:
-                pdl += int(val)
-            except ValueError:
-                await ctx.send('Valor inválido')
-                return
-            update_value('pdl3', pdl, CHANNEL)
-            elo = get_elo('3', CHANNEL)
-            div = get_div('3', CHANNEL)
-            drt = get_drt('3', CHANNEL)
-            conta = get_conta('3', CHANNEL)
-        elif command_string.startswith('-'):
-            val = command_string.replace('-', '').strip()
-            try:
-                pdl -= int(val)
-            except ValueError:
-                await ctx.send('Valor inválido')
-                return
-            update_value('pdl3', pdl, CHANNEL)
-            elo = get_elo('3', CHANNEL)
-            div = get_div('3', CHANNEL)
-            drt = get_drt('3', CHANNEL)
-            conta = get_conta('3', CHANNEL)
-        else:
-            try:
-                pdl = int(command_string)
-            except ValueError:
-                await ctx.send('Valor inválido')
-                return
-            update_value('pdl3', pdl, CHANNEL)
-            elo = get_elo('3', CHANNEL)
-            div = get_div('3', CHANNEL)
-            drt = get_drt('3', CHANNEL)
-            conta = get_conta('3', CHANNEL)
-        await ctx.send(f'{conta}: {elo} {div} ({pdl} {drt})')
-
-dorito = {'drt': ['ferro', 'iron', 'bronze', 'prata', 'silver', 'ouro',
-                  'gold', 'plat', 'platinum', 'platina', 'esmeralda', 'emerald']}
-
-
-def get_drt(ac, channel):
-    JSON_FILE = str(dir_path) + f'/channeldata/{channel}.json'
-    with open(JSON_FILE) as json_file:
-        data = json.load(json_file)
-        cmd = data[f'elo{ac}'].lower()
-        if cmd in dorito['drt']:
-            drt = 'DoritosChip '
-        else:
-            drt = 'PdL'
-        return drt
-
-
-def get_elo(ac, channel):
-    JSON_FILE = str(dir_path) + f'/channeldata/{channel}.json'
-    with open(JSON_FILE) as json_file:
-        data = json.load(json_file)
-        return data[f'elo{ac}']
-
-
-def get_conta(ac, channel):
-    JSON_FILE = str(dir_path) + f'/channeldata/{channel}.json'
-    with open(JSON_FILE) as json_file:
-        data = json.load(json_file)
-        return data[f'conta{ac}']
-
-
-def get_div(ac, channel):
-    JSON_FILE = str(dir_path) + f'/channeldata/{channel}.json'
-    with open(JSON_FILE) as json_file:
-        data = json.load(json_file)
-        return data[f'div{ac}']
-
-
-def get_pdl(ac, channel):
-    JSON_FILE = str(dir_path) + f'/channeldata/{channel}.json'
-    with open(JSON_FILE) as json_file:
-        data = json.load(json_file)
-        return data[f'pdl{ac}']
-
-
-def update_value(key, value, channel):
-    JSON_FILE = str(dir_path) + f'/channeldata/{channel}.json'
-    data = None
-    with open(JSON_FILE) as json_file:
-        data = json.load(json_file)
-    if data is not None:
-        data[key] = value
-    with open(JSON_FILE, 'w') as json_file:
-        json.dump(data, json_file, sort_keys=True, indent=4)
-
-
-def file_check(channel):
-    JSON_FILE = str(dir_path) + f'/channeldata/{channel}.json'
-    if os.path.isfile(JSON_FILE) and os.access(JSON_FILE, os.R_OK):
-        return True
-    else:
-        with io.open(os.path.join(JSON_FILE), 'w') as json_file:
-            json_file.write(json.dumps({}))
+            mod.update_value(f'pdl{ac}', pdl, CHANNEL)
+            elo = mod.get_elo(ac, CHANNEL)
+            div = mod.get_div(ac, CHANNEL)
+            drt = mod.get_drt(ac, CHANNEL)
+            conta = mod.get_conta(ac, CHANNEL)
+        await ctx.channel.send(f'/me {conta}: {elo} {div} ({pdl} {drt})')
 
 
 if __name__ == "__main__":
