@@ -76,13 +76,13 @@ async def command_join(ctx):
     if ctx.channel.name.lower() == BOT_NICK.lower():
         CONTA = f'#{AUTHOR}'
         if CONTA in CHANNELS:
-            await ctx.channel.send(f'/me Bot JÁ ESTÁ no canal {ctx.author.name}')
+            await ctx.channel.send(f'/me Bot JÁ ESTÁ no canal {AUTHOR}')
         else:
             CHANNELS.append(f'#{AUTHOR}')
             mod.update_channel(CHANNELS)
             mod.file_check(AUTHOR)
             await bot.join_channels(CHANNELS)
-            await ctx.channel.send(f'/me Bot ENTROU no canal {ctx.author.name}')
+            await ctx.channel.send(f'/me Bot ENTROU no canal {AUTHOR}')
 
 
 @bot.command(name='sair', aliases=['leave'])
@@ -98,9 +98,9 @@ async def command_join(ctx):
         if CONTA in CHANNELS:
             CHANNELS.remove(f'#{AUTHOR}')
             mod.update_channel(CHANNELS)
-            await ctx.channel.send(F'Bot SAIU do canal {ctx.author.name}')
+            await ctx.channel.send(F'/me Bot SAIU do canal {AUTHOR}')
         else:
-            await ctx.channel.send(F'Bot NÃO ESTÁ no canal {ctx.author.name}')
+            await ctx.channel.send(F'/me Bot NÃO ESTÁ no canal {AUTHOR}')
 
 
 @bot.command(name='elos')
