@@ -70,7 +70,7 @@ async def command_join(ctx):
     AUTHOR = ctx.author.name.lower()
     if AUTHOR == '1bode':
         try:
-            AUTHOR = ctx.content.split()[1]
+            AUTHOR = ctx.message.content.split()[1]
         except IndexError:
             pass
     if ctx.channel.name.lower() == BOT_NICK.lower():
@@ -90,7 +90,7 @@ async def command_join(ctx):
     AUTHOR = ctx.author.name.lower()
     if AUTHOR == '1bode':
         try:
-            AUTHOR = ctx.content.split()[1]
+            AUTHOR = ctx.message.content.split()[1]
         except IndexError:
             pass
     if ctx.channel.name.lower() == BOT_NICK.lower():
