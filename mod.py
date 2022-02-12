@@ -1,8 +1,28 @@
 import os
 import io
 import json
+import time
+import threading
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
+
+
+def cooldown(function, duration=int(5)):
+    function.on_cooldown = False
+
+    def sleeper():
+        function.on_cooldown = True
+        time.sleep(duration)
+        function.on_cooldown = False
+
+    async def wrapper(*args, **kwargs):
+        if function.on_cooldown:
+            print(f"Function {function.__name__} on cooldown")
+        else:
+            timer = threading.Thread(target=sleeper)
+            await function(*args, **kwargs)
+            timer.start()
+    return wrapper
 
 
 def get_channel():
@@ -25,10 +45,9 @@ def update_channel(value):
         json.dump(data, json_file, sort_keys=True, indent=4)
 
 
-
 def get_drt(ac, channel):
     dorito = {'drt': ['ferro', 'iron', 'bronze', 'prata', 'silver', 'ouro',
-                    'gold', 'plat', 'platinum', 'platina', 'esmeralda', 'emerald']}
+                      'gold', 'plat', 'platinum', 'platina', 'esmeralda', 'emerald']}
     JSON_FILE = str(dir_path) + f'/channeldata/{channel}.json'
     with open(JSON_FILE) as json_file:
         data = json.load(json_file)

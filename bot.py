@@ -58,6 +58,7 @@ async def update(ctx):
 
 
 @bot.command(name='tutorial', aliases=['tuto'])
+@mod.cooldown
 async def command_tutorial(ctx):
     if ctx.channel.name.lower() == BOT_NICK.lower():
         await ctx.channel.send('/me Como adicionar o bot e configurar em seu canal: https://imgur.com/a/zl1T2CY')
