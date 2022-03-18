@@ -174,7 +174,7 @@ async def command_conta(ctx):
     ac = '' if ac == 'a' else ac
     ac = 1 if ac == 'f' else ac
     if ctx.message.content.split(' ')[1:] != []:
-        if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
+        if(ctx.author.is_mod) or (ctx.author == '1bode'):
             command_string = ctx.message.content.split(' ', 1)[1:][0]
             conta = f'Conta{ac}'
             try:
@@ -192,7 +192,7 @@ async def command_elo(ctx):
     ac = ctx.message.content.split(' ', 1)[0][-1]
     ac = '' if ac == 'o' else ac
     if ctx.message.content.split(' ')[1:] != []:
-        if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
+        if(ctx.author.is_mod) or (ctx.author == '1bode'):
             command_string = ctx.message.content.split(' ', 1)[1:][0]
             elo = 'Ferro'
             try:
@@ -218,7 +218,7 @@ async def command_add(ctx):
     CHANNEL = ctx.channel.name.lower()
     ac = ctx.message.content.split(' ', 1)[0][-1]
     ac = '' if ac == 'v' else ac
-    if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
+    if(ctx.author.is_mod) or (ctx.author == '1bode'):
         command_string = ctx.message.content.split(' ', 1)[1:][0]
         div = 0
         try:
@@ -236,7 +236,7 @@ async def command_add(ctx):
     CHANNEL = ctx.channel.name.lower()
     ac = ctx.message.content.split(' ', 1)[0][-1]
     ac = '' if ac == 'l' else ac
-    if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
+    if(ctx.author.is_mod) or (ctx.author == '1bode'):
         command_string = ctx.message.content.split(' ', 1)[1:][0]
         try:
             pdl = mod.get_pdl(ac, CHANNEL)
