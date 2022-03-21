@@ -4,7 +4,7 @@ import json
 import time
 import threading
 
-dir_path = os.path.dirname(os.path.realpath(__file__))
+dir_path = os.path.abspath("resources")
 
 
 def cooldown(function, duration=int(5)):

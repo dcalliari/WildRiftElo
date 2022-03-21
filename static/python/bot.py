@@ -1,14 +1,12 @@
 import os
-import mod
+import static.python.mod as mod
 
 from dotenv import load_dotenv
 from os.path import join
 from twitchio.ext import commands
 from twitchio.client import Client
 
-dir_path = os.path.dirname(os.path.realpath(__file__))
-dotenv_path = join(dir_path, '.env')
-load_dotenv(dotenv_path)
+load_dotenv(os.path.abspath('.env'))
 
 PREFIX = os.environ.get('BOT_PREFIX')
 TOKEN = os.environ.get('TOKEN')
