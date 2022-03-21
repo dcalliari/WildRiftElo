@@ -26,23 +26,37 @@ def cooldown(function, duration=int(5)):
 
 
 def get_channel():
-    JSON_FILE = str(dir_path) + '/channels.json'
-    with open(JSON_FILE) as json_file:
-        data = json.load(json_file)
-        global CHAN
-        CHAN = data['CHANNEL']
-    return CHAN
+    CHANNELS = []
+    for i in range(len(db.session.query(Broadcaster.twitch_id).where(Broadcaster.is_active == True).all())):
+        CHANNELS.append(db.session.query(Broadcaster.twitch_id).where(
+            Broadcaster.is_active == True).all()[i][0])
+    return CHANNELS
 
 
-def update_channel(value):
-    JSON_FILE = str(dir_path) + '/channels.json'
-    data = None
-    with open(JSON_FILE) as json_file:
-        data = json.load(json_file)
-    if data is not None:
-        data['CHANNEL'] = value
-    with open(JSON_FILE, 'w') as json_file:
-        json.dump(data, json_file, sort_keys=True, indent=4)
+def add_channel(value):
+    if db.session.query(db.exists().where(Broadcaster.twitch_id == value, Broadcaster.is_active == True)).scalar():
+        return -1
+    elif db.session.query(db.exists().where(Broadcaster.twitch_id == value, Broadcaster.is_active == False)).scalar():
+        Broadcaster.query.filter_by(twitch_id='1bode', is_active=False).update({
+            Broadcaster.is_active: True})
+        db.session.commit()
+        return
+    else:
+        db.session.add(db.Broadcaster(twitch_id=value))
+        db.session.commit()
+        return
+
+
+def del_channel(value):
+    if db.session.query(db.exists().where(Broadcaster.twitch_id == value, Broadcaster.is_active == False)).scalar():
+        return -1
+    elif db.session.query(db.exists().where(Broadcaster.twitch_id == value, Broadcaster.is_active == True)).scalar():
+        Broadcaster.query.filter_by(twitch_id='1bode', is_active=True).update({
+            Broadcaster.is_active: False})
+        db.session.commit()
+        return
+    else:
+        return -1
 
 
 def get_drt(ac, channel):
