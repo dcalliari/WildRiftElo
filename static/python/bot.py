@@ -44,50 +44,7 @@ class Bot(commands.Bot):
 
         await self.handle_commands(message)
 
-    @commands.command(name='tutorial', aliases=['tuto'])
-    @mod.cooldown
-    async def command_tutorial(self, ctx: commands.Context):
-        if ctx.channel.name.lower() == BOT_NICK.lower():
-            await ctx.reply('/me Como adicionar o bot e configurar em seu canal: https://imgur.com/a/zl1T2CY')
-        else:
-            await ctx.reply(f'/me Envie !tutorial no chat do {BOT_NICK}')
-
-    @commands.command(name='entrar', aliases=['join'])
-    async def command_join(self, ctx: commands.Context):
-        AUTHOR = ctx.author.name.lower()
-        if AUTHOR == '1bode':
-            try:
-                AUTHOR = ctx.message.content.split()[1]
-            except IndexError:
-                pass
-        if ctx.channel.name.lower() == BOT_NICK.lower():
-            CONTA = f'#{AUTHOR}'
-            if CONTA in CHANNELS:
-                await ctx.reply(f'/me Bot JÁ ESTÁ no canal {AUTHOR}')
-            else:
-                CHANNELS.append(f'#{AUTHOR}')
-                mod.update_channel(CHANNELS)
-                mod.file_check(AUTHOR)
-                await bot.join_channels(CHANNELS)
-                await ctx.reply(f'/me Bot ENTROU no canal {AUTHOR}')
-
-    @commands.command(name='sair', aliases=['leave'])
-    async def command_join(self, ctx: commands.Context):
-        AUTHOR = ctx.author.name.lower()
-        if AUTHOR == '1bode':
-            try:
-                AUTHOR = ctx.message.content.split()[1]
-            except IndexError:
-                pass
-        if ctx.channel.name.lower() == BOT_NICK.lower():
-            CONTA = f'#{AUTHOR}'
-            if CONTA in CHANNELS:
-                CHANNELS.remove(f'#{AUTHOR}')
-                mod.update_channel(CHANNELS)
-                await ctx.reply(F'/me Bot SAIU do canal {AUTHOR}')
-            else:
-                await ctx.reply(F'/me Bot NÃO ESTÁ no canal {AUTHOR}')
-
+    # Mostra os elos de todas as contas
     @commands.command(name='elos')
     @mod.cooldown
     async def command_elo(self, ctx: commands.Context):
@@ -151,6 +108,7 @@ class Bot(commands.Bot):
                         except KeyError:
                             await ctx.reply('/me Você precisa configurar pelo menos duas contas.')
 
+    # Edita o nome das contas
     @commands.command(name='conta', aliases=['conta1', 'conta2', 'conta3', 'smurf', 'elosmurf'])
     @mod.cooldown
     async def command_conta(self, ctx: commands.Context):
@@ -170,6 +128,7 @@ class Bot(commands.Bot):
                 mod.update_value(f'conta{ac}', conta, CHANNEL)
                 await ctx.reply(f'/me Nome da conta{ac} atualizado para: {conta}')
 
+    # Edita o elo das contas ou responde com o elo
     @commands.command(name='elo', aliases=['elo1', 'elo2', 'elo3'])
     @mod.cooldown
     async def command_elo(self, ctx: commands.Context):
@@ -197,6 +156,7 @@ class Bot(commands.Bot):
             conta = mod.get_conta(ac, CHANNEL)
             await ctx.reply(f'/me {conta}: {elo} {div} ({pdl} {drt})')
 
+    # Edita a divisão das contas
     @commands.command(name='div', aliases=['div1', 'div2', 'div3'])
     @mod.cooldown
     async def command_add(self, ctx: commands.Context):
@@ -215,6 +175,7 @@ class Bot(commands.Bot):
             conta = mod.get_conta(ac, CHANNEL)
             await ctx.reply(f'/me Divisão de "{conta}" atualizada para {div}')
 
+    # Edita os pontos/doritos das contas
     @commands.command(name='pdl', aliases=['pdl1', 'pdl2', 'pdl3'])
     @mod.cooldown
     async def command_add(self, ctx: commands.Context):
@@ -263,6 +224,53 @@ class Bot(commands.Bot):
                 drt = mod.get_drt(ac, CHANNEL)
                 conta = mod.get_conta(ac, CHANNEL)
             await ctx.reply(f'/me {conta}: {elo} {div} ({pdl} {drt})')
+
+    # Envia o link do tutorial caso esteja no canal do bot, caso contrário, envia instruções
+    @commands.command(name='tutorial', aliases=['tuto'])
+    @mod.cooldown
+    async def command_tutorial(self, ctx: commands.Context):
+        if ctx.channel.name.lower() == BOT_NICK.lower():
+            await ctx.reply('/me Como adicionar o bot e configurar em seu canal: https://imgur.com/a/zl1T2CY')
+        else:
+            await ctx.reply(f'/me Envie !tutorial no chat do {BOT_NICK}')
+
+    # Entra no canal que enviou a mensagem
+    @commands.command(name='entrar', aliases=['join'])
+    async def command_join(self, ctx: commands.Context):
+        AUTHOR = ctx.author.name.lower()
+        if AUTHOR == '1bode':
+            try:
+                AUTHOR = ctx.message.content.split()[1]
+            except IndexError:
+                pass
+        if ctx.channel.name.lower() == BOT_NICK.lower():
+            CONTA = f'#{AUTHOR}'
+            if CONTA in CHANNELS:
+                await ctx.reply(f'/me Bot JÁ ESTÁ no canal {AUTHOR}')
+            else:
+                CHANNELS.append(f'#{AUTHOR}')
+                mod.update_channel(CHANNELS)
+                mod.file_check(AUTHOR)
+                await bot.join_channels(CHANNELS)
+                await ctx.reply(f'/me Bot ENTROU no canal {AUTHOR}')
+
+    # Sai do canal que enviou a mensagem
+    @commands.command(name='sair', aliases=['leave'])
+    async def command_join(self, ctx: commands.Context):
+        AUTHOR = ctx.author.name.lower()
+        if AUTHOR == '1bode':
+            try:
+                AUTHOR = ctx.message.content.split()[1]
+            except IndexError:
+                pass
+        if ctx.channel.name.lower() == BOT_NICK.lower():
+            CONTA = f'#{AUTHOR}'
+            if CONTA in CHANNELS:
+                CHANNELS.remove(f'#{AUTHOR}')
+                mod.update_channel(CHANNELS)
+                await ctx.reply(F'/me Bot SAIU do canal {AUTHOR}')
+            else:
+                await ctx.reply(F'/me Bot NÃO ESTÁ no canal {AUTHOR}')
 
 
 bot = Bot()
