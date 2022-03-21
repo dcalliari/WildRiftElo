@@ -235,7 +235,7 @@ class Bot(commands.Bot):
             await ctx.reply(f'/me Envie !tutorial no chat do {BOT_NICK}')
 
     # Entra no canal que enviou a mensagem
-    @commands.command(name='entrar', aliases=['join'])
+    @commands.command(name='join', aliases=['entrar'])
     async def command_join(self, ctx: commands.Context):
         AUTHOR = ctx.author.name.lower()
         if AUTHOR == '1bode':
@@ -243,34 +243,26 @@ class Bot(commands.Bot):
                 AUTHOR = ctx.message.content.split()[1]
             except IndexError:
                 pass
-        if ctx.channel.name.lower() == BOT_NICK.lower():
-            CONTA = f'#{AUTHOR}'
-            if CONTA in CHANNELS:
+        elif ctx.channel.name.lower() == BOT_NICK.lower():
+            if mod.add_channel(AUTHOR) == -1:
                 await ctx.reply(f'/me Bot JÁ ESTÁ no canal {AUTHOR}')
             else:
-                CHANNELS.append(f'#{AUTHOR}')
-                mod.update_channel(CHANNELS)
-                mod.file_check(AUTHOR)
-                await bot.join_channels(CHANNELS)
                 await ctx.reply(f'/me Bot ENTROU no canal {AUTHOR}')
 
     # Sai do canal que enviou a mensagem
-    @commands.command(name='sair', aliases=['leave'])
-    async def command_join(self, ctx: commands.Context):
+    @commands.command(name='leave', aliases=['sair'])
+    async def command_leave(self, ctx: commands.Context):
         AUTHOR = ctx.author.name.lower()
         if AUTHOR == '1bode':
             try:
                 AUTHOR = ctx.message.content.split()[1]
             except IndexError:
                 pass
-        if ctx.channel.name.lower() == BOT_NICK.lower():
-            CONTA = f'#{AUTHOR}'
-            if CONTA in CHANNELS:
-                CHANNELS.remove(f'#{AUTHOR}')
-                mod.update_channel(CHANNELS)
-                await ctx.reply(F'/me Bot SAIU do canal {AUTHOR}')
-            else:
+        elif ctx.channel.name.lower() == BOT_NICK.lower():
+            if mod.del_channel(AUTHOR) == -1:
                 await ctx.reply(F'/me Bot NÃO ESTÁ no canal {AUTHOR}')
+            else:
+                await ctx.reply(F'/me Bot SAIU do canal {AUTHOR}')
 
 
 bot = Bot()
