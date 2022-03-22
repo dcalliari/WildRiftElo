@@ -101,15 +101,16 @@ def get_pdl(ac, channel):
         return data[f'pdl{ac}']
 
 
-def update_value(key, value, channel):
-    JSON_FILE = str(dir_path) + f'/channeldata/{channel}.json'
-    data = None
-    with open(JSON_FILE) as json_file:
-        data = json.load(json_file)
-    if data is not None:
-        data[key] = value
-    with open(JSON_FILE, 'w') as json_file:
-        json.dump(data, json_file, sort_keys=True, indent=4)
+def update_riot_id(key, value, channel):
+    try:
+        db.session.add(Account(acc_id=key, riot_id=value, broadcaster=db.session.query(
+            Broadcaster).where(Broadcaster.twitch_id == channel).one()))
+        db.session.commit()
+    except:
+        Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(
+            twitch_id=channel).first().id).update({Account.riot_id: value})
+        db.session.commit()
+        return
 
 
 def file_check(channel):

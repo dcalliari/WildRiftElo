@@ -48,7 +48,7 @@ class Bot(commands.Bot):
     @commands.command(name='elos')
     @mod.cooldown
     async def command_elo(self, ctx: commands.Context):
-        CHANNEL = ctx.channel.name.lower()
+        CHANNEL = ctx.channel.name
         try:
             elo = mod.get_elo('', CHANNEL)
             div = mod.get_div('', CHANNEL)
@@ -112,12 +112,12 @@ class Bot(commands.Bot):
     @commands.command(name='conta', aliases=['conta1', 'conta2', 'conta3', 'smurf', 'elosmurf'])
     @mod.cooldown
     async def command_conta(self, ctx: commands.Context):
-        CHANNEL = ctx.channel.name.lower()
+        CHANNEL = ctx.channel.name
         ac = ctx.message.content.split(' ', 1)[0][-1]
-        ac = '' if ac == 'a' else ac
+        ac = 0 if ac == 'a' else ac
         ac = 1 if ac == 'f' else ac
         if ctx.message.content.split(' ')[1:] != []:
-            if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
+            if ctx.author.is_mod or ctx.author.name == '1bode':
                 command_string = ctx.message.content.split(' ', 1)[1:][0]
                 conta = f'Conta{ac}'
                 try:
@@ -125,16 +125,16 @@ class Bot(commands.Bot):
                 except ValueError:
                     await ctx.reply('/me Valor inválido')
                     return
-                mod.update_value(f'conta{ac}', conta, CHANNEL)
+                mod.update_riot_id(ac, conta, CHANNEL)
                 await ctx.reply(f'/me Nome da conta{ac} atualizado para: {conta}')
 
     # Edita o elo das contas ou responde com o elo
     @commands.command(name='elo', aliases=['elo1', 'elo2', 'elo3'])
     @mod.cooldown
     async def command_elo(self, ctx: commands.Context):
-        CHANNEL = ctx.channel.name.lower()
+        CHANNEL = ctx.channel.name
         ac = ctx.message.content.split(' ', 1)[0][-1]
-        ac = '' if ac == 'o' else ac
+        ac = 0 if ac == 'o' else ac
         if ctx.message.content.split(' ')[1:] != []:
             if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
                 command_string = ctx.message.content.split(' ', 1)[1:][0]
@@ -160,9 +160,9 @@ class Bot(commands.Bot):
     @commands.command(name='div', aliases=['div1', 'div2', 'div3'])
     @mod.cooldown
     async def command_add(self, ctx: commands.Context):
-        CHANNEL = ctx.channel.name.lower()
+        CHANNEL = ctx.channel.name
         ac = ctx.message.content.split(' ', 1)[0][-1]
-        ac = '' if ac == 'v' else ac
+        ac = 0 if ac == 'v' else ac
         if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
             command_string = ctx.message.content.split(' ', 1)[1:][0]
             div = 0
@@ -179,9 +179,9 @@ class Bot(commands.Bot):
     @commands.command(name='pdl', aliases=['pdl1', 'pdl2', 'pdl3'])
     @mod.cooldown
     async def command_add(self, ctx: commands.Context):
-        CHANNEL = ctx.channel.name.lower()
+        CHANNEL = ctx.channel.name
         ac = ctx.message.content.split(' ', 1)[0][-1]
-        ac = '' if ac == 'l' else ac
+        ac = 0 if ac == 'l' else ac
         if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
             command_string = ctx.message.content.split(' ', 1)[1:][0]
             try:
@@ -229,7 +229,7 @@ class Bot(commands.Bot):
     @commands.command(name='tutorial', aliases=['tuto'])
     @mod.cooldown
     async def command_tutorial(self, ctx: commands.Context):
-        if ctx.channel.name.lower() == BOT_NICK.lower():
+        if ctx.channel.name == BOT_NICK:
             await ctx.reply('/me Como adicionar o bot e configurar em seu canal: https://imgur.com/a/zl1T2CY')
         else:
             await ctx.reply(f'/me Envie !tutorial no chat do {BOT_NICK}')
@@ -237,32 +237,32 @@ class Bot(commands.Bot):
     # Entra no canal que enviou a mensagem
     @commands.command(name='join', aliases=['entrar'])
     async def command_join(self, ctx: commands.Context):
-        AUTHOR = ctx.author.name.lower()
-        if AUTHOR == '1bode':
+        autor = ctx.author.name
+        if autor == '1bode':
             try:
-                AUTHOR = ctx.message.content.split()[1]
+                autor = ctx.message.content.split()[1]
             except IndexError:
                 pass
-        elif ctx.channel.name.lower() == BOT_NICK.lower():
-            if mod.add_channel(AUTHOR) == -1:
-                await ctx.reply(f'/me Bot JÁ ESTÁ no canal {AUTHOR}')
+        elif ctx.channel.name == BOT_NICK:
+            if mod.add_channel(autor) == -1:
+                await ctx.reply(f'/me Bot JÁ ESTÁ no canal {autor}')
             else:
-                await ctx.reply(f'/me Bot ENTROU no canal {AUTHOR}')
+                await ctx.reply(f'/me Bot ENTROU no canal {autor}')
 
     # Sai do canal que enviou a mensagem
     @commands.command(name='leave', aliases=['sair'])
     async def command_leave(self, ctx: commands.Context):
-        AUTHOR = ctx.author.name.lower()
-        if AUTHOR == '1bode':
+        autor = ctx.author.name
+        if autor == '1bode':
             try:
-                AUTHOR = ctx.message.content.split()[1]
+                autor = ctx.message.content.split()[1]
             except IndexError:
                 pass
-        elif ctx.channel.name.lower() == BOT_NICK.lower():
-            if mod.del_channel(AUTHOR) == -1:
-                await ctx.reply(F'/me Bot NÃO ESTÁ no canal {AUTHOR}')
+        elif ctx.channel.name == BOT_NICK:
+            if mod.del_channel(autor) == -1:
+                await ctx.reply(F'/me Bot NÃO ESTÁ no canal {autor}')
             else:
-                await ctx.reply(F'/me Bot SAIU do canal {AUTHOR}')
+                await ctx.reply(F'/me Bot SAIU do canal {autor}')
 
 
 bot = Bot()
