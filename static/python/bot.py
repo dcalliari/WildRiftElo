@@ -265,12 +265,12 @@ class Bot(commands.Bot):
                 autor = ctx.message.content.split()[1]
             except IndexError:
                 pass
-        elif ctx.channel.name == BOT_NICK:
+        if ctx.channel.name == BOT_NICK:
             if autor in mod.get_channel():
                 await ctx.reply(f'/me Bot JÁ ESTÁ no canal {autor}')
             else:
                 mod.add_channel(autor)
-                await bot.join_channels(mod.get_channel())
+                await super()
                 await ctx.reply(f'/me Bot ENTROU no canal {autor}')
 
     # Sai do canal que enviou a mensagem
