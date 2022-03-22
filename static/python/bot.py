@@ -287,7 +287,6 @@ class Bot(commands.Bot):
                 await ctx.reply(F'/me Bot NÃO ESTÁ no canal {autor}')
             else:
                 mod.del_channel(autor)
-                await super()
                 await ctx.reply(F'/me Bot SAIU do canal {autor}')
 
 
