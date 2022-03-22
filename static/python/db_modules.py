@@ -42,7 +42,7 @@ def get(key, channel, type):
     elif type == 'pdl':
         return Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(twitch_id=channel).first().id).first().pdl
     elif type == 'drt':
-        if Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(twitch_id=channel).first().id).first().elo in dorito:
+        if Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(twitch_id=channel).first().id).first().elo.lower() in dorito:
             drt = 'DoritosChip '
         else:
             drt = 'PdL'
@@ -53,10 +53,12 @@ def update_riot_id(key, value, channel):
     try:
         db.session.add(Account(acc_id=key, riot_id=value, broadcaster=db.session.query(
             Broadcaster).where(Broadcaster.twitch_id == channel).one()))
+        db.session.commit()
     except:
+        db.session.rollback()
         Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(
             twitch_id=channel).first().id).update({Account.riot_id: value})
-    db.session.commit()
+        db.session.commit()
     return
 
 
@@ -64,10 +66,12 @@ def update_elo(key, value, channel):
     try:
         db.session.add(Account(acc_id=key, elo=value, broadcaster=db.session.query(
             Broadcaster).where(Broadcaster.twitch_id == channel).one()))
+        db.session.commit()
     except:
+        db.session.rollback()
         Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(
             twitch_id=channel).first().id).update({Account.elo: value})
-    db.session.commit()
+        db.session.commit()
     return
 
 
@@ -75,10 +79,12 @@ def update_div(key, value, channel):
     try:
         db.session.add(Account(acc_id=key, div=value, broadcaster=db.session.query(
             Broadcaster).where(Broadcaster.twitch_id == channel).one()))
+        db.session.commit()
     except:
+        db.session.rollback()
         Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(
             twitch_id=channel).first().id).update({Account.div: value})
-    db.session.commit()
+        db.session.commit()
     return
 
 
@@ -86,8 +92,10 @@ def update_pdl(key, value, channel):
     try:
         db.session.add(Account(acc_id=key, pdl=value, broadcaster=db.session.query(
             Broadcaster).where(Broadcaster.twitch_id == channel).one()))
+        db.session.commit()
     except:
+        db.session.rollback()
         Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(
             twitch_id=channel).first().id).update({Account.pdl: value})
-    db.session.commit()
+        db.session.commit()
     return
