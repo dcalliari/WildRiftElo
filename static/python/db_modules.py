@@ -13,10 +13,8 @@ def get_channel():
 
 
 def add_channel(value):
-    if db.session.query(db.exists().where(Broadcaster.twitch_id == value, Broadcaster.is_active == True)).scalar():
-        return -1
-    elif db.session.query(db.exists().where(Broadcaster.twitch_id == value, Broadcaster.is_active == False)).scalar():
-        Broadcaster.query.filter_by(twitch_id='1bode', is_active=False).update({
+    if db.session.query(db.exists().where(Broadcaster.twitch_id == value, Broadcaster.is_active == False)).scalar():
+        Broadcaster.query.filter_by(twitch_id=value, is_active=False).update({
             Broadcaster.is_active: True})
         db.session.commit()
         return
@@ -27,20 +25,16 @@ def add_channel(value):
 
 
 def del_channel(value):
-    if db.session.query(db.exists().where(Broadcaster.twitch_id == value, Broadcaster.is_active == False)).scalar():
-        return -1
-    elif db.session.query(db.exists().where(Broadcaster.twitch_id == value, Broadcaster.is_active == True)).scalar():
-        Broadcaster.query.filter_by(twitch_id='1bode', is_active=True).update({
+    if db.session.query(db.exists().where(Broadcaster.twitch_id == value, Broadcaster.is_active == True)).scalar():
+        Broadcaster.query.filter_by(twitch_id=value, is_active=True).update({
             Broadcaster.is_active: False})
         db.session.commit()
         return
-    else:
-        return -1
 
 
 def get(key, channel, type):
     if type == 'conta':
-        return Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(twitch_id=channel).first().id).first().elo
+        return Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(twitch_id=channel).first().id).first().riot_id
     if type == 'elo':
         return Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(twitch_id=channel).first().id).first().elo
     elif type == 'div':
