@@ -128,13 +128,12 @@ class Bot(commands.Bot):
                             await ctx.reply('/me Você precisa configurar pelo menos duas contas.')
 
     # Edita o nome das contas
-    @commands.command(name='conta', aliases=['conta1', 'conta2', 'conta3', 'smurf', 'elosmurf'])
+    @commands.command(name='conta', aliases=['conta1', 'conta2', 'conta3'])
     @cooldown
     async def command_account(self, ctx: commands.Context):
         canal = ctx.channel.name
         ac = ctx.message.content.split(' ', 1)[0][-1]
         ac = 0 if ac == 'a' else ac
-        ac = 1 if ac == 'f' else ac
         if ctx.message.content.split(' ')[1:] != [] and (ctx.author.is_mod or ctx.author.name == '1bode'):
             command_string = ctx.message.content.split(' ', 1)[1:][0]
             conta = f'Conta{ac}'
@@ -148,12 +147,13 @@ class Bot(commands.Bot):
             await ctx.reply(f'/me Nome da conta{ac} atualizado para: {conta}')
 
     # Edita o elo das contas ou responde com o elo
-    @commands.command(name='elo', aliases=['elo1', 'elo2', 'elo3'])
+    @commands.command(name='elo', aliases=['elo1', 'elo2', 'elo3', 'smurf', 'elosmurf'])
     @cooldown
     async def command_elo(self, ctx: commands.Context):
         canal = ctx.channel.name
         ac = ctx.message.content.split(' ', 1)[0][-1]
         ac = 0 if ac == 'o' else ac
+        ac = 1 if ac == 'f' else ac
         if ctx.message.content.split(' ')[1:] != []:
             if ctx.author.is_mod or ctx.author.name == '1bode':
                 command_string = ctx.message.content.split(' ', 1)[1:][0]
