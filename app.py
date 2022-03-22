@@ -59,11 +59,6 @@ class Account(db.Model):
     #     self.pdl = pdl
 
 
-db.create_all()
-db.session.add(Broadcaster(twitch_id='1bode'))
-db.session.commit()
-
-
 @app.route("/", methods=["GET"])
 def index():
     return render_template("index.html")
