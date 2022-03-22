@@ -258,12 +258,15 @@ class Bot(commands.Bot):
     @commands.command(name='join', aliases=['entrar'])
     async def command_join(self, ctx: commands.Context):
         autor = ctx.author.name
+        print(autor)
         if autor == '1bode':
             try:
                 autor = ctx.message.content.split()[1]
+                print(autor)
             except IndexError:
                 pass
         elif ctx.channel.name == BOT_NICK:
+            print(autor)
             if db.add_channel(autor) == -1:
                 await ctx.reply(f'/me Bot JÁ ESTÁ no canal {autor}')
             else:
