@@ -145,6 +145,7 @@ class Bot(commands.Bot):
                 await ctx.reply('/me Valor inválido')
                 return
             db.update_riot_id(ac, conta, canal)
+            ac = '' if ac == 0 else ac
             await ctx.reply(f'/me Nome da conta{ac} atualizado para: {conta}')
 
     # Edita o elo das contas ou responde com o elo
@@ -155,7 +156,7 @@ class Bot(commands.Bot):
         ac = ctx.message.content.split(' ', 1)[0][-1]
         ac = 0 if ac == 'o' else ac
         if ctx.message.content.split(' ')[1:] != []:
-            if ctx.author.is_mod or ctx.author == '1bode':
+            if ctx.author.is_mod or ctx.author.name == '1bode':
                 command_string = ctx.message.content.split(' ', 1)[1:][0]
                 elo = 'Ferro'
                 try:
@@ -182,7 +183,7 @@ class Bot(commands.Bot):
         canal = ctx.channel.name
         ac = ctx.message.content.split(' ', 1)[0][-1]
         ac = 0 if ac == 'v' else ac
-        if ctx.author.is_mod or ctx.author == '1bode':
+        if ctx.author.is_mod or ctx.author.name == '1bode':
             command_string = ctx.message.content.split(' ', 1)[1:][0]
             div = 0
             try:
@@ -201,7 +202,7 @@ class Bot(commands.Bot):
         canal = ctx.channel.name
         ac = ctx.message.content.split(' ', 1)[0][-1]
         ac = 0 if ac == 'l' else ac
-        if ctx.author.is_mod or ctx.author == '1bode':
+        if ctx.author.is_mod or ctx.author.name == '1bode':
             command_string = ctx.message.content.split(' ', 1)[1:][0]
             try:
                 pdl = db.get(ac, canal, 'pdl')
