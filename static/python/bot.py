@@ -168,12 +168,12 @@ class Bot(commands.Bot):
                 await ctx.reply(f'/me Elo de "{conta}" atualizado para {elo}')
 
         else:
-            elo = mod.get(ac, canal, 'elo')
-            div = mod.get(ac, canal, 'div')
-            pdl = mod.get(ac, canal, 'pdl')
-            drt = mod.get(ac, canal, 'drt')
-            conta = mod.get(ac, canal, 'conta')
-            await ctx.reply(f'/me {conta}: {elo} {div} ({pdl} {drt})')
+                elo = mod.get(ac, canal, 'elo')
+                div = mod.get(ac, canal, 'div')
+                pdl = mod.get(ac, canal, 'pdl')
+                drt = mod.get(ac, canal, 'drt')
+                conta = mod.get(ac, canal, 'conta')
+                await ctx.reply(f'/me {conta}: {elo} {div} ({pdl} {drt})')
 
     # Edita a divisão das contas
     @commands.command(name='div', aliases=['div1', 'div2', 'div3'])
