@@ -168,12 +168,15 @@ class Bot(commands.Bot):
                 await ctx.reply(f'/me Elo de "{conta}" atualizado para {elo}')
 
         else:
+            try:
                 elo = mod.get(ac, canal, 'elo')
                 div = mod.get(ac, canal, 'div')
                 pdl = mod.get(ac, canal, 'pdl')
                 drt = mod.get(ac, canal, 'drt')
                 conta = mod.get(ac, canal, 'conta')
                 await ctx.reply(f'/me {conta}: {elo} {div} ({pdl} {drt})')
+            except AttributeError:
+                await ctx.reply(f'Primeiro você deve adicionar uma conta. Para mais informações, envie !tutorial no chat do bot.')
 
     # Edita a divisão das contas
     @commands.command(name='div', aliases=['div1', 'div2', 'div3'])
