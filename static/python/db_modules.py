@@ -19,7 +19,7 @@ def add_channel(value):
         db.session.commit()
         return
     else:
-        db.session.add(db.Broadcaster(twitch_id=value))
+        db.session.add(Broadcaster(twitch_id=value))
         db.session.commit()
         return
 
