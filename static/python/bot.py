@@ -270,7 +270,7 @@ class Bot(commands.Bot):
                 await ctx.reply(f'/me Bot JÁ ESTÁ no canal {autor}')
             else:
                 mod.add_channel(autor)
-                await super()
+                await bot.join_channels(mod.get_channel())
                 await ctx.reply(f'/me Bot ENTROU no canal {autor}')
 
     # Sai do canal que enviou a mensagem
@@ -282,13 +282,12 @@ class Bot(commands.Bot):
                 autor = ctx.message.content.split()[1]
             except IndexError:
                 pass
-        elif ctx.channel.name == BOT_NICK:
+        if ctx.channel.name == BOT_NICK:
             if autor not in mod.get_channel():
                 await ctx.reply(F'/me Bot NÃO ESTÁ no canal {autor}')
             else:
                 mod.del_channel(autor)
-                print(mod.get_channel())
-                await bot.join_channels(mod.get_channel())
+                await super()
                 await ctx.reply(F'/me Bot SAIU do canal {autor}')
 
 
