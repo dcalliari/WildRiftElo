@@ -59,6 +59,9 @@ class Account(db.Model):
     #     self.pdl = pdl
 
 
+db.create_all()
+
+
 @app.route("/", methods=["GET"])
 def index():
     return render_template("index.html")
