@@ -1,28 +1,7 @@
-import os
-import io
-import json
-import time
-import threading
+from app import db, Broadcaster, Account
 
-dir_path = os.path.abspath("resources")
-
-
-def cooldown(function, duration=int(5)):
-    function.on_cooldown = False
-
-    def sleeper():
-        function.on_cooldown = True
-        time.sleep(duration)
-        function.on_cooldown = False
-
-    async def wrapper(*args, **kwargs):
-        if function.on_cooldown:
-            print(f"Function {function.__name__} on cooldown")
-        else:
-            timer = threading.Thread(target=sleeper)
-            await function(*args, **kwargs)
-            timer.start()
-    return wrapper
+dorito = ['ferro', 'iron', 'bronze', 'prata', 'silver', 'ouro',
+          'gold', 'plat', 'platinum', 'platina', 'esmeralda', 'emerald']
 
 
 def get_channel():
@@ -59,46 +38,21 @@ def del_channel(value):
         return -1
 
 
-def get_drt(ac, channel):
-    dorito = {'drt': ['ferro', 'iron', 'bronze', 'prata', 'silver', 'ouro',
-                      'gold', 'plat', 'platinum', 'platina', 'esmeralda', 'emerald']}
-    JSON_FILE = str(dir_path) + f'/channeldata/{channel}.json'
-    with open(JSON_FILE) as json_file:
-        data = json.load(json_file)
-        cmd = data[f'elo{ac}'].lower()
-        if cmd in dorito['drt']:
+def get(key, channel, type):
+    if type == 'conta':
+        return Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(twitch_id=channel).first().id).first().elo
+    if type == 'elo':
+        return Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(twitch_id=channel).first().id).first().elo
+    elif type == 'div':
+        return Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(twitch_id=channel).first().id).first().div
+    elif type == 'pdl':
+        return Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(twitch_id=channel).first().id).first().pdl
+    elif type == 'drt':
+        if Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(twitch_id=channel).first().id).first().elo in dorito:
             drt = 'DoritosChip '
         else:
             drt = 'PdL'
         return drt
-
-
-def get_elo(ac, channel):
-    JSON_FILE = str(dir_path) + f'/channeldata/{channel}.json'
-    with open(JSON_FILE) as json_file:
-        data = json.load(json_file)
-        return data[f'elo{ac}']
-
-
-def get_conta(ac, channel):
-    JSON_FILE = str(dir_path) + f'/channeldata/{channel}.json'
-    with open(JSON_FILE) as json_file:
-        data = json.load(json_file)
-        return data[f'conta{ac}']
-
-
-def get_div(ac, channel):
-    JSON_FILE = str(dir_path) + f'/channeldata/{channel}.json'
-    with open(JSON_FILE) as json_file:
-        data = json.load(json_file)
-        return data[f'div{ac}']
-
-
-def get_pdl(ac, channel):
-    JSON_FILE = str(dir_path) + f'/channeldata/{channel}.json'
-    with open(JSON_FILE) as json_file:
-        data = json.load(json_file)
-        return data[f'pdl{ac}']
 
 
 def update_riot_id(key, value, channel):
@@ -110,13 +64,40 @@ def update_riot_id(key, value, channel):
         Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(
             twitch_id=channel).first().id).update({Account.riot_id: value})
         db.session.commit()
-        return
+    return
 
 
-def file_check(channel):
-    JSON_FILE = str(dir_path) + f'/channeldata/{channel}.json'
-    if os.path.isfile(JSON_FILE) and os.access(JSON_FILE, os.R_OK):
-        return True
-    else:
-        with io.open(os.path.join(JSON_FILE), 'w') as json_file:
-            json_file.write(json.dumps({}))
+def update_elo(key, value, channel):
+    try:
+        db.session.add(Account(acc_id=key, elo=value, broadcaster=db.session.query(
+            Broadcaster).where(Broadcaster.twitch_id == channel).one()))
+        db.session.commit()
+    except:
+        Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(
+            twitch_id=channel).first().id).update({Account.elo: value})
+        db.session.commit()
+    return
+
+
+def update_div(key, value, channel):
+    try:
+        db.session.add(Account(acc_id=key, div=value, broadcaster=db.session.query(
+            Broadcaster).where(Broadcaster.twitch_id == channel).one()))
+        db.session.commit()
+    except:
+        Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(
+            twitch_id=channel).first().id).update({Account.div: value})
+        db.session.commit()
+    return
+
+
+def update_pdl(key, value, channel):
+    try:
+        db.session.add(Account(acc_id=key, pdl=value, broadcaster=db.session.query(
+            Broadcaster).where(Broadcaster.twitch_id == channel).one()))
+        db.session.commit()
+    except:
+        Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(
+            twitch_id=channel).first().id).update({Account.pdl: value})
+        db.session.commit()
+    return

@@ -1,4 +1,6 @@
 import os
+import time
+import threading
 import static.python.mod as mod
 
 from dotenv import load_dotenv
@@ -16,6 +18,24 @@ client = Client(
     token=TOKEN,
     heartbeat=30.0
 )
+
+
+def cooldown(function, duration=int(5)):
+    function.on_cooldown = False
+
+    def sleeper():
+        function.on_cooldown = True
+        time.sleep(duration)
+        function.on_cooldown = False
+
+    async def wrapper(*args, **kwargs):
+        if function.on_cooldown:
+            print(f"Function {function.__name__} on cooldown")
+        else:
+            timer = threading.Thread(target=sleeper)
+            await function(*args, **kwargs)
+            timer.start()
+    return wrapper
 
 
 class Bot(commands.Bot):
@@ -46,97 +66,96 @@ class Bot(commands.Bot):
 
     # Mostra os elos de todas as contas
     @commands.command(name='elos')
-    @mod.cooldown
-    async def command_elo(self, ctx: commands.Context):
-        CHANNEL = ctx.channel.name
+    @cooldown
+    async def command_elos(self, ctx: commands.Context):
+        canal = ctx.channel.name
         try:
-            elo = mod.get_elo('', CHANNEL)
-            div = mod.get_div('', CHANNEL)
-            conta = mod.get_conta('', CHANNEL)
-            elo1 = mod.get_elo('1', CHANNEL)
-            div1 = mod.get_div('1', CHANNEL)
-            conta1 = mod.get_conta('1', CHANNEL)
-            elo2 = mod.get_elo('2', CHANNEL)
-            div2 = mod.get_div('2', CHANNEL)
-            conta2 = mod.get_conta('2', CHANNEL)
-            elo3 = mod.get_elo('3', CHANNEL)
-            div3 = mod.get_div('3', CHANNEL)
-            conta3 = mod.get_conta('3', CHANNEL)
+            elo = mod.get(0, canal, 'elo')
+            div = mod.get(0, canal, 'div')
+            conta = mod.get(0, canal, 'conta')
+            elo1 = mod.get(1, canal, 'elo')
+            div1 = mod.get(1, canal, 'div')
+            conta1 = mod.get(1, canal, 'conta')
+            elo2 = mod.get(2, canal, 'elo')
+            div2 = mod.get(2, canal, 'div')
+            conta2 = mod.get(2, canal, 'conta')
+            elo3 = mod.get(3, canal, 'elo')
+            div3 = mod.get(3, canal, 'div')
+            conta3 = mod.get(3, canal, 'conta')
             await ctx.reply(f'/me {conta}: {elo} {div} | {conta1}: {elo1} {div1} | {conta2}: {elo2} {div2} | {conta3}: {elo3} {div3}')
         except KeyError:
             try:
-                elo = mod.get_elo('', CHANNEL)
-                div = mod.get_div('', CHANNEL)
-                conta = mod.get_conta('', CHANNEL)
-                elo1 = mod.get_elo('1', CHANNEL)
-                div1 = mod.get_div('1', CHANNEL)
-                conta1 = mod.get_conta('1', CHANNEL)
-                elo2 = mod.get_elo('2', CHANNEL)
-                div2 = mod.get_div('2', CHANNEL)
-                conta2 = mod.get_conta('2', CHANNEL)
+                elo = mod.get(0, canal, 'elo')
+                div = mod.get(0, canal, 'div')
+                conta = mod.get(0, canal, 'conta')
+                elo1 = mod.get(1, canal, 'elo')
+                div1 = mod.get(1, canal, 'div')
+                conta1 = mod.get(1, canal, 'conta')
+                elo2 = mod.get(2, canal, 'elo')
+                div2 = mod.get(2, canal, 'div')
+                conta2 = mod.get(2, canal, 'conta')
                 await ctx.reply(f'/me {conta}: {elo} {div} | {conta1}: {elo1} {div1} | {conta2}: {elo2} {div2}')
             except KeyError:
                 try:
-                    elo = mod.get_elo('', CHANNEL)
-                    div = mod.get_div('', CHANNEL)
-                    conta = mod.get_conta('', CHANNEL)
-                    elo1 = mod.get_elo('1', CHANNEL)
-                    div1 = mod.get_div('1', CHANNEL)
-                    conta1 = mod.get_conta('1', CHANNEL)
+                    elo = mod.get(0, canal, 'elo')
+                    div = mod.get(0, canal, 'div')
+                    conta = mod.get(0, canal, 'conta')
+                    elo1 = mod.get(1, canal, 'elo')
+                    div1 = mod.get(1, canal, 'div')
+                    conta1 = mod.get(1, canal, 'conta')
                     await ctx.reply(f'/me {conta}: {elo} {div} | {conta1}: {elo1} {div1}')
                 except KeyError:
                     try:
-                        elo1 = mod.get_elo('1', CHANNEL)
-                        div1 = mod.get_div('1', CHANNEL)
-                        conta1 = mod.get_conta('1', CHANNEL)
-                        elo2 = mod.get_elo('2', CHANNEL)
-                        div2 = mod.get_div('2', CHANNEL)
-                        conta2 = mod.get_conta('2', CHANNEL)
-                        elo3 = mod.get_elo('3', CHANNEL)
-                        div3 = mod.get_div('3', CHANNEL)
-                        conta3 = mod.get_conta('3', CHANNEL)
+                        elo1 = mod.get(1, canal, 'elo')
+                        div1 = mod.get(1, canal, 'div')
+                        conta1 = mod.get(1, canal, 'conta')
+                        elo2 = mod.get(2, canal, 'elo')
+                        div2 = mod.get(2, canal, 'div')
+                        conta2 = mod.get(2, canal, 'conta')
+                        elo3 = mod.get(3, canal, 'elo')
+                        div3 = mod.get(3, canal, 'div')
+                        conta3 = mod.get(3, canal, 'conta')
                         await ctx.reply(f'/me {conta1}: {elo1} {div1} | {conta2}: {elo2} {div2} | {conta3}: {elo3} {div3}')
                     except KeyError:
                         try:
-                            elo1 = mod.get_elo('1', CHANNEL)
-                            div1 = mod.get_div('1', CHANNEL)
-                            conta1 = mod.get_conta('1', CHANNEL)
-                            elo2 = mod.get_elo('2', CHANNEL)
-                            div2 = mod.get_div('2', CHANNEL)
-                            conta2 = mod.get_conta('2', CHANNEL)
+                            elo1 = mod.get(1, canal, 'elo')
+                            div1 = mod.get(1, canal, 'div')
+                            conta1 = mod.get(1, canal, 'conta')
+                            elo2 = mod.get(2, canal, 'elo')
+                            div2 = mod.get(2, canal, 'div')
+                            conta2 = mod.get(2, canal, 'conta')
                             await ctx.reply(f'/me {conta1}: {elo1} {div1} | {conta2}: {elo2} {div2}')
                         except KeyError:
                             await ctx.reply('/me Você precisa configurar pelo menos duas contas.')
 
     # Edita o nome das contas
     @commands.command(name='conta', aliases=['conta1', 'conta2', 'conta3', 'smurf', 'elosmurf'])
-    @mod.cooldown
-    async def command_conta(self, ctx: commands.Context):
-        CHANNEL = ctx.channel.name
+    @cooldown
+    async def command_account(self, ctx: commands.Context):
+        canal = ctx.channel.name
         ac = ctx.message.content.split(' ', 1)[0][-1]
         ac = 0 if ac == 'a' else ac
         ac = 1 if ac == 'f' else ac
-        if ctx.message.content.split(' ')[1:] != []:
-            if ctx.author.is_mod or ctx.author.name == '1bode':
-                command_string = ctx.message.content.split(' ', 1)[1:][0]
-                conta = f'Conta{ac}'
-                try:
-                    conta = str(command_string)
-                except ValueError:
-                    await ctx.reply('/me Valor inválido')
-                    return
-                mod.update_riot_id(ac, conta, CHANNEL)
-                await ctx.reply(f'/me Nome da conta{ac} atualizado para: {conta}')
+        if ctx.message.content.split(' ')[1:] != [] and (ctx.author.is_mod or ctx.author.name == '1bode'):
+            command_string = ctx.message.content.split(' ', 1)[1:][0]
+            conta = f'Conta{ac}'
+            try:
+                conta = str(command_string)
+            except ValueError:
+                await ctx.reply('/me Valor inválido')
+                return
+            mod.update_riot_id(ac, conta, canal)
+            await ctx.reply(f'/me Nome da conta{ac} atualizado para: {conta}')
 
     # Edita o elo das contas ou responde com o elo
     @commands.command(name='elo', aliases=['elo1', 'elo2', 'elo3'])
-    @mod.cooldown
+    @cooldown
     async def command_elo(self, ctx: commands.Context):
-        CHANNEL = ctx.channel.name
+        canal = ctx.channel.name
         ac = ctx.message.content.split(' ', 1)[0][-1]
         ac = 0 if ac == 'o' else ac
         if ctx.message.content.split(' ')[1:] != []:
-            if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
+            if ctx.author.is_mod or ctx.author == '1bode':
                 command_string = ctx.message.content.split(' ', 1)[1:][0]
                 elo = 'Ferro'
                 try:
@@ -144,26 +163,26 @@ class Bot(commands.Bot):
                 except ValueError:
                     await ctx.reply('/me Valor inválido')
                     return
-                mod.update_value(f'elo{ac}', elo, CHANNEL)
-                conta = mod.get_conta(ac, CHANNEL)
+                mod.update_elo(ac, elo, canal)
+                conta = mod.get(ac, canal, 'conta')
                 await ctx.reply(f'/me Elo de "{conta}" atualizado para {elo}')
 
         else:
-            elo = mod.get_elo(ac, CHANNEL)
-            div = mod.get_div(ac, CHANNEL)
-            pdl = mod.get_pdl(ac, CHANNEL)
-            drt = mod.get_drt(ac, CHANNEL)
-            conta = mod.get_conta(ac, CHANNEL)
+            elo = mod.get(ac, canal, 'elo')
+            div = mod.get(ac, canal, 'div')
+            pdl = mod.get(ac, canal, 'pdl')
+            drt = mod.get(ac, canal, 'drt')
+            conta = mod.get(ac, canal, 'conta')
             await ctx.reply(f'/me {conta}: {elo} {div} ({pdl} {drt})')
 
     # Edita a divisão das contas
     @commands.command(name='div', aliases=['div1', 'div2', 'div3'])
-    @mod.cooldown
-    async def command_add(self, ctx: commands.Context):
-        CHANNEL = ctx.channel.name
+    @cooldown
+    async def command_div(self, ctx: commands.Context):
+        canal = ctx.channel.name
         ac = ctx.message.content.split(' ', 1)[0][-1]
         ac = 0 if ac == 'v' else ac
-        if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
+        if ctx.author.is_mod or ctx.author == '1bode':
             command_string = ctx.message.content.split(' ', 1)[1:][0]
             div = 0
             try:
@@ -171,21 +190,21 @@ class Bot(commands.Bot):
             except ValueError:
                 await ctx.reply('/me Valor inválido')
                 return
-            mod.update_value(f'div{ac}', div, CHANNEL)
-            conta = mod.get_conta(ac, CHANNEL)
+            mod.update_div(ac, div, canal)
+            conta = mod.get(ac, canal, 'conta')
             await ctx.reply(f'/me Divisão de "{conta}" atualizada para {div}')
 
     # Edita os pontos/doritos das contas
     @commands.command(name='pdl', aliases=['pdl1', 'pdl2', 'pdl3'])
-    @mod.cooldown
-    async def command_add(self, ctx: commands.Context):
-        CHANNEL = ctx.channel.name
+    @cooldown
+    async def command_pdl(self, ctx: commands.Context):
+        canal = ctx.channel.name
         ac = ctx.message.content.split(' ', 1)[0][-1]
         ac = 0 if ac == 'l' else ac
-        if(ctx.author.is_mod) or (ctx.author == CHANNEL) or (ctx.author == '1bode'):
+        if ctx.author.is_mod or ctx.author == '1bode':
             command_string = ctx.message.content.split(' ', 1)[1:][0]
             try:
-                pdl = mod.get_pdl(ac, CHANNEL)
+                pdl = mod.get(ac, canal, 'pdl')
             except KeyError:
                 pdl = 0
             if command_string.startswith('+'):
@@ -195,11 +214,11 @@ class Bot(commands.Bot):
                 except ValueError:
                     await ctx.reply('/me Valor inválido')
                     return
-                mod.update_value(f'pdl{ac}', pdl, CHANNEL)
-                elo = mod.get_elo(ac, CHANNEL)
-                div = mod.get_div(ac, CHANNEL)
-                drt = mod.get_drt(ac, CHANNEL)
-                conta = mod.get_conta(ac, CHANNEL)
+                mod.update_pdl(ac, pdl, canal)
+                elo = mod.get(ac, canal, 'elo')
+                div = mod.get(ac, canal, 'div')
+                drt = mod.get(ac, canal, 'drt')
+                conta = mod.get(ac, canal, 'conta')
             elif command_string.startswith('-'):
                 val = command_string.replace('-', '').strip()
                 try:
@@ -207,27 +226,27 @@ class Bot(commands.Bot):
                 except ValueError:
                     await ctx.reply('/me Valor inválido')
                     return
-                mod.update_value(f'pdl{ac}', pdl, CHANNEL)
-                elo = mod.get_elo(ac, CHANNEL)
-                div = mod.get_div(ac, CHANNEL)
-                drt = mod.get_drt(ac, CHANNEL)
-                conta = mod.get_conta(ac, CHANNEL)
+                mod.update_pdl(ac, pdl, canal)
+                elo = mod.get(ac, canal, 'elo')
+                div = mod.get(ac, canal, 'div')
+                drt = mod.get(ac, canal, 'drt')
+                conta = mod.get(ac, canal, 'conta')
             else:
                 try:
                     pdl = int(command_string)
                 except ValueError:
                     await ctx.reply('/me Valor inválido')
                     return
-                mod.update_value(f'pdl{ac}', pdl, CHANNEL)
-                elo = mod.get_elo(ac, CHANNEL)
-                div = mod.get_div(ac, CHANNEL)
-                drt = mod.get_drt(ac, CHANNEL)
-                conta = mod.get_conta(ac, CHANNEL)
+                mod.update_pdl(ac, pdl, canal)
+                elo = mod.get(ac, canal, 'elo')
+                div = mod.get(ac, canal, 'div')
+                drt = mod.get(ac, canal, 'drt')
+                conta = mod.get(ac, canal, 'conta')
             await ctx.reply(f'/me {conta}: {elo} {div} ({pdl} {drt})')
 
     # Envia o link do tutorial caso esteja no canal do bot, caso contrário, envia instruções
     @commands.command(name='tutorial', aliases=['tuto'])
-    @mod.cooldown
+    @cooldown
     async def command_tutorial(self, ctx: commands.Context):
         if ctx.channel.name == BOT_NICK:
             await ctx.reply('/me Como adicionar o bot e configurar em seu canal: https://imgur.com/a/zl1T2CY')
