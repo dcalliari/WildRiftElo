@@ -49,7 +49,7 @@ class Account(db.Model):
     elo = db.Column(db.String(25))
     div = db.Column(db.Integer)
     pdl = db.Column(db.Integer)
-    acc_id = db.Column(db.Integer, unique=True)
+    acc_id = db.Column(db.Integer)
     broadcaster_id = db.Column(db.Integer, db.ForeignKey('broadcaster.id'))
 
     # def __init__(self, riot_id, elo, div, pdl):
@@ -57,6 +57,11 @@ class Account(db.Model):
     #     self.elo = elo
     #     self.div = div
     #     self.pdl = pdl
+
+
+db.create_all()
+db.session.add(Broadcaster(twitch_id='1bode'))
+db.session.commit()
 
 
 @app.route("/", methods=["GET"])
