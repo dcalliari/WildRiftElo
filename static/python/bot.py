@@ -11,7 +11,6 @@ load_dotenv(os.path.abspath('.env'))
 
 PREFIX = os.environ.get('BOT_PREFIX')
 TOKEN = os.environ.get('TOKEN')
-CHANNELS = db.get_channel()
 BOT_NICK = os.environ.get('BOT_NICK')
 
 client = Client(
@@ -43,7 +42,7 @@ class Bot(commands.Bot):
         super().__init__(
             prefix=PREFIX,
             token=TOKEN,
-            initial_channels=CHANNELS,
+            initial_channels=db.get_channel(),
             heartbeat=30.0
         )
 
@@ -258,18 +257,17 @@ class Bot(commands.Bot):
     @commands.command(name='join', aliases=['entrar'])
     async def command_join(self, ctx: commands.Context):
         autor = ctx.author.name
-        print(autor)
         if autor == '1bode':
             try:
                 autor = ctx.message.content.split()[1]
-                print(autor)
             except IndexError:
                 pass
         elif ctx.channel.name == BOT_NICK:
-            print(autor)
-            if db.add_channel(autor) == -1:
+            if autor in db.get_channel():
                 await ctx.reply(f'/me Bot JÁ ESTÁ no canal {autor}')
             else:
+                db.add_channel(autor)
+                await bot.join_channels(db.get_channel())
                 await ctx.reply(f'/me Bot ENTROU no canal {autor}')
 
     # Sai do canal que enviou a mensagem
@@ -282,9 +280,11 @@ class Bot(commands.Bot):
             except IndexError:
                 pass
         elif ctx.channel.name == BOT_NICK:
-            if db.del_channel(autor) == -1:
+            if autor not in db.get_channel():
                 await ctx.reply(F'/me Bot NÃO ESTÁ no canal {autor}')
             else:
+                db.del_channel(autor)
+                await bot.join_channels(db.get_channel())
                 await ctx.reply(F'/me Bot SAIU do canal {autor}')
 
 
