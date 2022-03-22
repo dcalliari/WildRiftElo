@@ -82,7 +82,7 @@ class Bot(commands.Bot):
             div3 = mod.get(3, canal, 'div')
             conta3 = mod.get(3, canal, 'conta')
             await ctx.reply(f'/me {conta}: {elo} {div} | {conta1}: {elo1} {div1} | {conta2}: {elo2} {div2} | {conta3}: {elo3} {div3}')
-        except KeyError:
+        except AttributeError:
             try:
                 elo = mod.get(0, canal, 'elo')
                 div = mod.get(0, canal, 'div')
@@ -94,7 +94,7 @@ class Bot(commands.Bot):
                 div2 = mod.get(2, canal, 'div')
                 conta2 = mod.get(2, canal, 'conta')
                 await ctx.reply(f'/me {conta}: {elo} {div} | {conta1}: {elo1} {div1} | {conta2}: {elo2} {div2}')
-            except KeyError:
+            except AttributeError:
                 try:
                     elo = mod.get(0, canal, 'elo')
                     div = mod.get(0, canal, 'div')
@@ -103,7 +103,7 @@ class Bot(commands.Bot):
                     div1 = mod.get(1, canal, 'div')
                     conta1 = mod.get(1, canal, 'conta')
                     await ctx.reply(f'/me {conta}: {elo} {div} | {conta1}: {elo1} {div1}')
-                except KeyError:
+                except AttributeError:
                     try:
                         elo1 = mod.get(1, canal, 'elo')
                         div1 = mod.get(1, canal, 'div')
@@ -115,7 +115,7 @@ class Bot(commands.Bot):
                         div3 = mod.get(3, canal, 'div')
                         conta3 = mod.get(3, canal, 'conta')
                         await ctx.reply(f'/me {conta1}: {elo1} {div1} | {conta2}: {elo2} {div2} | {conta3}: {elo3} {div3}')
-                    except KeyError:
+                    except AttributeError:
                         try:
                             elo1 = mod.get(1, canal, 'elo')
                             div1 = mod.get(1, canal, 'div')
@@ -124,7 +124,7 @@ class Bot(commands.Bot):
                             div2 = mod.get(2, canal, 'div')
                             conta2 = mod.get(2, canal, 'conta')
                             await ctx.reply(f'/me {conta1}: {elo1} {div1} | {conta2}: {elo2} {div2}')
-                        except KeyError:
+                        except AttributeError:
                             await ctx.reply('/me Você precisa configurar pelo menos duas contas.')
 
     # Edita o nome das contas
