@@ -35,7 +35,7 @@ def del_channel(value):
 def get(key, channel, type):
     if type == 'conta':
         return Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(twitch_id=channel).first().id).first().riot_id
-    if type == 'elo':
+    elif type == 'elo':
         return Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(twitch_id=channel).first().id).first().elo
     elif type == 'div':
         return Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(twitch_id=channel).first().id).first().div
@@ -50,52 +50,52 @@ def get(key, channel, type):
 
 
 def update_riot_id(key, value, channel):
-    try:
-        db.session.add(Account(acc_id=key, riot_id=value, broadcaster=db.session.query(
-            Broadcaster).where(Broadcaster.twitch_id == channel).one()))
-        db.session.commit()
-    except:
-        db.session.rollback()
-        Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(
-            twitch_id=channel).first().id).update({Account.riot_id: value})
-        db.session.commit()
+    b_id = db.session.query(Broadcaster).where(
+        Broadcaster.twitch_id == channel).first()
+
+    account = Account.query.filter_by(
+        acc_id=key, broadcaster_id=b_id.id).update({Account.riot_id: value})
+    if account == 0:
+        account = Account(riot_id=value, acc_id=key, broadcaster=b_id)
+        db.session.add(account)
+    db.session.commit()
     return
 
 
 def update_elo(key, value, channel):
-    try:
-        db.session.add(Account(acc_id=key, elo=value, broadcaster=db.session.query(
-            Broadcaster).where(Broadcaster.twitch_id == channel).one()))
-        db.session.commit()
-    except:
-        db.session.rollback()
-        Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(
-            twitch_id=channel).first().id).update({Account.elo: value})
-        db.session.commit()
+    b_id = db.session.query(Broadcaster).where(
+        Broadcaster.twitch_id == channel).first()
+
+    account = Account.query.filter_by(
+        acc_id=key, broadcaster_id=b_id.id).update({Account.elo: value})
+    if account == 0:
+        account = Account(elo=value, acc_id=key, broadcaster=b_id)
+        db.session.add(account)
+    db.session.commit()
     return
 
 
 def update_div(key, value, channel):
-    try:
-        db.session.add(Account(acc_id=key, div=value, broadcaster=db.session.query(
-            Broadcaster).where(Broadcaster.twitch_id == channel).one()))
-        db.session.commit()
-    except:
-        db.session.rollback()
-        Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(
-            twitch_id=channel).first().id).update({Account.div: value})
-        db.session.commit()
+    b_id = db.session.query(Broadcaster).where(
+        Broadcaster.twitch_id == channel).first()
+
+    account = Account.query.filter_by(
+        acc_id=key, broadcaster_id=b_id.id).update({Account.div: value})
+    if account == 0:
+        account = Account(div=value, acc_id=key, broadcaster=b_id)
+        db.session.add(account)
+    db.session.commit()
     return
 
 
 def update_pdl(key, value, channel):
-    try:
-        db.session.add(Account(acc_id=key, pdl=value, broadcaster=db.session.query(
-            Broadcaster).where(Broadcaster.twitch_id == channel).one()))
-        db.session.commit()
-    except:
-        db.session.rollback()
-        Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(
-            twitch_id=channel).first().id).update({Account.pdl: value})
-        db.session.commit()
+    b_id = db.session.query(Broadcaster).where(
+        Broadcaster.twitch_id == channel).first()
+
+    account = Account.query.filter_by(
+        acc_id=key, broadcaster_id=b_id.id).update({Account.pdl: value})
+    if account == 0:
+        account = Account(pdl=value, acc_id=key, broadcaster=b_id)
+        db.session.add(account)
+    db.session.commit()
     return
