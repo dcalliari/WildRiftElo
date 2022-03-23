@@ -271,10 +271,10 @@ class Bot(commands.Bot):
             else:
                 if len(mod.get_channel()) < 20:
                     mod.add_channel(autor)
-                    await bot.join_channels(autor)
+                    await bot.join_channels([autor])
                     await ctx.reply(f'/me Bot ENTROU no canal {autor}')
                 else:
-                    await bot.join_channels(autor)
+                    await bot.join_channels([autor])
                     await ctx.reply(f'/me No momento não temos vaga :( @1bode tá tentando resolver!')
 
     # Sai do canal que enviou a mensagem
