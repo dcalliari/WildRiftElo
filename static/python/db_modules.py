@@ -38,7 +38,11 @@ def get(key, channel, type):
     elif type == 'elo':
         return Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(twitch_id=channel).first().id).first().elo
     elif type == 'div':
-        return Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(twitch_id=channel).first().id).first().div
+        div = Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(
+            twitch_id=channel).first().id).first().div
+        if div == None:
+            div = ''
+        return div
     elif type == 'pdl':
         return Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(twitch_id=channel).first().id).first().pdl
     elif type == 'drt':
