@@ -44,7 +44,11 @@ def get(key, channel, type):
             div = ''
         return div
     elif type == 'pdl':
-        return Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(twitch_id=channel).first().id).first().pdl
+        pdl = Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(
+            twitch_id=channel).first().id).first().pdl
+        if pdl == None:
+            pdl = 0
+        return pdl
     elif type == 'drt':
         if Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(twitch_id=channel).first().id).first().elo.lower() in dorito:
             drt = 'DoritosChip '
