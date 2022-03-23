@@ -42,24 +42,13 @@ class Bot(commands.Bot):
         super().__init__(
             prefix=PREFIX,
             token=TOKEN,
-            initial_channels=[BOT_NICK],
+            initial_channels=mod.get_channel(),
             heartbeat=30.0
         )
 
     async def event_ready(self):
         print(f'Iniciando como | {self.nick}')
         print(f'Id de usuário é | {self.user_id}')
-        k = 0
-        j = 0
-        conn = []
-        channels = mod.get_channel()
-        for i in range(int(len(channels)/20)):
-            while j < 20+k:
-                conn.append(channels[j])
-                j += 1
-            bot.join_channels(conn)
-            time.sleep(15)
-            k += 20
 
     async def event_message(self, message):
 
