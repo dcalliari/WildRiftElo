@@ -81,7 +81,7 @@ class Bot(commands.Bot):
             elo3 = mod.get(3, canal, 'elo')
             div3 = mod.get(3, canal, 'div')
             conta3 = mod.get(3, canal, 'conta')
-            await ctx.reply(f'/me {conta}: {elo} {div} | {conta1}: {elo1} {div1} | {conta2}: {elo2} {div2} | {conta3}: {elo3} {div3}')
+            await ctx.send(f'/me {conta}: {elo} {div} | {conta1}: {elo1} {div1} | {conta2}: {elo2} {div2} | {conta3}: {elo3} {div3}')
         except AttributeError:
             try:
                 elo = mod.get(0, canal, 'elo')
@@ -93,7 +93,7 @@ class Bot(commands.Bot):
                 elo2 = mod.get(2, canal, 'elo')
                 div2 = mod.get(2, canal, 'div')
                 conta2 = mod.get(2, canal, 'conta')
-                await ctx.reply(f'/me {conta}: {elo} {div} | {conta1}: {elo1} {div1} | {conta2}: {elo2} {div2}')
+                await ctx.send(f'/me {conta}: {elo} {div} | {conta1}: {elo1} {div1} | {conta2}: {elo2} {div2}')
             except AttributeError:
                 try:
                     elo = mod.get(0, canal, 'elo')
@@ -102,7 +102,7 @@ class Bot(commands.Bot):
                     elo1 = mod.get(1, canal, 'elo')
                     div1 = mod.get(1, canal, 'div')
                     conta1 = mod.get(1, canal, 'conta')
-                    await ctx.reply(f'/me {conta}: {elo} {div} | {conta1}: {elo1} {div1}')
+                    await ctx.send(f'/me {conta}: {elo} {div} | {conta1}: {elo1} {div1}')
                 except AttributeError:
                     try:
                         elo1 = mod.get(1, canal, 'elo')
@@ -114,7 +114,7 @@ class Bot(commands.Bot):
                         elo3 = mod.get(3, canal, 'elo')
                         div3 = mod.get(3, canal, 'div')
                         conta3 = mod.get(3, canal, 'conta')
-                        await ctx.reply(f'/me {conta1}: {elo1} {div1} | {conta2}: {elo2} {div2} | {conta3}: {elo3} {div3}')
+                        await ctx.send(f'/me {conta1}: {elo1} {div1} | {conta2}: {elo2} {div2} | {conta3}: {elo3} {div3}')
                     except AttributeError:
                         try:
                             elo1 = mod.get(1, canal, 'elo')
@@ -123,7 +123,7 @@ class Bot(commands.Bot):
                             elo2 = mod.get(2, canal, 'elo')
                             div2 = mod.get(2, canal, 'div')
                             conta2 = mod.get(2, canal, 'conta')
-                            await ctx.reply(f'/me {conta1}: {elo1} {div1} | {conta2}: {elo2} {div2}')
+                            await ctx.send(f'/me {conta1}: {elo1} {div1} | {conta2}: {elo2} {div2}')
                         except AttributeError:
                             await ctx.reply('/me Você precisa configurar pelo menos duas contas.')
 
@@ -174,7 +174,7 @@ class Bot(commands.Bot):
                 pdl = mod.get(ac, canal, 'pdl')
                 drt = mod.get(ac, canal, 'drt')
                 conta = mod.get(ac, canal, 'conta')
-                await ctx.reply(f'/me {conta}: {elo} {div} ({pdl} {drt})')
+                await ctx.send(f'/me {conta}: {elo} {div} ({pdl} {drt})')
             except AttributeError:
                 await ctx.reply(f'/me Primeiro você deve adicionar uma conta. Para mais informações, envie !tutorial no chat do bot.')
 
@@ -245,7 +245,7 @@ class Bot(commands.Bot):
                 div = mod.get(ac, canal, 'div')
                 drt = mod.get(ac, canal, 'drt')
                 conta = mod.get(ac, canal, 'conta')
-            await ctx.reply(f'/me {conta}: {elo} {div} ({pdl} {drt})')
+            await ctx.send(f'/me {conta}: {elo} {div} ({pdl} {drt})')
 
     # Envia o link do tutorial caso esteja no canal do bot, caso contrário, envia instruções
     @commands.command(name='tutorial', aliases=['tuto'])
@@ -267,14 +267,14 @@ class Bot(commands.Bot):
                 pass
         if ctx.channel.name == BOT_NICK:
             if autor in mod.get_channel():
-                await ctx.reply(f'/me Bot JÁ ESTÁ no canal {autor}')
+                await ctx.send(f'/me Bot JÁ ESTÁ no canal {autor}')
             else:
                 if len(mod.get_channel()) < 20:
                     mod.add_channel(autor)
                     await bot.join_channels([autor])
-                    await ctx.reply(f'/me Bot ENTROU no canal {autor}')
+                    await ctx.send(f'/me Bot ENTROU no canal {autor}')
                 else:
-                    await ctx.reply(f'/me No momento não temos vaga :( @1bode tá tentando resolver!')
+                    await ctx.send(f'/me No momento não temos vaga :( @1bode tá tentando resolver!')
 
     # Sai do canal que enviou a mensagem
     @commands.command(name='leave', aliases=['sair'])
@@ -287,10 +287,10 @@ class Bot(commands.Bot):
                 pass
         if ctx.channel.name == BOT_NICK:
             if autor not in mod.get_channel():
-                await ctx.reply(F'/me Bot NÃO ESTÁ no canal {autor}')
+                await ctx.send(F'/me Bot NÃO ESTÁ no canal {autor}')
             else:
                 mod.del_channel(autor)
-                await ctx.reply(F'/me Bot SAIU do canal {autor}')
+                await ctx.send(F'/me Bot SAIU do canal {autor}')
 
 
 bot = Bot()
