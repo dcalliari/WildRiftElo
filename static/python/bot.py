@@ -42,28 +42,27 @@ class Bot(commands.Bot):
         super().__init__(
             prefix=PREFIX,
             token=TOKEN,
-            initial_channels=[BOT_NICK],
+            initial_channels=mod.get_channel(),
             heartbeat=30.0
         )
 
     async def event_ready(self):
         print(f'Iniciando como | {self.nick}')
         print(f'Id de usuário é | {self.user_id}')
-        k = 0
-        j = 0
-        conn = []
-        channels = mod.get_channel()
-        if len(channels) > 20:
-            for i in range(int(len(channels)/20)):
-                while j < 20+k:
-                    conn.append(channels[j])
-                    j += 1
-                await bot.join_channels(conn)
-                print(conn)
-                time.sleep(20)
-                k += 20
-        else:
-            await bot.join_channels(channels)
+        # k = 0
+        # j = 0
+        # conn = []
+        # channels = mod.get_channel()
+        # if len(channels) > 20:
+        #     for i in range(int(len(channels)/20)):
+        #         while j < 20+k:
+        #             conn.append(channels[j])
+        #             j += 1
+        #         await bot.join_channels(conn)
+        #         time.sleep(20)
+        #         k += 20
+        # else:
+        #     await bot.join_channels(channels)
 
     async def event_message(self, message):
 
@@ -284,12 +283,12 @@ class Bot(commands.Bot):
             if autor in mod.get_channel():
                 await ctx.send(f'/me Bot JÁ ESTÁ no canal {autor}')
             else:
-                # if len(mod.get_channel()) < 20:
-                mod.add_channel(autor)
-                await bot.join_channels([autor])
-                await ctx.send(f'/me Bot ENTROU no canal {autor}')
-                # else:
-                #     await ctx.send(f'/me No momento não temos vaga :( @1bode tá tentando resolver!')
+                if len(mod.get_channel()) < 20:
+                    mod.add_channel(autor)
+                    await bot.join_channels([autor])
+                    await ctx.send(f'/me Bot ENTROU no canal {autor}')
+                else:
+                    await ctx.send(f'/me No momento não temos vaga :( @1bode tá tentando resolver!')
 
     # Sai do canal que enviou a mensagem
     @commands.command(name='leave', aliases=['sair'])
