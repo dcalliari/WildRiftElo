@@ -309,7 +309,7 @@ class Bot(commands.Bot):
 
     # comando para git pull pelo chat
     @commands.command(name="update")
-    async def update(ctx):
+    async def update(self, ctx: commands.Context):
         if ctx.author.name == 'bodedotexe' or ctx.author.name == '1bode':
             os.system("git pull")
             print("Atualizando e reiniciando...")
