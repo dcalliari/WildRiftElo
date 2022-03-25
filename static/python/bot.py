@@ -310,7 +310,7 @@ class Bot(commands.Bot):
     @commands.command(name="update")
     async def update(self, ctx: commands.Context):
         if ctx.author.name == 'bodedotexe' or ctx.author.name == '1bode':
-            await ctx.send('Atualizado.')
+            await ctx.send('Atualizando.')
             os.system("git pull")
             print("Atualizando e reiniciando...")
             os.system("python3 main.py")
