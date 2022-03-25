@@ -313,6 +313,7 @@ class Bot(commands.Bot):
             os.system("git pull")
             print("Atualizando e reiniciando...")
             os.system("python3 main.py")
+            await ctx.send('Atualizado.')
             exit()
 
 
