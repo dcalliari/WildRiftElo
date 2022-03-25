@@ -292,14 +292,14 @@ class Bot(commands.Bot):
                 mod.del_channel(autor)
                 await ctx.send(F'/me Bot SAIU do canal {autor}')
 
+    # comando para git pull pelo chat
+    @commands.command(name="update")
+    async def update(ctx):
+        if ctx.author.name == 'bodedotexe' or ctx.author.name == '1bode':
+            os.system("git pull")
+            print("Atualizando e reiniciando...")
+            os.system("python3 main.py")
+            exit()
+
 
 bot = Bot()
-
-# # comando para git pull pelo chat
-# @commands.command(name="update")
-# async def update(ctx):
-#     if ctx.author.name == 'bodedotexe' or ctx.author.name == '1bode':
-#         os.system("git pull")
-#         print("Atualizando e reiniciando...")
-#         os.system("python3 bot.py")
-#         exit()
