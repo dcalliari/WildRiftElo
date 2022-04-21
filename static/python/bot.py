@@ -1,7 +1,6 @@
 import os
 import static.python.db_modules as mod
 
-from static.python.utils import cooldown
 from dotenv import load_dotenv
 from twitchio.ext import commands
 from twitchio.client import Client
@@ -60,7 +59,7 @@ class Bot(commands.Bot):
 
     # Mostra os elos de todas as contas
     @commands.command(name='elos')
-    # @cooldown.cooldown(3)
+    @commands.cooldown(1, 3)
     async def command_elos(self, ctx: commands.Context):
         canal = ctx.channel.name
         try:
@@ -124,7 +123,7 @@ class Bot(commands.Bot):
 
     # Edita o nome das contas
     @commands.command(name='conta', aliases=['conta1', 'conta2', 'conta3'])
-    # @cooldown.cooldown(3)
+    @commands.cooldown(1, 3)
     async def command_account(self, ctx: commands.Context):
         canal = ctx.channel.name
         ac = ctx.message.content.split(' ', 1)[0][-1]
@@ -143,7 +142,7 @@ class Bot(commands.Bot):
 
     # Edita o elo das contas ou responde com o elo
     @commands.command(name='elo', aliases=['elo1', 'elo2', 'elo3', 'smurf', 'elosmurf'])
-    # @cooldown.cooldown(3)
+    @commands.cooldown(1, 3)
     async def command_elo(self, ctx: commands.Context):
         canal = ctx.channel.name
         ac = ctx.message.content.split(' ', 1)[0][-1]
@@ -175,7 +174,7 @@ class Bot(commands.Bot):
 
     # Edita a divisão das contas
     @commands.command(name='div', aliases=['div1', 'div2', 'div3'])
-    # @cooldown.cooldown(3)
+    @commands.cooldown(1, 3)
     async def command_div(self, ctx: commands.Context):
         canal = ctx.channel.name
         ac = ctx.message.content.split(' ', 1)[0][-1]
@@ -194,7 +193,7 @@ class Bot(commands.Bot):
 
     # Edita os pontos/doritos das contas
     @commands.command(name='pdl', aliases=['pdl1', 'pdl2', 'pdl3'])
-    # @cooldown.cooldown(3)
+    @commands.cooldown(1, 3)
     async def command_pdl(self, ctx: commands.Context):
         canal = ctx.channel.name
         ac = ctx.message.content.split(' ', 1)[0][-1]
@@ -244,7 +243,7 @@ class Bot(commands.Bot):
 
     # Envia o link do tutorial caso esteja no canal do bot, caso contrário, envia instruções
     @commands.command(name='tutorial', aliases=['tuto'])
-    # @cooldown.cooldown(3)
+    @commands.cooldown(1, 3)
     async def command_tutorial(self, ctx: commands.Context):
         if ctx.channel.name == BOT_NICK:
             await ctx.reply('/me Como adicionar o bot e configurar em seu canal: https://imgur.com/a/zl1T2CY')
