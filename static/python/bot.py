@@ -59,7 +59,7 @@ class Bot(commands.Bot):
 
     # Mostra os elos de todas as contas
     @commands.command(name='elos')
-    @commands.cooldown(1, 3)
+    @commands.cooldown(1, 1)
     async def command_elos(self, ctx: commands.Context):
         canal = ctx.channel.name
         try:
@@ -123,7 +123,7 @@ class Bot(commands.Bot):
 
     # Edita o nome das contas
     @commands.command(name='conta', aliases=['conta1', 'conta2', 'conta3'])
-    @commands.cooldown(1, 3)
+    @commands.cooldown(1, 1)
     async def command_account(self, ctx: commands.Context):
         canal = ctx.channel.name
         ac = ctx.message.content.split(' ', 1)[0][-1]
@@ -142,7 +142,7 @@ class Bot(commands.Bot):
 
     # Edita o elo das contas ou responde com o elo
     @commands.command(name='elo', aliases=['elo1', 'elo2', 'elo3', 'smurf', 'elosmurf'])
-    @commands.cooldown(1, 3)
+    @commands.cooldown(1, 1)
     async def command_elo(self, ctx: commands.Context):
         canal = ctx.channel.name
         ac = ctx.message.content.split(' ', 1)[0][-1]
