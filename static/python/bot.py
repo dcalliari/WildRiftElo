@@ -168,7 +168,10 @@ class Bot(commands.Bot):
                 pdl = mod.get(ac, canal, 'pdl')
                 drt = mod.get(ac, canal, 'drt')
                 conta = mod.get(ac, canal, 'conta')
-                await ctx.send(f'/me {conta}: {elo} {div} ({pdl} {drt})')
+                if canal == 'lufelixya':
+                    await ctx.send(f'/me {conta}: {elo} {div} ({pdl} {drt}) lufeliCalva')
+                else:
+                    await ctx.send(f'/me {conta}: {elo} {div} ({pdl} {drt})')
             except AttributeError:
                 await ctx.reply(f'/me Primeiro você deve adicionar uma conta. Para mais informações, envie !tutorial no chat do bot.')
 
