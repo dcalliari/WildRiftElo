@@ -171,7 +171,7 @@ class Bot(commands.Bot):
                 if canal == 'lufelixya':
                     await ctx.send(f'/me {conta}: {elo} {div} ({pdl} {drt}) lufeliCalva')
                 if canal == 'emerok1':
-                    await ctx.send(f'/me {conta}: {elo} {div} ({pdl} {drt}) emerokSmite')
+                    await ctx.send(f'/me {conta}: {elo} {div} ({pdl} {drt}) emerokSegurou')
                 else:
                     await ctx.send(f'/me {conta}: {elo} {div} ({pdl} {drt})')
             except AttributeError:
