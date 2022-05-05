@@ -170,6 +170,8 @@ class Bot(commands.Bot):
                 conta = mod.get(ac, canal, 'conta')
                 if canal == 'lufelixya':
                     await ctx.send(f'/me {conta}: {elo} {div} ({pdl} {drt}) lufeliCalva')
+                if canal == 'emerok1':
+                    await ctx.send(f'/me {conta}: {elo} {div} ({pdl} {drt}) emerokSmite')
                 else:
                     await ctx.send(f'/me {conta}: {elo} {div} ({pdl} {drt})')
             except AttributeError:
