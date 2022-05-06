@@ -4,7 +4,7 @@ dorito = ['ferro', 'iron', 'bronze', 'prata', 'silver', 'ouro',
           'gold', 'plat', 'platinum', 'platina', 'esmeralda', 'emerald']
 
 
-def get_channel():
+def get_channels():
     CHANNELS = []
     for i in range(len(db.session.query(Broadcaster.twitch_id).where(Broadcaster.is_active == True).all())):
         CHANNELS.append(db.session.query(Broadcaster.twitch_id).where(
