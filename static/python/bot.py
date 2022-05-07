@@ -114,7 +114,7 @@ class Bot(commands.Bot):
     @commands.command(name='elohelp', aliases=['wrhelp', 'eloajuda'])
     @commands.cooldown(1, 3)
     async def command_tutorial(self, ctx: commands.Context):
-        await ctx.reply(f'/me Envie !tutorial no chat do {BOT_NICK}')
+        await ctx.reply(f'/me Configure sua primeira conta enviando !conta Account#Tag. Ex: !conta Emerok#BR1')
 
     # Entra no canal que enviou a mensagem
     @commands.command(name='join', aliases=['entrar'])
