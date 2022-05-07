@@ -36,27 +36,13 @@ class Broadcaster(db.Model):
     is_active = db.Column(db.Boolean, default=True)
     accounts = db.relationship("Account", backref="broadcaster")
 
-# def __init__(self, twitch_id, accounts, created_at):
-#     self.twitch_id = twitch_id
-#     self.accounts = accounts
-#     self.created_at = created_at
-
 
 class Account(db.Model):
     __tablename__ = 'account'
     id = db.Column(db.Integer, primary_key=True)
-    riot_id = db.Column(db.String(25))
-    elo = db.Column(db.String(25))
-    div = db.Column(db.Integer)
-    pdl = db.Column(db.Integer)
+    hash = db.Column(db.String(25))
     acc_id = db.Column(db.Integer)
     broadcaster_id = db.Column(db.Integer, db.ForeignKey('broadcaster.id'))
-
-    # def __init__(self, riot_id, elo, div, pdl):
-    #     self.riot_id = riot_id
-    #     self.elo = elo
-    #     self.div = div
-    #     self.pdl = pdl
 
 
 @app.route("/", methods=["GET"])
