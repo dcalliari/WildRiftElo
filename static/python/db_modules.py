@@ -66,9 +66,10 @@ def get_accounts(channel):
 def update_riot_id(key, value, channel):
     b_id = db.session.query(Broadcaster).where(
         Broadcaster.twitch_id == channel).first()
-    account = Account.query.filter_by(acc_id=key, broadcaster_id=b_id.id).update(
-        {Account.hash: value})
-    if account == 0:
+    try:
+        account = Account.query.filter_by(acc_id=key, broadcaster_id=b_id.id).update(
+            {Account.hash: value})
+    except:
         account = Account(hash=value, acc_id=key,
                           broadcaster=b_id)
         db.session.add(account)
