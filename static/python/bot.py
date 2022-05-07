@@ -108,7 +108,8 @@ class Bot(commands.Bot):
             response = mod.get_elo(id, ctx.channel.name)
             await ctx.send(f'/me {response}')
         except AttributeError:
-            await ctx.reply(f'/me Primeiro você deve adicionar uma conta. Envie !eloajuda')
+            if ctx.channel.name != 'casaldenerd':
+                await ctx.reply(f'/me Primeiro você deve adicionar uma conta. Envie !eloajuda')
 
     # Envia o link do tutorial caso esteja no canal do bot, caso contrário, envia instruções
     @commands.command(name='elohelp', aliases=['wrhelp', 'eloajuda'])
