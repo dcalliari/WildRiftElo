@@ -8,7 +8,7 @@ API_URL = os.environ.get('API_URL')
 
 
 def idCheck(riotId):
-    return re.match("\w{3,16}[#]\w{3,5}", riotId)
+    return re.match("\w|\s{3,16}[#]\w{3,5}", riotId)
 
 
 def createHash(riotId):
