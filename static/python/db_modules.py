@@ -1,7 +1,19 @@
 from app import db, Broadcaster, Account
+import re
+import os
+import requests
 
-dorito = ['ferro', 'iron', 'bronze', 'prata', 'silver', 'ouro',
-          'gold', 'plat', 'platinum', 'platina', 'esmeralda', 'emerald']
+SCRAPED_URL = os.environ.get('SCRAPED_URL')
+API_URL = os.environ.get('API_URL')
+
+
+def idCheck(riotId):
+    return re.match("\w{3,16}[#]\w{3,5}", riotId)
+
+
+def createHash(riotId):
+    riotId = riotId.replace('#', '/')
+    return requests.get(f'{SCRAPED_URL}/{riotId}').text
 
 
 def get_channels():
@@ -32,78 +44,33 @@ def del_channel(value):
         return
 
 
-def get(key, channel, type):
-    if type == 'conta':
-        return Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(twitch_id=channel).first().id).first().riot_id
-    elif type == 'elo':
-        return Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(twitch_id=channel).first().id).first().elo
-    elif type == 'div':
-        div = Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(
-            twitch_id=channel).first().id).first().div
-        if div == None:
-            div = ''
-        return div
-    elif type == 'pdl':
-        pdl = Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(
-            twitch_id=channel).first().id).first().pdl
-        if pdl == None:
-            pdl = 0
-        return pdl
-    elif type == 'drt':
-        if Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(twitch_id=channel).first().id).first().elo.lower() in dorito:
-            drt = 'DoritosChip '
-        else:
-            drt = 'PdL'
-        return drt
+def get_elo(key, channel):
+    hash = Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(
+        twitch_id=channel).first().id).first().hash
+    return requests.get(f'{API_URL}{hash}/br').text
+
+
+def get_accounts(channel):
+    id_list = []
+    elo_list = []
+    list = Account.query.filter_by(broadcaster_id=Broadcaster.query.filter_by(
+        twitch_id=channel).all()[0].id).all()
+    for account in list:
+        id_list.append(account.acc_id)
+    id_list.sort()
+    for i in id_list:
+        elo_list.append(get_elo(i, channel))
+    return elo_list
 
 
 def update_riot_id(key, value, channel):
     b_id = db.session.query(Broadcaster).where(
         Broadcaster.twitch_id == channel).first()
-
-    account = Account.query.filter_by(
-        acc_id=key, broadcaster_id=b_id.id).update({Account.riot_id: value})
+    account = Account.query.filter_by(acc_id=key, broadcaster_id=b_id.id).update(
+        {Account.hash: value})
     if account == 0:
-        account = Account(riot_id=value, acc_id=key, broadcaster=b_id)
-        db.session.add(account)
-    db.session.commit()
-    return
-
-
-def update_elo(key, value, channel):
-    b_id = db.session.query(Broadcaster).where(
-        Broadcaster.twitch_id == channel).first()
-
-    account = Account.query.filter_by(
-        acc_id=key, broadcaster_id=b_id.id).update({Account.elo: value})
-    if account == 0:
-        account = Account(elo=value, acc_id=key, broadcaster=b_id)
-        db.session.add(account)
-    db.session.commit()
-    return
-
-
-def update_div(key, value, channel):
-    b_id = db.session.query(Broadcaster).where(
-        Broadcaster.twitch_id == channel).first()
-
-    account = Account.query.filter_by(
-        acc_id=key, broadcaster_id=b_id.id).update({Account.div: value})
-    if account == 0:
-        account = Account(div=value, acc_id=key, broadcaster=b_id)
-        db.session.add(account)
-    db.session.commit()
-    return
-
-
-def update_pdl(key, value, channel):
-    b_id = db.session.query(Broadcaster).where(
-        Broadcaster.twitch_id == channel).first()
-
-    account = Account.query.filter_by(
-        acc_id=key, broadcaster_id=b_id.id).update({Account.pdl: value})
-    if account == 0:
-        account = Account(pdl=value, acc_id=key, broadcaster=b_id)
+        account = Account(hash=value, acc_id=key,
+                          broadcaster=b_id)
         db.session.add(account)
     db.session.commit()
     return
