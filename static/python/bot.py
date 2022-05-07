@@ -61,21 +61,8 @@ class Bot(commands.Bot):
 
         await self.handle_commands(message)
 
-    # Mostra os elos de todas as contas
-    @commands.command(name='elos')
-    @commands.cooldown(1, 5)
-    async def command_elos(self, ctx: commands.Context):
-        try:
-            contas = mod.get_accounts(ctx.channel.name)
-            if len(contas) > 1:
-                response = ' | '.join(contas)
-                await ctx.send(f'/me {response}')
-            else:
-                await ctx.reply('/me Você precisa configurar pelo menos duas contas.')
-        except:
-            await ctx.reply('/me Você precisa configurar pelo menos duas contas.')
+    # Adiciona/edita contas
 
-    # Edita o nome das contas
     @commands.command(name='conta', aliases=['conta1', 'conta2', 'conta3', 'account', 'account1', 'account2', 'account3'])
     @commands.cooldown(1, 1)
     async def command_account(self, ctx: commands.Context):
@@ -108,14 +95,35 @@ class Bot(commands.Bot):
             response = mod.get_elo(id, ctx.channel.name)
             await ctx.send(f'/me {response}')
         except AttributeError:
-            if ctx.channel.name != 'casaldenerd':
-                await ctx.reply(f'/me Primeiro você deve adicionar uma conta. Envie !eloajuda')
+            contas = mod.get_accounts(ctx.channel.name, 'elo')
+            id = mod.get_accounts(ctx.channel.name, 'id')
+            if len(contas) == 0:
+                await ctx.reply('/me Primeiro você deve adicionar uma conta. Envie !eloajuda')
+            else:
+                response1 = ' | '.join(contas)
+                response2 = ' !elo'.join('' if x == 0 else str(x) for x in id)
+                await ctx.send(f'/me {response1}')
+                await ctx.reply(f'Contas disponíveis: !elo{response2}')
 
-    # Envia o link do tutorial caso esteja no canal do bot, caso contrário, envia instruções
+    # Mostra os elos de todas as contas
+    @commands.command(name='elos')
+    @commands.cooldown(1, 5)
+    async def command_elos(self, ctx: commands.Context):
+        try:
+            contas = mod.get_accounts(ctx.channel.name, 'elo')
+            if len(contas) > 1:
+                response = ' | '.join(contas)
+                await ctx.send(f'/me {response}')
+            else:
+                await ctx.reply('/me Você precisa configurar pelo menos duas contas.')
+        except:
+            await ctx.reply('/me Você precisa configurar pelo menos duas contas.')
+
+    # Envia instruções
     @commands.command(name='elohelp', aliases=['wrhelp', 'eloajuda'])
     @commands.cooldown(1, 3)
     async def command_tutorial(self, ctx: commands.Context):
-        await ctx.reply(f'/me Configure sua primeira conta enviando !conta Account#Tag. Ex: !conta Emerok#BR1')
+        await ctx.reply('/me Configure sua primeira conta enviando !conta Account#Tag. Ex: !conta Emerok#BR1')
 
     # Entra no canal que enviou a mensagem
     @commands.command(name='join', aliases=['entrar'])

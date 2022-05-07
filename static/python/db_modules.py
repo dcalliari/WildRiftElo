@@ -56,7 +56,7 @@ def get_elo(key, channel):
     return requests.get(f'{API_URL}{hash}/br').text
 
 
-def get_accounts(channel):
+def get_accounts(channel, type):
     id_list = []
     elo_list = []
     list = Account.query.filter_by(broadcaster_id=Broadcaster.query.filter_by(
@@ -66,7 +66,10 @@ def get_accounts(channel):
     id_list.sort()
     for i in id_list:
         elo_list.append(get_elo(i, channel))
-    return elo_list
+    if type == 'elo':
+        return elo_list
+    elif type == 'id':
+        return id_list
 
 
 def update_riot_id(key, value, channel):
