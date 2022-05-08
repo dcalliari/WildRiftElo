@@ -129,7 +129,7 @@ class Bot(commands.Bot):
     @commands.cooldown(1, 3)
     async def command_help(self, ctx: commands.Context):
         lang = mod.lang()[mod.get_lang(ctx.channel.name)]['elohelp']
-        await ctx.reply(lang['elohelp'])
+        await ctx.reply(lang)
 
     # Change bot language
     @commands.command(name='lang')
