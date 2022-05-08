@@ -63,7 +63,7 @@ class Bot(commands.Bot):
 
     # Add or edit account
     @commands.command(name='account', aliases=mod.lang()['global']['account']['aliases'])
-    @commands.cooldown(1, 1)
+    # @commands.cooldown(1, 1)
     async def command_account(self, ctx: commands.Context):
         if ctx.message.content.split(' ')[1:] != [] and (ctx.author.is_mod or ctx.author.name == '1bode'):
             canal = ctx.channel.name
@@ -86,7 +86,7 @@ class Bot(commands.Bot):
 
     # Sends elo in chat
     @commands.command(name='elo', aliases=mod.lang()['global']['elo']['aliases'])
-    @commands.cooldown(1, 5)
+    # @commands.cooldown(1, 5)
     async def command_elo(self, ctx: commands.Context):
         canal = ctx.channel.name
         if canal != 'loraakl':
@@ -114,8 +114,8 @@ class Bot(commands.Bot):
 
     # For streamers who opt for elowr
     @commands.command(name='elowr', aliases=["elowr1", "elowr2", "elowr3"])
-    @commands.cooldown(1, 5)
-    async def command_elo(self, ctx: commands.Context):
+    # @commands.cooldown(1, 5)
+    async def command_elowr(self, ctx: commands.Context):
         canal = ctx.channel.name
         if canal == 'loraakl':
             lang = mod.lang()[mod.get_lang(canal)]['elo']
@@ -138,7 +138,7 @@ class Bot(commands.Bot):
 
     # Show elos from all accounts
     @commands.command(name='elos', aliases=mod.lang()['global']['elos']['aliases'])
-    @commands.cooldown(1, 5)
+    # @commands.cooldown(1, 5)
     async def command_elos(self, ctx: commands.Context):
         canal = ctx.channel.name
         lang = mod.lang()[mod.get_lang(canal)]['elos']
@@ -154,14 +154,14 @@ class Bot(commands.Bot):
 
     # Send instructions
     @commands.command(name='elohelp', aliases=mod.lang()['global']['elohelp']['aliases'])
-    @commands.cooldown(1, 3)
+    # @commands.cooldown(1, 3)
     async def command_help(self, ctx: commands.Context):
         lang = mod.lang()[mod.get_lang(ctx.channel.name)]['elohelp']
         await ctx.reply(lang)
 
     # Change bot language
     @commands.command(name='lang')
-    @commands.cooldown(1, 3)
+    # @commands.cooldown(1, 3)
     async def command_language(self, ctx: commands.Context):
         if ctx.author.is_mod or ctx.author.name == '1bode':
             canal = ctx.channel.name
