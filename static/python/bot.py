@@ -94,6 +94,8 @@ class Bot(commands.Bot):
             id = ctx.message.content.split(' ', 1)[0][-1]
             id = 0 if id == 'o' else id
             id = 0 if id == 'n' else id
+            id = 0 if id == 'k' else id
+            id = 0 if id == 'r' else id
             id = 1 if id == 'f' else id
             try:
                 response = mod.get_elo(id, canal)
