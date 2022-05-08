@@ -60,7 +60,8 @@ def del_channel(value):
 def get_elo(key, channel):
     hash = Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(
         twitch_id=channel).first().id).first().hash
-    return requests.get(f'{API_URL}{hash}/br').text
+    lang = get_lang(channel)
+    return requests.get(f'{API_URL}{hash}/{lang}').text
 
 
 def get_accounts(channel, type):
