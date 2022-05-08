@@ -35,6 +35,7 @@ class Broadcaster(db.Model):
     created_at = db.Column(db.Date, default=datetime.utcnow)
     is_active = db.Column(db.Boolean, default=True)
     accounts = db.relationship("Account", backref="broadcaster")
+    lang = db.Column(db.String(25), default="en")
 
 
 class Account(db.Model):

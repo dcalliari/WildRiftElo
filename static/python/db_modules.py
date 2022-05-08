@@ -1,10 +1,17 @@
 from app import db, Broadcaster, Account
 import re
 import os
+import json
 import requests
 
 SCRAPED_URL = os.environ.get('SCRAPED_URL')
 API_URL = os.environ.get('API_URL')
+
+
+def lang():
+    with open(os.path.abspath('resources/lang.json'), encoding='utf8') as json_file:
+        lang = json.load(json_file)
+        return lang
 
 
 def idCheck(riotId):
@@ -81,5 +88,16 @@ def update_riot_id(key, value, channel):
         account = Account(hash=value, acc_id=key,
                           broadcaster=b_id)
         db.session.add(account)
+    db.session.commit()
+    return
+
+
+def get_lang(channel):
+    return Broadcaster.query.filter_by(twitch_id=channel).first().lang
+
+
+def change_lang(value, channel):
+    Broadcaster.query.filter_by(twitch_id=channel).update({
+        Broadcaster.lang: value})
     db.session.commit()
     return

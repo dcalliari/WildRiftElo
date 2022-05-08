@@ -1,0 +1,239 @@
+{
+  "global": {
+    "account": {
+      "aliases": [
+        "conta",
+        "conta1",
+        "conta2",
+        "conta3",
+        "account1",
+        "account2",
+        "account3",
+        "cuenta",
+        "cuenta1",
+        "cuenta2",
+        "cuenta3",
+        "konto",
+        "konto1",
+        "konto2",
+        "konto3",
+        "trem",
+        "trem1",
+        "trem2",
+        "trem3"
+      ]
+    },
+    "elo": {
+      "aliases": ["elomain", "elo1", "elo2", "elo3", "smurf", "elosmurf"]
+    },
+    "elos": {
+      "aliases": []
+    },
+    "elohelp": {
+      "aliases": [
+        "wrhelp",
+        "eloajuda",
+        "tutorial",
+        "eloaiuto",
+        "eloayuda",
+        "elohilfe",
+        "eloaide"
+      ]
+    },
+    "join": {
+      "aliases": ["entrar"]
+    },
+    "leave": {
+      "aliases": ["sair"]
+    }
+  },
+  "br": {
+    "account": {
+      "delay": "Aguarde alguns segundos...",
+      "updated": "Conta%s atualizada para: %s",
+      "error": "Não foi possível adicionar esta conta. Entre em contato com @1bode",
+      "invalid": "Valor inválido. Ex: Emerok#BR1"
+    },
+    "elo": {
+      "no_accounts": "Primeiro você deve adicionar uma conta. Envie !eloajuda",
+      "available_accounts": "Contas disponíveis: !elo%s"
+    },
+    "elos": {
+      "no_accounts": "Você precisa configurar pelo menos duas contas"
+    },
+    "lang": {
+      "instructions": "Idiomas disponíveis: %s",
+      "updated": "Idioma atualizado para: %s",
+      "wrong_lang": "Idioma inválido. Disponíveis: %s"
+    },
+    "elohelp": "Configure sua primeira conta enviando !conta Account#Tag. Ex: !conta Emerok#BR1"
+  },
+  "it": {
+    "account": {
+      "delay": "Per favore attendi qualche secondo...",
+      "updated": "Account%s aggiornato a: %s",
+      "error": "Impossibile aggiungere questo account. Per favore contatta @1bode",
+      "invalid": "Valore non valido. Es: Emerok#BR1"
+    },
+    "elo": {
+      "no_accounts": "Devi prima aggiungere un account. Invia !eloaiuto",
+      "available_accounts": "Account disponibili: !elo%s"
+    },
+    "elos": {
+      "no_accounts": "Devi impostare almeno due account"
+    },
+    "lang": {
+      "instructions": "Lingue disponibili: %s",
+      "updated": "Lingua aggiornata a: %s",
+      "wrong_lang": "Lingua non valida. Disponibili: %s"
+    },
+    "elohelp": "Configura il tuo primo account inviando !account Account#Tag. Es: !account Emerok#BR1"
+  },
+  "es": {
+    "account": {
+      "delay": "Por favor, espere unos segundos...",
+      "updated": "Cuenta%s actualizada a: %s",
+      "error": "No se pudo agregar esta cuenta. Comuníquese con @1bode",
+      "invalid": "Valor no válido. Ej: Emerok#BR1"
+    },
+    "elo": {
+      "no_accounts": "Primero debes agregar una cuenta. Envía !elayuda",
+      "available_accounts": "Cuentas disponibles: !elo%s"
+    },
+    "elos": {
+      "no_accounts": "Necesitas configurar al menos dos cuentas"
+    },
+    "lang": {
+      "instructions": "Idiomas disponibles: %s",
+      "updated": "Idioma actualizado a: %s",
+      "wrong_lang": "Idioma no válido. Disponibles: %s"
+    },
+    "elohelp": "Configure su primera cuenta enviando !cuenta Account#Tag. Ej: !cuenta Emerok#BR1"
+  },
+  "kr": {
+    "account": {
+      "delay": "몇 초만 기다려 주십시오...",
+      "updated": "계정%s 다음으로 업데이트됨: %s",
+      "error": "이 계정을 추가할 수 없습니다. @1bode 에 문의하십시오",
+      "invalid": "잘못된 값입니다. 예: Emerok#BR1"
+    },
+    "elo": {
+      "no_accounts": "먼저 계정을 추가해야 합니다. !elohelp 를 보내십시오",
+      "available_accounts": "사용 가능한 계정: !elo%s"
+    },
+    "elos": {
+      "no_accounts": "최소 2개의 계정을 설정해야 합니다"
+    },
+    "lang": {
+      "instructions": "사용 가능한 언어: %s",
+      "updated": "언어 업데이트: %s",
+      "wrong_lang": "잘못된 언어입니다. 사용 가능: %s"
+    },
+    "elohelp": "!account Account#Tag 를 전송하여 첫 번째 계정을 설정하십시오. 예: !account Emerok#BR1"
+  },
+  "de": {
+    "account": {
+      "delay": "Bitte warten Sie ein paar Sekunden...",
+      "updated": "Konto%s wurde aktualisiert auf: %s",
+      "error": "Dieses Konto konnte nicht hinzugefügt werden. Bitte kontaktieren Sie @1bode",
+      "invalid": "Ungültiger Wert. Beispiel: Emerok#BR1"
+    },
+    "elo": {
+      "no_accounts": "Sie müssen zuerst ein Konto hinzufügen. Senden Sie !elohilfe",
+      "available_accounts": "Verfügbare Konten: !elo%s"
+    },
+    "elos": {
+      "no_accounts": "Sie müssen mindestens 2 Konten einrichten"
+    },
+    "lang": {
+      "instructions": "Verfügbare Sprachen: %s",
+      "updated": "Sprache aktualisiert auf: %s",
+      "wrong_lang": "Ungültige Sprache. Verfügbar: %s"
+    },
+    "elohelp": "Senden Sie !konto Account#Tag, um Ihr erstes Konto einzurichten. Beispiel: !konto Emerok#BR1"
+  },
+  "fr": {
+    "account": {
+      "delay": "Veuillez patienter quelques secondes...",
+      "updated": "Le compte%s a été mis à jour vers: %s",
+      "error": "Impossible d'ajouter ce compte. Veuillez contacter @1bode",
+      "invalid": "Valeur invalide. Exemple: Emerok#BR1"
+    },
+    "elo": {
+      "no_accounts": "Vous devez d'abord ajouter un compte. Envoyez !eloaide",
+      "available_accounts": "Comptes disponibles: !elo%s"
+    },
+    "elos": {
+      "no_accounts": "Vous devez configurer au moins 2 comptes"
+    },
+    "lang": {
+      "instructions": "Langues disponibles: %s",
+      "updated": "Langue mise à jour à: %s",
+      "wrong_lang": "Langue invalide. Disponibles: %s"
+    },
+    "elohelp": "Envoyez !compte Account#Tag pour configurer votre premier compte. Exemple: !compte Emerok#BR1"
+  },
+  "jp": {
+    "account": {
+      "delay": "数秒 お待ちください...",
+      "Updated": "アカウント%s が 更新されました： %s",
+      "Error": "この アカウント を 追加できませんでした。 @1bode に 連絡してください",
+      "invalid": "値が無効です。例：Emerok#BR1"
+    },
+    "elo": {
+      "no_accounts": "最初 に アカウント を 追加する 必要 が あります。!elohelp を 送信します",
+      "available_accounts": "利用 可能な アカウント： !elo%s"
+    },
+    "elos": {
+      "no_accounts": "少なくとも 2つ の アカウント を 設定する 必要 が あります"
+    },
+    "lang": {
+      "instructions": "利用可能 な 言語： %s",
+      "updated": "言語 が %s に 更新されました",
+      "wrong_lang": "言語が無効です。 利用可能： %s"
+    },
+    "elohelp": "!account Account#Tag を 送信して、最初 の アカウント を 設定します。例：!account Emerok#BR1"
+  },
+  "en": {
+    "account": {
+      "delay": "Please wait a few seconds...",
+      "updated": "Account%s updated to: %s",
+      "error": "Unable to add this account. Please contact @1bode",
+      "invalid": "Invalid value. Ex: Emerok#BR1"
+    },
+    "elo": {
+      "no_accounts": "You must first add an account. Send !elohelp",
+      "available_accounts": "Available accounts: !elo%s"
+    },
+    "elos": {
+      "no_accounts": "You need to set up at least two accounts"
+    },
+    "lang": {
+      "instructions": "Available languages: %s",
+      "updated": "Language updated to: %s",
+      "wrong_lang": "Invalid language. Availables: %s"
+    },
+    "elohelp": "Set up your first account by sending !account Account#Tag. Ex: !account Emerok#BR1"
+  },
+  "noobzinha": {
+    "account": {
+      "delay": "hm pera lá...",
+      "updated": "o trem%s mudou pra %s",
+      "error": "tendi nd :D ó o @1bode aí, fala com ele",
+      "invalid": "ué? ve se vai assim: Emerok#BR1"
+    },
+    "elo": {
+      "no_accounts": "tem que add o trem. manda !tendind",
+      "available_accounts": "tem essas ai !elo%s"
+    },
+    "elos": {
+      "no_accounts": "precisa ter pelo menos dois trem desse"
+    },
+    "lang": {
+      "instructions": "vai muda msm? óóó: %s",
+      "updated": "mudou pra %s e vai tomar ban!!!",
+      "wrong_lang": "tendi nd :D tenta essas daí: %s"
+    },
+    "elohelp": "como coloca o wild rift elo no chat mesmo? desse jeito? !trem Emerok#BR1"
+  }
+}

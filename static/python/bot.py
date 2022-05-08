@@ -61,72 +61,98 @@ class Bot(commands.Bot):
 
         await self.handle_commands(message)
 
-    # Adiciona/edita contas
-
-    @commands.command(name='conta', aliases=['conta1', 'conta2', 'conta3', 'account', 'account1', 'account2', 'account3'])
+    # Add or edit account
+    @commands.command(name='account', aliases=mod.lang()['global']['account']['aliases'])
     @commands.cooldown(1, 1)
     async def command_account(self, ctx: commands.Context):
+        canal = ctx.channel.name
+        lang = mod.lang()[mod.get_lang(canal)]['account']
         id = ctx.message.content.split(' ', 1)[0][-1]
         id = 0 if id == 'a' else id
         id = 0 if id == 't' else id
         if ctx.message.content.split(' ')[1:] != [] and (ctx.author.is_mod or ctx.author.name == '1bode'):
             riotId = ctx.message.content.split(' ', 1)[1:][0]
             if mod.idCheck(riotId):
-                await ctx.reply(f'Aguarde alguns segundos...')
+                await ctx.reply(lang['delay'])
                 accId = mod.createHash(riotId)
                 if accId != 'gameid':
-                    mod.update_riot_id(id, accId, ctx.channel.name)
+                    mod.update_riot_id(id, accId, canal)
                     id = '' if id == 0 else id
-                    await ctx.reply(f'/me Conta{id} atualizada para: {riotId}')
+                    await ctx.reply(lang['updated'] % (id, riotId))
                 else:
-                    await ctx.reply('Não foi possível adicionar esta conta. Entre em contato com @1bode.')
+                    await ctx.reply(lang['error'])
             else:
-                await ctx.reply('/me Valor inválido. Ex: Emerok#BR1')
+                await ctx.reply(lang['invalid'])
 
-    # Responde com o elo
-    @commands.command(name='elo', aliases=['elomain', 'elo1', 'elo2', 'elo3', 'smurf', 'elosmurf'])
+    # Sends elo in chat
+    @commands.command(name='elo', aliases=mod.lang()['global']['elo']['aliases'])
     @commands.cooldown(1, 5)
     async def command_elo(self, ctx: commands.Context):
+        canal = ctx.channel.name
+        lang = mod.lang()[mod.get_lang(canal)]['elo']
         id = ctx.message.content.split(' ', 1)[0][-1]
         id = 0 if id == 'o' else id
         id = 0 if id == 'n' else id
         id = 1 if id == 'f' else id
         try:
-            response = mod.get_elo(id, ctx.channel.name)
+            response = mod.get_elo(id, canal)
             await ctx.send(f'/me {response}')
         except AttributeError:
-            contas = mod.get_accounts(ctx.channel.name, 'elo')
-            id = mod.get_accounts(ctx.channel.name, 'id')
+            contas = mod.get_accounts(canal, 'elo')
+            id = mod.get_accounts(canal, 'id')
             if len(contas) == 0:
-                await ctx.reply('/me Primeiro você deve adicionar uma conta. Envie !eloajuda')
+                await ctx.reply(lang['no_accounts'])
             else:
                 response1 = ' | '.join(contas)
                 response2 = ' !elo'.join('' if x == 0 else str(x) for x in id)
                 await ctx.send(f'/me {response1}')
-                await ctx.reply(f'Contas disponíveis: !elo{response2}')
+                await ctx.reply(lang['available_accounts'] % response2)
 
-    # Mostra os elos de todas as contas
-    @commands.command(name='elos')
+    # Show elos from all accounts
+    @commands.command(name='elos', aliases=mod.lang()['global']['elos']['aliases'])
     @commands.cooldown(1, 5)
     async def command_elos(self, ctx: commands.Context):
+        canal = ctx.channel.name
+        lang = mod.lang()[mod.get_lang(canal)]['elos']
         try:
-            contas = mod.get_accounts(ctx.channel.name, 'elo')
+            contas = mod.get_accounts(canal, 'elo')
             if len(contas) > 1:
                 response = ' | '.join(contas)
                 await ctx.send(f'/me {response}')
             else:
-                await ctx.reply('/me Você precisa configurar pelo menos duas contas.')
+                await ctx.reply(lang['no_accounts'])
         except:
-            await ctx.reply('/me Você precisa configurar pelo menos duas contas.')
+            await ctx.reply(lang['no_accounts'])
 
-    # Envia instruções
-    @commands.command(name='elohelp', aliases=['wrhelp', 'eloajuda'])
+    # Send instructions
+    @commands.command(name='elohelp', aliases=mod.lang()['global']['elohelp']['aliases'])
     @commands.cooldown(1, 3)
-    async def command_tutorial(self, ctx: commands.Context):
-        await ctx.reply('/me Configure sua primeira conta enviando !conta Account#Tag. Ex: !conta Emerok#BR1')
+    async def command_help(self, ctx: commands.Context):
+        lang = mod.lang()[mod.get_lang(ctx.channel.name)]['elohelp']
+        await ctx.reply(lang['elohelp'])
 
-    # Entra no canal que enviou a mensagem
-    @commands.command(name='join', aliases=['entrar'])
+    # Change bot language
+    @commands.command(name='lang')
+    @commands.cooldown(1, 3)
+    async def command_language(self, ctx: commands.Context):
+        canal = ctx.channel.name
+        lang = mod.lang()[mod.get_lang(canal)]['lang']
+        lang_keys = list(mod.lang().keys())[1:]
+        key_string = ', '.join(lang_keys)
+        try:
+            l = ctx.message.content.split(' ')[1]
+        except IndexError:
+            await ctx.reply(lang['instructions'] % key_string)
+            return
+        if l in lang_keys and l != 'global':
+            mod.change_lang(l, canal)
+            await ctx.reply(lang['updated'] % l)
+        else:
+            await ctx.reply(lang['wrong_lang'] % key_string)
+            return
+
+    # Enters the channel which sent the message
+    @commands.command(name='join', aliases=mod.lang()['global']['join']['aliases'])
     async def command_join(self, ctx: commands.Context):
         autor = ctx.author.name
         if autor == '1bode':
@@ -136,14 +162,14 @@ class Bot(commands.Bot):
                 pass
         if ctx.channel.name == BOT_NICK:
             if autor in mod.get_channels():
-                await ctx.send(f'/me Bot JÁ ESTÁ no canal {autor}')
+                await ctx.send(f'/me Bot is already in the channel: {autor}')
             else:
                 mod.add_channel(autor)
                 await bot.join_channels([autor])
-                await ctx.send(f'/me Bot ENTROU no canal {autor}')
+                await ctx.send(f'/me Bot joined the channel: {autor}')
 
-    # Sai do canal que enviou a mensagem
-    @commands.command(name='leave', aliases=['sair'])
+    # Leaves the channel which sent the message
+    @commands.command(name='leave', aliases=mod.lang()['global']['leave']['aliases'])
     async def command_leave(self, ctx: commands.Context):
         autor = ctx.author.name
         if autor == '1bode':
@@ -153,18 +179,18 @@ class Bot(commands.Bot):
                 pass
         if ctx.channel.name == BOT_NICK:
             if autor not in mod.get_channels():
-                await ctx.send(F'/me Bot NÃO ESTÁ no canal {autor}')
+                await ctx.send(f'/me Bot is not in the channel: {autor}')
             else:
                 mod.del_channel(autor)
-                await ctx.send(F'/me Bot SAIU do canal {autor}')
+                await ctx.send(f'/me Bot left the channel: {autor}')
 
-    # Comando para git pull pelo chat
+    # Git Pull and reboot via chat
     @commands.command(name="update")
-    async def update(self, ctx: commands.Context):
+    async def command_update(self, ctx: commands.Context):
         if ctx.author.name == 'bodedotexe' or ctx.author.name == '1bode':
-            await ctx.send('Atualizando.')
+            await ctx.send('/me Updating!')
             os.system("git pull")
-            print("Atualizando e reiniciando...")
+            print("Updating and rebooting...")
             os.system("python3 main.py")
             exit()
 
