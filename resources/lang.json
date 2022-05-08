@@ -24,7 +24,16 @@
       ]
     },
     "elo": {
-      "aliases": ["elomain", "elo1", "elo2", "elo3", "smurf", "elosmurf"]
+      "aliases": [
+        "elomain",
+        "elo1",
+        "elo2",
+        "elo3",
+        "smurf",
+        "elosmurf",
+        "rank",
+        "rankwr"
+      ]
     },
     "elos": {
       "aliases": []

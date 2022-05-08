@@ -65,12 +65,12 @@ class Bot(commands.Bot):
     @commands.command(name='account', aliases=mod.lang()['global']['account']['aliases'])
     @commands.cooldown(1, 1)
     async def command_account(self, ctx: commands.Context):
-        canal = ctx.channel.name
-        lang = mod.lang()[mod.get_lang(canal)]['account']
-        id = ctx.message.content.split(' ', 1)[0][-1]
-        id = 0 if id == 'a' else id
-        id = 0 if id == 't' else id
         if ctx.message.content.split(' ')[1:] != [] and (ctx.author.is_mod or ctx.author.name == '1bode'):
+            canal = ctx.channel.name
+            lang = mod.lang()[mod.get_lang(canal)]['account']
+            id = ctx.message.content.split(' ', 1)[0][-1]
+            id = 0 if id == 'a' else id
+            id = 0 if id == 't' else id
             riotId = ctx.message.content.split(' ', 1)[1:][0]
             if mod.idCheck(riotId):
                 await ctx.reply(lang['delay'])
@@ -89,24 +89,52 @@ class Bot(commands.Bot):
     @commands.cooldown(1, 5)
     async def command_elo(self, ctx: commands.Context):
         canal = ctx.channel.name
-        lang = mod.lang()[mod.get_lang(canal)]['elo']
-        id = ctx.message.content.split(' ', 1)[0][-1]
-        id = 0 if id == 'o' else id
-        id = 0 if id == 'n' else id
-        id = 1 if id == 'f' else id
-        try:
-            response = mod.get_elo(id, canal)
-            await ctx.send(f'/me {response}')
-        except AttributeError:
-            contas = mod.get_accounts(canal, 'elo')
-            id = mod.get_accounts(canal, 'id')
-            if len(contas) == 0:
-                await ctx.reply(lang['no_accounts'])
-            else:
-                response1 = ' | '.join(contas)
-                response2 = ' !elo'.join('' if x == 0 else str(x) for x in id)
-                await ctx.send(f'/me {response1}')
-                await ctx.reply(lang['available_accounts'] % response2)
+        if canal != 'loraakl':
+            lang = mod.lang()[mod.get_lang(canal)]['elo']
+            id = ctx.message.content.split(' ', 1)[0][-1]
+            id = 0 if id == 'o' else id
+            id = 0 if id == 'n' else id
+            id = 1 if id == 'f' else id
+            try:
+                response = mod.get_elo(id, canal)
+                await ctx.send(f'/me {response}')
+            except AttributeError:
+                contas = mod.get_accounts(canal, 'elo')
+                id = mod.get_accounts(canal, 'id')
+                if len(contas) == 0:
+                    await ctx.reply(lang['no_accounts'])
+                else:
+                    response1 = ' | '.join(contas)
+                    response2 = ' !elo'.join(
+                        '' if x == 0 else str(x) for x in id)
+                    await ctx.send(f'/me {response1}')
+                    await ctx.reply(lang['available_accounts'] % response2)
+
+    # For streamers who opt for elowr
+    @commands.command(name='elowr', aliases=["elowr1", "elowr2", "elowr3", "smurfwr"])
+    @commands.cooldown(1, 5)
+    async def command_elo(self, ctx: commands.Context):
+        canal = ctx.channel.name
+        if canal == 'loraakl':
+            lang = mod.lang()[mod.get_lang(canal)]['elo']
+            id = ctx.message.content.split(' ', 1)[0][-1]
+            id = 0 if id == 'o' else id
+            id = 0 if id == 'n' else id
+            id = 1 if id == 'f' else id
+            try:
+                response = mod.get_elo(id, canal)
+                await ctx.send(f'/me {response}')
+            except AttributeError:
+                contas = mod.get_accounts(canal, 'elo')
+                id = mod.get_accounts(canal, 'id')
+                if len(contas) == 0:
+                    await ctx.reply(lang['no_accounts'])
+                else:
+                    response1 = ' | '.join(contas)
+                    response2 = ' !elo'.join(
+                        '' if x == 0 else str(x) for x in id)
+                    await ctx.send(f'/me {response1}')
+                    await ctx.reply(lang['available_accounts'] % response2)
 
     # Show elos from all accounts
     @commands.command(name='elos', aliases=mod.lang()['global']['elos']['aliases'])
@@ -135,21 +163,22 @@ class Bot(commands.Bot):
     @commands.command(name='lang')
     @commands.cooldown(1, 3)
     async def command_language(self, ctx: commands.Context):
-        canal = ctx.channel.name
-        lang = mod.lang()[mod.get_lang(canal)]['lang']
-        lang_keys = list(mod.lang().keys())[1:]
-        key_string = ', '.join(lang_keys)
-        try:
-            l = ctx.message.content.split(' ')[1]
-        except IndexError:
-            await ctx.reply(lang['instructions'] % key_string)
-            return
-        if l in lang_keys and l != 'global':
-            mod.change_lang(l, canal)
-            await ctx.reply(lang['updated'] % l)
-        else:
-            await ctx.reply(lang['wrong_lang'] % key_string)
-            return
+        if ctx.author.is_mod or ctx.author.name == '1bode':
+            canal = ctx.channel.name
+            lang = mod.lang()[mod.get_lang(canal)]['lang']
+            lang_keys = list(mod.lang().keys())[1:]
+            key_string = ', '.join(lang_keys)
+            try:
+                l = ctx.message.content.split(' ')[1]
+            except IndexError:
+                await ctx.reply(lang['instructions'] % key_string)
+                return
+            if l in lang_keys and l != 'global':
+                mod.change_lang(l, canal)
+                await ctx.reply(lang['updated'] % l)
+            else:
+                await ctx.reply(lang['wrong_lang'] % key_string)
+                return
 
     # Enters the channel which sent the message
     @commands.command(name='join', aliases=mod.lang()['global']['join']['aliases'])
