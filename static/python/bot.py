@@ -111,16 +111,14 @@ class Bot(commands.Bot):
                     await ctx.reply(lang['available_accounts'] % response2)
 
     # For streamers who opt for elowr
-    @commands.command(name='elowr', aliases=["elowr1", "elowr2", "elowr3", "smurfwr"])
+    @commands.command(name='elowr', aliases=["elowr1", "elowr2", "elowr3"])
     @commands.cooldown(1, 5)
     async def command_elo(self, ctx: commands.Context):
         canal = ctx.channel.name
         if canal == 'loraakl':
             lang = mod.lang()[mod.get_lang(canal)]['elo']
             id = ctx.message.content.split(' ', 1)[0][-1]
-            id = 0 if id == 'o' else id
-            id = 0 if id == 'n' else id
-            id = 1 if id == 'f' else id
+            id = 0 if id == 'r' else id
             try:
                 response = mod.get_elo(id, canal)
                 await ctx.send(f'/me {response}')
