@@ -61,7 +61,11 @@ def get_elo(key, channel):
     hash = Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(
         twitch_id=channel).first().id).first().hash
     lang = get_lang(channel)
-    return requests.get(f'{API_URL}{hash}/{lang}').text
+    elo = requests.get(f'{API_URL}{hash}/{lang}').text
+    if '#' in elo:
+        return elo
+    else:
+        return 'Error. Try again.'
 
 
 def get_accounts(channel, type):
