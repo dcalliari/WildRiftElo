@@ -14,7 +14,7 @@ BOT_NICK = os.environ.get('BOT_NICK')
 
 client = Client(
     token=TOKEN,
-    heartbeat=30.0
+    heartbeat=20.0
 )
 
 
