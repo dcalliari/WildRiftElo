@@ -44,6 +44,7 @@ class Account(db.Model):
     hash = db.Column(db.String(25))
     acc_id = db.Column(db.Integer)
     broadcaster_id = db.Column(db.Integer, db.ForeignKey('broadcaster.id'))
+    cache = db.Column(db.String(100))
 
 
 @app.route("/", methods=["GET"])
