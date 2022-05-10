@@ -24,7 +24,7 @@ class Bot(commands.Bot):
             prefix=PREFIX,
             token=TOKEN,
             initial_channels=[BOT_NICK],
-            heartbeat=30.0
+            heartbeat=20.0
         )
 
     async def event_ready(self):
