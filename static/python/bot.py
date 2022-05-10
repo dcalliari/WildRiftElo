@@ -1,5 +1,5 @@
 import os
-import time
+import asyncio
 import static.python.db_modules as mod
 
 from dotenv import load_dotenv
@@ -40,7 +40,7 @@ class Bot(commands.Bot):
                     conn.append(channels[j])
                     j += 1
                 await bot.join_channels(conn)
-                time.sleep(30)
+                asyncio.sleep(40)
             else:
                 while len(conn) < len_channels % 20:
                     conn.append(channels[j])
