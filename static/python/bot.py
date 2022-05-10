@@ -40,7 +40,7 @@ class Bot(commands.Bot):
                     conn.append(channels[j])
                     j += 1
                 await bot.join_channels(conn)
-                asyncio.sleep(40)
+                await asyncio.sleep(30)
             else:
                 while len(conn) < len_channels % 20:
                     conn.append(channels[j])
