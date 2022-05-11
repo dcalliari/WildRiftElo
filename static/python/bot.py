@@ -157,7 +157,10 @@ class Bot(commands.Bot):
     # @commands.cooldown(1, 3)
     async def command_help(self, ctx: commands.Context):
         lang = mod.lang()[mod.get_lang(ctx.channel.name)]['elohelp']
-        await ctx.reply(lang)
+        if ctx.channel.name == BOT_NICK:
+            await ctx.reply(lang['bot_channel'])
+        else:
+            await ctx.reply(lang['user_channel'])
 
     # Change bot language
     @commands.command(name='lang')
@@ -191,11 +194,11 @@ class Bot(commands.Bot):
                 pass
         if ctx.channel.name == BOT_NICK:
             if autor in mod.get_channels():
-                await ctx.send(f'/me Bot is already in the channel: {autor}')
+                await ctx.send(f'/me Bot is already in the channel: {autor}. Send /vip WildRiftElo in your chat then !elohelp')
             else:
                 mod.add_channel(autor)
                 await bot.join_channels([autor])
-                await ctx.send(f'/me Bot joined the channel: {autor}')
+                await ctx.send(f'/me Bot joined the channel: {autor}. Send /vip WildRiftElo in your chat then !elohelp')
 
     # Leaves the channel which sent the message
     @commands.command(name='leave', aliases=mod.lang()['global']['leave']['aliases'])

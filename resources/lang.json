@@ -75,7 +75,10 @@
       "updated": "Idioma atualizado para: %s",
       "wrong_lang": "Idioma inválido. Disponíveis: %s"
     },
-    "elohelp": "Configure sua primeira conta enviando !conta Account#Tag. Ex: !conta Emerok#BR1"
+    "elohelp": {
+      "bot_channel": "Envie !entrar para o bot entrar em seu canal e depois dê o cargo de vip a ele -> /vip WildRiftElo",
+      "user_channel": "Dê o cargo de vip ao bot -> /vip WildRiftElo e depois configure sua primeira conta enviando !conta Account#Tag. Ex: !conta Emerok#BR1"
+    }
   },
   "it": {
     "account": {
@@ -96,7 +99,9 @@
       "updated": "Lingua aggiornata a: %s",
       "wrong_lang": "Lingua non valida. Disponibili: %s"
     },
-    "elohelp": "Configura il tuo primo account inviando !account Account#Tag. Es: !account Emerok#BR1"
+    "elohelp": {
+      "user_channel": "Give the bot VIP role -> /vip WildRiftElo and then configura il tuo primo account inviando !account Account#Tag. Es: !account Emerok#BR1"
+    }
   },
   "es": {
     "account": {
@@ -117,7 +122,9 @@
       "updated": "Idioma actualizado a: %s",
       "wrong_lang": "Idioma no válido. Disponibles: %s"
     },
-    "elohelp": "Configure su primera cuenta enviando !cuenta Account#Tag. Ej: !cuenta Emerok#BR1"
+    "elohelp": {
+      "user_channel": "Give the bot VIP role -> /vip WildRiftElo and then configure su primera cuenta enviando !cuenta Account#Tag. Ej: !cuenta Emerok#BR1"
+    }
   },
   "kr": {
     "account": {
@@ -138,7 +145,9 @@
       "updated": "언어 업데이트: %s",
       "wrong_lang": "잘못된 언어입니다. 사용 가능: %s"
     },
-    "elohelp": "!account Account#Tag 를 전송하여 첫 번째 계정을 설정하십시오. 예: !account Emerok#BR1"
+    "elohelp": {
+      "user_channel": "Give the bot VIP role -> /vip WildRiftElo and then !account Account#Tag 를 전송하여 첫 번째 계정을 설정하십시오. 예: !account Emerok#BR1"
+    }
   },
   "de": {
     "account": {
@@ -159,7 +168,9 @@
       "updated": "Sprache aktualisiert auf: %s",
       "wrong_lang": "Ungültige Sprache. Verfügbar: %s"
     },
-    "elohelp": "Senden Sie !konto Account#Tag, um Ihr erstes Konto einzurichten. Beispiel: !konto Emerok#BR1"
+    "elohelp": {
+      "user_channel": "Give the bot VIP role -> /vip WildRiftElo and then Senden Sie !konto Account#Tag, um Ihr erstes Konto einzurichten. Beispiel: !konto Emerok#BR1"
+    }
   },
   "fr": {
     "account": {
@@ -201,7 +212,10 @@
       "updated": "言語 が %s に 更新されました",
       "wrong_lang": "言語が無効です。 利用可能： %s"
     },
-    "elohelp": "!account Account#Tag を 送信して、最初 の アカウント を 設定します。例：!account Emerok#BR1"
+    "elohelp": {
+      "bot_channel": "Send !join for the bot to join in your channel and then give it VIP by sending -> /vip WildRiftElo",
+      "user_channel": "Give the bot VIP role -> /vip WildRiftElo and then !account Account#Tag を 送信して、最初 の アカウント を 設定します。例：!account Emerok#BR1"
+    }
   },
   "en": {
     "account": {
@@ -222,7 +236,10 @@
       "updated": "Language updated to: %s",
       "wrong_lang": "Invalid language. Availables: %s"
     },
-    "elohelp": "Set up your first account by sending !account Account#Tag. Ex: !account Emerok#BR1"
+    "elohelp": {
+      "bot_channel": "Send !join for the bot to join in your channel and then give it VIP by sending -> /vip WildRiftElo",
+      "user_channel": "Give the bot VIP role -> /vip WildRiftElo and then set up your first account by sending !account Account#Tag. Ex: !account Emerok#BR1"
+    }
   },
   "noobzinha": {
     "account": {
@@ -243,6 +260,8 @@
       "updated": "mudou pra %s e vai tomar ban!!!",
       "wrong_lang": "tendi nd :D tenta essas daí: %s"
     },
-    "elohelp": "como coloca o wild rift elo no chat mesmo? desse jeito? !trem Emerok#BR1"
+    "elohelp": {
+      "user_channel": "como coloca o wild rift elo no chat mesmo? desse jeito? !trem Emerok#BR1"
+    }
   }
 }
