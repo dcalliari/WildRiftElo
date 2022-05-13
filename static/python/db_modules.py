@@ -63,12 +63,15 @@ def get_elo(key, channel):
     hash = account.first().hash
     cache = account.first().cache
     lang = get_lang(channel)
-    elo = requests.get(f'{API_URL}{hash}/{lang}', timeout=10).text
-    if '#' in elo:
-        account.update({Account.cache: elo})
-        db.session.commit()
-        return elo
-    else:
+    try:
+        elo = requests.get(f'{API_URL}{hash}/{lang}', timeout=10).text
+        if '#' in elo:
+            account.update({Account.cache: elo})
+            db.session.commit()
+            return elo
+        else:
+            return cache
+    except:
         return cache
 
 
