@@ -185,6 +185,7 @@ class Bot(commands.Bot):
 
     # Enters the channel which sent the message
     @commands.command(name='join', aliases=mod.lang()['global']['join']['aliases'])
+    @commands.cooldown(1, 5)
     async def command_join(self, ctx: commands.Context):
         autor = ctx.author.name
         if autor == '1bode':
@@ -202,6 +203,7 @@ class Bot(commands.Bot):
 
     # Leaves the channel which sent the message
     @commands.command(name='leave', aliases=mod.lang()['global']['leave']['aliases'])
+    @commands.cooldown(1, 5)
     async def command_leave(self, ctx: commands.Context):
         autor = ctx.author.name
         if autor == '1bode':
