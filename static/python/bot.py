@@ -86,7 +86,7 @@ class Bot(commands.Bot):
 
     # Sends elo in chat
     @commands.command(name='elo', aliases=mod.lang()['global']['elo']['aliases'])
-    # @commands.cooldown(1, 5)
+    @commands.cooldown(1, 5)
     async def command_elo(self, ctx: commands.Context):
         canal = ctx.channel.name
         if canal != 'loraakl':
