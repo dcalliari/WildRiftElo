@@ -303,7 +303,7 @@
       "wrong_lang": "Invalid language. Availables: %s"
     },
     "elohelp": {
-      "bot_channel": "Send !join for the bot to join in your channel and then give it VIP by sending -> /vip WildRiftElo",
+      "bot_channel": "Send !join for the bot to join in your channel and then give it VIP by sending -> /vip WildRiftElo !lang to change languages",
       "user_channel": "Give the bot VIP role -> /vip WildRiftElo and then set up your first account by sending !account Account#Tag. Ex: !account Emerok#BR1"
     }
   },
