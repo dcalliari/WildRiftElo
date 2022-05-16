@@ -71,6 +71,9 @@ class Bot(commands.Bot):
             id = ctx.message.content.split(' ', 1)[0][-1]
             id = 0 if id == 'a' else id
             id = 0 if id == 't' else id
+            id = 0 if id == 'o' else id
+            id = 0 if id == 'm' else id
+            id = 0 if id == 'e' else id
             riotId = ctx.message.content.split(' ', 1)[1:][0]
             if mod.idCheck(riotId):
                 await ctx.reply(lang['delay'])
@@ -83,6 +86,23 @@ class Bot(commands.Bot):
                     await ctx.reply(lang['error'])
             else:
                 await ctx.reply(lang['invalid'])
+
+    @commands.command(name='delaccount', aliases=mod.lang()['global']['delaccount']['aliases'])
+    async def command_delete(self, ctx: commands.Context):
+        canal = ctx.channel.name
+        lang = mod.lang()[mod.get_lang(canal)]['delaccount']
+        id = ctx.message.content.split(' ', 1)[0][-1]
+        id = 0 if id == 'a' else id
+        id = 0 if id == 't' else id
+        id = 0 if id == 'o' else id
+        id = 0 if id == 'm' else id
+        id = 0 if id == 'e' else id
+        if mod.del_account(id, canal):
+            id = '' if id == 0 else id
+            await ctx.reply(lang['deleted'] % id)
+        else:
+            id = '' if id == 0 else id
+            await ctx.reply(lang['not_found'] % id)
 
     # Sends elo in chat
     @commands.command(name='elo', aliases=mod.lang()['global']['elo']['aliases'])

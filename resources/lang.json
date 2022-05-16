@@ -13,6 +13,10 @@
         "cuenta1",
         "cuenta2",
         "cuenta3",
+        "!compte",
+        "!compte1",
+        "!compte2",
+        "!compte3",
         "konto",
         "konto1",
         "konto2",
@@ -21,6 +25,34 @@
         "trem1",
         "trem2",
         "trem3"
+      ]
+    },
+    "delaccount": {
+      "aliases": [
+        "delconta",
+        "delconta1",
+        "delconta2",
+        "delconta2",
+        "delconta3",
+        "delaccount1",
+        "delaccount2",
+        "delaccount3",
+        "delcuenta",
+        "delcuenta1",
+        "delcuenta2",
+        "delcuenta3",
+        "!delcompte",
+        "!delcompte1",
+        "!delcompte2",
+        "!delcompte3",
+        "delkonto",
+        "delkonto1",
+        "delkonto2",
+        "delkonto3",
+        "deltrem",
+        "deltrem1",
+        "deltrem2",
+        "deltrem3"
       ]
     },
     "elo": {
@@ -32,11 +64,14 @@
         "smurf",
         "elosmurf",
         "rank",
+        "rank1",
+        "rank2",
+        "rank3",
         "rankwr"
       ]
     },
     "elos": {
-      "aliases": []
+      "aliases": ["ranks"]
     },
     "elohelp": {
       "aliases": [
@@ -63,6 +98,10 @@
       "error": "Não foi possível adicionar esta conta. Entre em contato com @1bode",
       "invalid": "Valor inválido. Ex: Emerok#BR1"
     },
+    "delaccount": {
+      "deleted": "Conta%s foi deletada",
+      "not_found": "Conta%s está vazia"
+    },
     "elo": {
       "no_accounts": "Primeiro você deve adicionar uma conta. Envie !eloajuda",
       "available_accounts": "Contas disponíveis: !elo%s"
@@ -87,6 +126,10 @@
       "error": "Impossibile aggiungere questo account. Per favore contatta @1bode",
       "invalid": "Valore non valido. Es: Emerok#BR1"
     },
+    "delaccount": {
+      "deleted": "L'account%s è stato cancellato",
+      "not_found": "L'account%s è vuoto"
+    },
     "elo": {
       "no_accounts": "Devi prima aggiungere un account. Invia !eloaiuto",
       "available_accounts": "Account disponibili: !elo%s"
@@ -100,7 +143,7 @@
       "wrong_lang": "Lingua non valida. Disponibili: %s"
     },
     "elohelp": {
-      "user_channel": "Give the bot VIP role -> /vip WildRiftElo and then configura il tuo primo account inviando !account Account#Tag. Es: !account Emerok#BR1"
+      "user_channel": "Assegna al bot il ruolo VIP -> /vip WildRiftElo e poi configura il tuo primo account inviando !account Account#Tag. Es: !account Emerok#BR1"
     }
   },
   "es": {
@@ -109,6 +152,10 @@
       "updated": "Cuenta%s actualizada a: %s",
       "error": "No se pudo agregar esta cuenta. Comuníquese con @1bode",
       "invalid": "Valor no válido. Ej: Emerok#BR1"
+    },
+    "delaccount": {
+      "deleted": "La cuenta%s ha sido eliminada",
+      "not_found": "La cuenta%s está vacía"
     },
     "elo": {
       "no_accounts": "Primero debes agregar una cuenta. Envía !elayuda",
@@ -123,22 +170,26 @@
       "wrong_lang": "Idioma no válido. Disponibles: %s"
     },
     "elohelp": {
-      "user_channel": "Give the bot VIP role -> /vip WildRiftElo and then configure su primera cuenta enviando !cuenta Account#Tag. Ej: !cuenta Emerok#BR1"
+      "user_channel": "Dale al bot el rol VIP -> /vip WildRiftElo y luego configure su primera cuenta enviando !cuenta Account#Tag. Ej: !cuenta Emerok#BR1"
     }
   },
   "kr": {
     "account": {
       "delay": "몇 초만 기다려 주십시오...",
       "updated": "계정%s 다음으로 업데이트됨: %s",
-      "error": "이 계정을 추가할 수 없습니다. @1bode 에 문의하십시오",
+      "error": "이 계정 추가할 수 없습니다. @1bode 에 문의하십시오",
       "invalid": "잘못된 값입니다. 예: Emerok#BR1"
     },
+    "delaccount": {
+      "deleted": "계정%s 삭제되었습니다",
+      "not_found": "계정%s 비어 있습니다"
+    },
     "elo": {
-      "no_accounts": "먼저 계정을 추가해야 합니다. !elohelp 를 보내십시오",
+      "no_accounts": "먼저 계정 추가해야 합니다. !elohelp 를 보내십시오",
       "available_accounts": "사용 가능한 계정: !elo%s"
     },
     "elos": {
-      "no_accounts": "최소 2개의 계정을 설정해야 합니다"
+      "no_accounts": "최소 2개의 계정 설정해야 합니다"
     },
     "lang": {
       "instructions": "사용 가능한 언어: %s",
@@ -146,7 +197,7 @@
       "wrong_lang": "잘못된 언어입니다. 사용 가능: %s"
     },
     "elohelp": {
-      "user_channel": "Give the bot VIP role -> /vip WildRiftElo and then !account Account#Tag 를 전송하여 첫 번째 계정을 설정하십시오. 예: !account Emerok#BR1"
+      "user_channel": "봇 VIP 역할 부여 -> /vip WildRiftElo 그리고 !account Account#Tag 를 전송하여 첫 번째 계정을 설정하십시오. 예: !account Emerok#BR1"
     }
   },
   "de": {
@@ -155,6 +206,10 @@
       "updated": "Konto%s wurde aktualisiert auf: %s",
       "error": "Dieses Konto konnte nicht hinzugefügt werden. Bitte kontaktieren Sie @1bode",
       "invalid": "Ungültiger Wert. Beispiel: Emerok#BR1"
+    },
+    "delaccount": {
+      "deleted": "Konto%s wurde gelöscht",
+      "not_found": "Konto%s ist leer"
     },
     "elo": {
       "no_accounts": "Sie müssen zuerst ein Konto hinzufügen. Senden Sie !elohilfe",
@@ -169,7 +224,7 @@
       "wrong_lang": "Ungültige Sprache. Verfügbar: %s"
     },
     "elohelp": {
-      "user_channel": "Give the bot VIP role -> /vip WildRiftElo and then Senden Sie !konto Account#Tag, um Ihr erstes Konto einzurichten. Beispiel: !konto Emerok#BR1"
+      "user_channel": "Geben Sie dem Bot die VIP-Rolle -> /vip WildRiftElo und dann Senden Sie !konto Account#Tag, um Ihr erstes Konto einzurichten. Beispiel: !konto Emerok#BR1"
     }
   },
   "fr": {
@@ -178,6 +233,10 @@
       "updated": "Le compte%s a été mis à jour vers: %s",
       "error": "Impossible d'ajouter ce compte. Veuillez contacter @1bode",
       "invalid": "Valeur invalide. Exemple: Emerok#BR1"
+    },
+    "delaccount": {
+      "deleted": "Le compte%s a été supprimé",
+      "not_found": "Le compte%s est vide"
     },
     "elo": {
       "no_accounts": "Vous devez d'abord ajouter un compte. Envoyez !eloaide",
@@ -200,6 +259,10 @@
       "Error": "この アカウント を 追加できませんでした。 @1bode に 連絡してください",
       "invalid": "値が無効です。例：Emerok#BR1"
     },
+    "delaccount": {
+      "deleted": "アカウント%s が 削除されました",
+      "not_found": "アカウント%s は 空です"
+    },
     "elo": {
       "no_accounts": "最初 に アカウント を 追加する 必要 が あります。!elohelp を 送信します",
       "available_accounts": "利用 可能な アカウント： !elo%s"
@@ -213,8 +276,7 @@
       "wrong_lang": "言語が無効です。 利用可能： %s"
     },
     "elohelp": {
-      "bot_channel": "Send !join for the bot to join in your channel and then give it VIP by sending -> /vip WildRiftElo",
-      "user_channel": "Give the bot VIP role -> /vip WildRiftElo and then !account Account#Tag を 送信して、最初 の アカウント を 設定します。例：!account Emerok#BR1"
+      "user_channel": "ボット に VIP の 役割 を 与える -> /vip WildRiftElo そして !account Account#Tag を 送信して、最初 の アカウント を 設定します。例：!account Emerok#BR1"
     }
   },
   "en": {
@@ -223,6 +285,10 @@
       "updated": "Account%s updated to: %s",
       "error": "Unable to add this account. Please contact @1bode",
       "invalid": "Invalid value. Ex: Emerok#BR1"
+    },
+    "delaccount": {
+      "deleted": "Account%s has been deleted",
+      "not_found": "Account%s is empty"
     },
     "elo": {
       "no_accounts": "You must first add an account. Send !elohelp",
@@ -247,6 +313,10 @@
       "updated": "o trem%s mudou pra %s",
       "error": "tendi nd :D ó o @1bode aí, fala com ele",
       "invalid": "ué? ve se vai assim: Emerok#BR1"
+    },
+    "delaccount": {
+      "deleted": "esse trem%s foi apagado",
+      "not_found": "esse trem%s n existe msm n"
     },
     "elo": {
       "no_accounts": "tem que add o trem. manda !tendind",

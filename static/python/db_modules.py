@@ -104,6 +104,18 @@ def update_riot_id(key, value, channel):
     return
 
 
+def del_account(key, channel):
+    b_id = db.session.query(Broadcaster).where(
+        Broadcaster.twitch_id == channel).first()
+    account = Account.query.filter_by(
+        acc_id=key, broadcaster_id=b_id.id)
+    if account.delete() == 0:
+        return False
+    else:
+        db.session.commit()
+        return True
+
+
 def get_lang(channel):
     return Broadcaster.query.filter_by(twitch_id=channel).first().lang
 
