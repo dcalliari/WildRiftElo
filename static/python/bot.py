@@ -65,7 +65,7 @@ class Bot(commands.Bot):
     @commands.command(name='account', aliases=mod.lang()['global']['account']['aliases'])
     # @commands.cooldown(1, 1)
     async def command_account(self, ctx: commands.Context):
-        if ctx.message.content.split(' ')[1:] != [] and (ctx.author.is_mod or ctx.author.name == '1bode'):
+        if ctx.message.content.split(' ')[1:] != [] and (ctx.author.is_mod or ctx.author.name in mod.lang()['global']['admin']):
             canal = ctx.channel.name
             lang = mod.lang()[mod.get_lang(canal)]['account']
             id = ctx.message.content.split(' ', 1)[0][-1]
@@ -186,7 +186,7 @@ class Bot(commands.Bot):
     @commands.command(name='lang')
     # @commands.cooldown(1, 3)
     async def command_language(self, ctx: commands.Context):
-        if ctx.author.is_mod or ctx.author.name == '1bode':
+        if ctx.author.is_mod or ctx.author.name in mod.lang()['global']['admin']:
             canal = ctx.channel.name
             lang = mod.lang()[mod.get_lang(canal)]['lang']
             lang_keys = list(mod.lang().keys())[1:]
@@ -208,7 +208,7 @@ class Bot(commands.Bot):
     @commands.cooldown(1, 5)
     async def command_join(self, ctx: commands.Context):
         autor = ctx.author.name
-        if autor == '1bode':
+        if autor in mod.lang()['global']['admin']:
             try:
                 autor = ctx.message.content.split()[1]
             except IndexError:
@@ -226,7 +226,7 @@ class Bot(commands.Bot):
     @commands.cooldown(1, 5)
     async def command_leave(self, ctx: commands.Context):
         autor = ctx.author.name
-        if autor == '1bode':
+        if autor in mod.lang()['global']['admin']:
             try:
                 autor = ctx.message.content.split()[1]
             except IndexError:
@@ -241,7 +241,7 @@ class Bot(commands.Bot):
     # Git Pull and reboot via chat
     @commands.command(name="update")
     async def command_update(self, ctx: commands.Context):
-        if ctx.author.name == 'bodedotexe' or ctx.author.name == '1bode':
+        if ctx.author.name in mod.lang()['global']['admin']:
             await ctx.send('/me Updating!')
             os.system("git pull")
             print("Updating and rebooting...")
