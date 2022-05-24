@@ -53,10 +53,10 @@ class Bot(commands.Bot):
         if message.echo:
             return
 
-        autor = message.author.name
-        canal = message.channel.name
-        content = message.content
-        hora = message.timestamp.strftime('%H:%M:%S')
+        # autor = message.author.name
+        # canal = message.channel.name
+        # content = message.content
+        # hora = message.timestamp.strftime('%H:%M:%S')
         # print(f'#{canal} {hora} {autor}: {content}')
 
         await self.handle_commands(message)
@@ -107,8 +107,17 @@ class Bot(commands.Bot):
     @commands.cooldown(1, 5)
     async def command_elo(self, ctx: commands.Context):
         canal = ctx.channel.name
+        channel = ctx.message.content.split(' ')[1:]
+        print(channel)
+        if channel != []:
+            canal = channel[0]
+        else:
+            pass
         if canal != 'loraakl':
-            lang = mod.lang()[await mod.get_lang(canal)]['elo']
+            try:
+                lang = mod.lang()[await mod.get_lang(canal)]['elo']
+            except AttributeError:
+                await ctx.reply(lang['not_found'])
             id = ctx.message.content.split(' ', 1)[0][-1]
             id = 1 if id == 'f' else id
             try:
@@ -135,10 +144,22 @@ class Bot(commands.Bot):
     # @commands.cooldown(1, 5)
     async def command_elowr(self, ctx: commands.Context):
         canal = ctx.channel.name
+        channel = ctx.message.content.split(' ')[1:]
+        print(channel)
+        if channel != []:
+            canal = channel[0]
+        else:
+            pass
         if canal == 'loraakl':
-            lang = mod.lang()[await mod.get_lang(canal)]['elo']
+            try:
+                lang = mod.lang()[await mod.get_lang(canal)]['elo']
+            except AttributeError:
+                await ctx.reply(lang['not_found'])
             id = ctx.message.content.split(' ', 1)[0][-1]
-            id = 0 if id == 'r' else id
+            try:
+                id = int(id)
+            except:
+                id = 0
             try:
                 response = await mod.get_elo(id, canal)
                 await ctx.send(f'/me {response}')

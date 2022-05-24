@@ -38,8 +38,8 @@ class Broadcaster(Base):
     created_at = Column(Date, default=datetime.utcnow)
     is_active = Column(Boolean, default=True)
     accounts = relationship("Account", backref="broadcaster")
-    region = Column(Integer, default=0)
     lang = Column(String(25), default="en")
+    region = Column(Integer, default=0)
 
 
 class Account(Base):

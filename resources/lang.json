@@ -27,6 +27,26 @@
         "trem3"
       ]
     },
+    "region": {
+      "regions": { "na": 0, "eu": 1, "sea": 2 },
+      "aliases": [
+        "regiao",
+        "regiao1",
+        "regiao2",
+        "regiao3",
+        "region1",
+        "region2",
+        "region3",
+        "konto",
+        "konto1",
+        "konto2",
+        "konto3",
+        "paodequeijo",
+        "paodequeijo1",
+        "paodequeijo2",
+        "paodequeijo3"
+      ]
+    },
     "delaccount": {
       "aliases": [
         "delconta",
@@ -110,6 +130,7 @@
       "not_found": "Conta%s está vazia"
     },
     "elo": {
+      "not_found": "Streamer não encontrado",
       "no_accounts": "Primeiro você deve adicionar uma conta. Envie !eloajuda",
       "available_accounts": "Contas disponíveis: !elo%s"
     },
@@ -138,6 +159,7 @@
       "not_found": "L'account%s è vuoto"
     },
     "elo": {
+      "not_found": "L'emittente non è stata trovata",
       "no_accounts": "Devi prima aggiungere un account. Invia !eloaiuto",
       "available_accounts": "Account disponibili: !elo%s"
     },
@@ -165,6 +187,7 @@
       "not_found": "La cuenta%s está vacía"
     },
     "elo": {
+      "not_found": "Broadcaster no encontrado",
       "no_accounts": "Primero debes agregar una cuenta. Envía !elayuda",
       "available_accounts": "Cuentas disponibles: !elo%s"
     },
@@ -192,6 +215,7 @@
       "not_found": "계정%s 비어 있습니다"
     },
     "elo": {
+      "not_found": "브로드캐스터를 찾을 수 없습니다",
       "no_accounts": "먼저 계정 추가해야 합니다. !elohelp 를 보내십시오",
       "available_accounts": "사용 가능한 계정: !elo%s"
     },
@@ -219,6 +243,7 @@
       "not_found": "Konto%s ist leer"
     },
     "elo": {
+      "not_found": "Broadcaster wurde nicht gefunden",
       "no_accounts": "Sie müssen zuerst ein Konto hinzufügen. Senden Sie !elohilfe",
       "available_accounts": "Verfügbare Konten: !elo%s"
     },
@@ -246,6 +271,7 @@
       "not_found": "Le compte%s est vide"
     },
     "elo": {
+      "not_found": "Diffuseur introuvable",
       "no_accounts": "Vous devez d'abord ajouter un compte. Envoyez !eloaide",
       "available_accounts": "Comptes disponibles: !elo%s"
     },
@@ -271,6 +297,7 @@
       "not_found": "アカウント%s は 空です"
     },
     "elo": {
+      "not_found": "ブロードキャスターが見つかりませんでした",
       "no_accounts": "最初 に アカウント を 追加する 必要 が あります。!elohelp を 送信します",
       "available_accounts": "利用 可能な アカウント： !elo%s"
     },
@@ -298,6 +325,7 @@
       "not_found": "Account%s is empty"
     },
     "elo": {
+      "not_found": "Broadcaster not found",
       "no_accounts": "You must first add an account. Send !elohelp",
       "available_accounts": "Available accounts: !elo%s"
     },
@@ -316,16 +344,17 @@
   },
   "noobzinha": {
     "account": {
-      "delay": "hm pera lá...",
+      "delay": "hm pera lá... 🤨 ",
       "updated": "o trem%s mudou pra %s",
-      "error": "tendi nd :D ó o @1bode aí, fala com ele",
-      "invalid": "ué? ve se vai assim: Emerok#BR1"
+      "error": "tendi nd 😀 ó o @1bode aí, fala com ele",
+      "invalid": "ué? 🤨 ve se vai assim: Emerok#BR1"
     },
     "delaccount": {
       "deleted": "esse trem%s foi apagado",
       "not_found": "esse trem%s n existe msm n"
     },
     "elo": {
+      "not_found": "num achei n 🤨 digito certo?",
       "no_accounts": "tem que add o trem. manda !tendind",
       "available_accounts": "tem essas ai !elo%s"
     },
