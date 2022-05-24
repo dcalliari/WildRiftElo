@@ -110,7 +110,7 @@ class Bot(commands.Bot):
         channel = ctx.message.content.split(' ')[1:]
         lang = mod.lang()[await mod.get_lang(ctx.channel.name)]['elo']
         if channel != []:
-            canal = channel[0]
+            canal = channel[0].lower()
         else:
             pass
         if canal != 'loraakl':
@@ -131,7 +131,10 @@ class Bot(commands.Bot):
                 contas = await mod.get_accounts(canal, 'elo')
                 id = await mod.get_accounts(canal, 'id')
                 if len(contas) == 0:
-                    await ctx.reply(lang['no_accounts'])
+                    if ctx.channel.name == canal:
+                        await ctx.reply(lang['no_accounts'])
+                    else:
+                        await ctx.reply(lang['not_found'])
                 else:
                     response1 = ' | '.join(contas)
                     response2 = ' !elo'.join(
@@ -147,7 +150,7 @@ class Bot(commands.Bot):
         channel = ctx.message.content.split(' ')[1:]
         lang = mod.lang()[await mod.get_lang(ctx.channel.name)]['elo']
         if channel != []:
-            canal = channel[0]
+            canal = channel[0].lower()
         else:
             pass
         if canal == 'loraakl':
@@ -167,7 +170,10 @@ class Bot(commands.Bot):
                 contas = await mod.get_accounts(canal, 'elo')
                 id = await mod.get_accounts(canal, 'id')
                 if len(contas) == 0:
-                    await ctx.reply(lang['no_accounts'])
+                    if ctx.channel.name == canal:
+                        await ctx.reply(lang['no_accounts'])
+                    else:
+                        await ctx.reply(lang['not_found'])
                 else:
                     response1 = ' | '.join(contas)
                     response2 = ' !elo'.join(
