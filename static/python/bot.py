@@ -57,7 +57,7 @@ class Bot(commands.Bot):
         canal = message.channel.name
         content = message.content
         hora = message.timestamp.strftime('%H:%M:%S')
-        print(f'#{canal} {hora} {autor}: {content}')
+        # print(f'#{canal} {hora} {autor}: {content}')
 
         await self.handle_commands(message)
 
