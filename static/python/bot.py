@@ -108,7 +108,7 @@ class Bot(commands.Bot):
     async def command_elo(self, ctx: commands.Context):
         canal = ctx.channel.name
         channel = ctx.message.content.split(' ')[1:]
-        lang = mod.lang()[await mod.get_lang(ctx.channel.name)]
+        lang = mod.lang()[await mod.get_lang(ctx.channel.name)]['elo']
         if channel != []:
             canal = channel[0]
         else:
@@ -145,7 +145,7 @@ class Bot(commands.Bot):
     async def command_elowr(self, ctx: commands.Context):
         canal = ctx.channel.name
         channel = ctx.message.content.split(' ')[1:]
-        lang = mod.lang()[await mod.get_lang(ctx.channel.name)]
+        lang = mod.lang()[await mod.get_lang(ctx.channel.name)]['elo']
         if channel != []:
             canal = channel[0]
         else:
