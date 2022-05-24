@@ -108,7 +108,6 @@ class Bot(commands.Bot):
     async def command_elo(self, ctx: commands.Context):
         canal = ctx.channel.name
         channel = ctx.message.content.split(' ')[1:]
-        print(channel)
         if channel != []:
             canal = channel[0]
         else:
@@ -145,7 +144,6 @@ class Bot(commands.Bot):
     async def command_elowr(self, ctx: commands.Context):
         canal = ctx.channel.name
         channel = ctx.message.content.split(' ')[1:]
-        print(channel)
         if channel != []:
             canal = channel[0]
         else:
