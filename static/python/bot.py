@@ -108,14 +108,14 @@ class Bot(commands.Bot):
     async def command_elo(self, ctx: commands.Context):
         canal = ctx.channel.name
         channel = ctx.message.content.split(' ')[1:]
-        lang = mod.lang()[await mod.get_lang(canal)]
+        lang = mod.lang()[await mod.get_lang(ctx.channel.name)]
         if channel != []:
             canal = channel[0]
         else:
             pass
         if canal != 'loraakl':
             try:
-                lang = lang['elo']
+                lang = mod.lang()[await mod.get_lang(canal)]['elo']
             except AttributeError:
                 await ctx.reply(lang['not_found'])
             id = ctx.message.content.split(' ', 1)[0][-1]
@@ -145,14 +145,14 @@ class Bot(commands.Bot):
     async def command_elowr(self, ctx: commands.Context):
         canal = ctx.channel.name
         channel = ctx.message.content.split(' ')[1:]
-        lang = mod.lang()[await mod.get_lang(canal)]
+        lang = mod.lang()[await mod.get_lang(ctx.channel.name)]
         if channel != []:
             canal = channel[0]
         else:
             pass
         if canal == 'loraakl':
             try:
-                lang = lang['elo']
+                lang = mod.lang()[await mod.get_lang(canal)]['elo']
             except AttributeError:
                 await ctx.reply(lang['not_found'])
             id = ctx.message.content.split(' ', 1)[0][-1]
