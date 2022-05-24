@@ -1,8 +1,9 @@
-from app import db, Broadcaster, Account
+import aiohttp
 import re
 import os
 import json
-import requests
+from app import Base, Broadcaster, Account, async_session, engine
+from sqlalchemy.future import select
 
 SCRAPED_URL = os.environ.get('SCRAPED_URL')
 API_URL = os.environ.get('API_URL')
@@ -14,7 +15,7 @@ def lang():
         return lang
 
 
-def idCheck(riotId):
+async def idCheck(riotId):
     regex = "[\w|\s]{3,16}[#]\w{3,5}"
     if re.match(regex, riotId):
         riotId = riotId.split('#')
@@ -24,104 +25,169 @@ def idCheck(riotId):
             return False
 
 
-def createHash(riotId):
+async def createHash(riotId):
     riotId = riotId.replace('#', '/')
-    return requests.get(f'{SCRAPED_URL}/{riotId}').text
+    async with aiohttp.ClientSession() as session:
+        resp = await session.get(f'{SCRAPED_URL}/{riotId}')
+        return await resp.text()
 
 
-def get_channels():
-    CHANNELS = []
-    for i in range(len(db.session.query(Broadcaster.twitch_id).where(Broadcaster.is_active == True).all())):
-        CHANNELS.append(db.session.query(Broadcaster.twitch_id).where(
-            Broadcaster.is_active == True).all()[i][0])
-    return CHANNELS
+async def get_channels():
+    channels = []
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    async with async_session() as session:
+        query = select(Broadcaster).where(Broadcaster.is_active == True)
+        result = await session.execute(query)
+        for i in result.scalars():
+            channels.append(i.twitch_id)
+        await session.commit()
+    await engine.dispose()
+    return channels
 
 
-def add_channel(value):
-    if db.session.query(db.exists().where(Broadcaster.twitch_id == value, Broadcaster.is_active == False)).scalar():
-        Broadcaster.query.filter_by(twitch_id=value, is_active=False).update({
-            Broadcaster.is_active: True})
-        db.session.commit()
-        return
-    else:
-        db.session.add(Broadcaster(twitch_id=value))
-        db.session.commit()
-        return
-
-
-def del_channel(value):
-    if db.session.query(db.exists().where(Broadcaster.twitch_id == value, Broadcaster.is_active == True)).scalar():
-        Broadcaster.query.filter_by(twitch_id=value, is_active=True).update({
-            Broadcaster.is_active: False})
-        db.session.commit()
-        return
-
-
-def get_elo(key, channel):
-    account = Account.query.filter_by(acc_id=key, broadcaster_id=Broadcaster.query.filter_by(
-        twitch_id=channel).first().id)
-    hash = account.first().hash
-    cache = account.first().cache
-    lang = get_lang(channel)
-    try:
-        elo = requests.get(f'{API_URL}{hash}/{lang}', timeout=3).text
-        if '#' in elo:
-            account.update({Account.cache: elo})
-            db.session.commit()
-            return elo
+async def add_channel(value):
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    async with async_session() as session:
+        query = select(Broadcaster).where(
+            Broadcaster.twitch_id == value, Broadcaster.is_active == False)
+        result = await session.execute(query)
+        channel = result.scalars().first()
+        if channel:
+            channel.is_active = True
         else:
-            return cache
+            session.add(Broadcaster(twitch_id=value))
+        await session.commit()
+    await engine.dispose()
+
+
+async def del_channel(value):
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    async with async_session() as session:
+        query = select(Broadcaster).where(
+            Broadcaster.twitch_id == value, Broadcaster.is_active == True)
+        result = await session.execute(query)
+        channel = result.scalars().first()
+        if channel:
+            channel.is_active = False
+        await session.commit()
+    await engine.dispose()
+
+
+async def get_elo(key, channel):
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    async with async_session() as session:
+        async with session.begin():
+            channels = await session.execute(select(Broadcaster).where(
+                Broadcaster.twitch_id == channel))
+            id = channels.scalars().first().id
+            query = select(Account).where(Account.broadcaster_id ==
+                                          id, Account.acc_id == key)
+            result = await session.execute(query)
+            account = result.scalars().first()
+            hash = account.hash
+            cache = account.cache
+            lang = await get_lang(channel)
+    await engine.dispose()
+    try:
+        async with aiohttp.ClientSession() as req:
+            resp = await req.get(f'{API_URL}/{hash}/{lang}')
+            elo = await resp.text()
+            if '#' in elo:
+                account.cache = elo
+                await session.commit()
+
+                return elo
+            else:
+                return cache
     except:
         return cache
 
 
-def get_accounts(channel, type):
+async def get_accounts(channel, type):
     id_list = []
     elo_list = []
-    list = Account.query.filter_by(broadcaster_id=Broadcaster.query.filter_by(
-        twitch_id=channel).all()[0].id).all()
-    for account in list:
-        id_list.append(account.acc_id)
-    id_list.sort()
-    for i in id_list:
-        elo_list.append(get_elo(i, channel))
-    if type == 'elo':
-        return elo_list
-    elif type == 'id':
-        return id_list
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    async with async_session() as session:
+        async with session.begin():
+            channels = await session.execute(select(Broadcaster).where(
+                Broadcaster.twitch_id == channel))
+            id = channels.scalars().first().id
+            query = select(Account).where(Account.broadcaster_id == id)
+            list = await session.execute(query)
+        for account in list.scalars():
+            id_list.append(account.acc_id)
+        id_list.sort()
+        for i in id_list:
+            elo_list.append(await get_elo(i, channel))
+        if type == 'elo':
+            return elo_list
+        elif type == 'id':
+            return id_list
+    await engine.dispose()
 
 
-def update_riot_id(key, value, channel):
-    b_id = db.session.query(Broadcaster).where(
-        Broadcaster.twitch_id == channel).first()
-    account = Account.query.filter_by(acc_id=key, broadcaster_id=b_id.id).update(
-        {Account.hash: value})
-    if account == 0:
-        account = Account(hash=value, acc_id=key,
-                          broadcaster=b_id)
-        db.session.add(account)
-    db.session.commit()
-    return
+async def update_riot_id(key, value, channel):
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    async with async_session() as session:
+        async with session.begin():
+            channels = await session.execute(select(Broadcaster).where(
+                Broadcaster.twitch_id == channel))
+            id = channels.scalars().first().id
+            query = select(Account).where(Account.broadcaster_id ==
+                                          id, Account.acc_id == key)
+            result = await session.execute(query)
+            account = result.scalars().first()
+            if account:
+                account.hash = value
+            else:
+                session.add(Account(hash=value, acc_id=key, broadcaster_id=id))
+        await session.commit()
+    await engine.dispose()
 
 
-def del_account(key, channel):
-    b_id = db.session.query(Broadcaster).where(
-        Broadcaster.twitch_id == channel).first()
-    account = Account.query.filter_by(
-        acc_id=key, broadcaster_id=b_id.id)
-    if account.delete() == 0:
-        return False
-    else:
-        db.session.commit()
-        return True
+async def del_account(key, channel):
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    async with async_session() as session:
+        channels = await session.execute(select(Broadcaster).where(
+            Broadcaster.twitch_id == channel))
+        id = channels.scalars().first().id
+        query = select(Account).where(Account.broadcaster_id ==
+                                      id, Account.acc_id == key)
+        result = await session.execute(query)
+        account = result.scalars().first()
+        if account:
+            await session.delete(account)
+            await session.commit()
+            return True
+        else:
+            return False
 
 
-def get_lang(channel):
-    return Broadcaster.query.filter_by(twitch_id=channel).first().lang
+async def get_lang(channel):
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    async with async_session() as session:
+        async with session.begin():
+            channel = await session.execute(select(Broadcaster).where(
+                Broadcaster.twitch_id == channel))
+    return channel.scalars().first().lang
 
 
-def change_lang(value, channel):
-    Broadcaster.query.filter_by(twitch_id=channel).update({
-        Broadcaster.lang: value})
-    db.session.commit()
-    return
+async def change_lang(value, channel):
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    async with async_session() as session:
+        async with session.begin():
+            channels = await session.execute(select(Broadcaster).where(
+                Broadcaster.twitch_id == channel))
+            channels = channels.scalars().first()
+            channels.lang = value
+            await session.commit()
+    await engine.dispose()

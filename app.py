@@ -1,22 +1,27 @@
 import os
 
-from flask_sqlalchemy import SQLAlchemy
-from flask import Flask, render_template
+from sqlalchemy import Column, Integer, String, Date, Boolean, ForeignKey
+from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy.orm import declarative_base, sessionmaker, relationship
+from quart import Quart, render_template
 from dotenv import load_dotenv
 from datetime import datetime
 
 
 load_dotenv(os.path.abspath('.env'))
 
-uri = os.environ.get('DATABASE_URL')
-if uri.startswith("postgres://"):
-    uri = uri.replace("postgres://", "postgresql://", 1)
+DATABASE_URL = os.environ.get('DATABASE_URL')
+
+engine = create_async_engine(DATABASE_URL, future=True, echo=True)
+async_session = sessionmaker(
+    engine, expire_on_commit=False, class_=AsyncSession)
+Base = declarative_base()
 
 ENV = os.environ.get('ENV')
 
-app = Flask(__name__)
+app = Quart(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = uri
+app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 
 if ENV == 'dev':
     app.debug = True
@@ -25,31 +30,30 @@ else:
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db = SQLAlchemy(app)
 
-
-class Broadcaster(db.Model):
+class Broadcaster(Base):
     __tablename__ = 'broadcaster'
-    id = db.Column(db.Integer, primary_key=True)
-    twitch_id = db.Column(db.String(25), unique=True, nullable=False)
-    created_at = db.Column(db.Date, default=datetime.utcnow)
-    is_active = db.Column(db.Boolean, default=True)
-    accounts = db.relationship("Account", backref="broadcaster")
-    lang = db.Column(db.String(25), default="en")
+    id = Column(Integer, primary_key=True)
+    twitch_id = Column(String(25), unique=True, nullable=False)
+    created_at = Column(Date, default=datetime.utcnow)
+    is_active = Column(Boolean, default=True)
+    accounts = relationship("Account", backref="broadcaster")
+    region = Column(Integer, default=0)
+    lang = Column(String(25), default="en")
 
 
-class Account(db.Model):
+class Account(Base):
     __tablename__ = 'account'
-    id = db.Column(db.Integer, primary_key=True)
-    hash = db.Column(db.String(25))
-    acc_id = db.Column(db.Integer)
-    broadcaster_id = db.Column(db.Integer, db.ForeignKey('broadcaster.id'))
-    cache = db.Column(db.String(100))
+    id = Column(Integer, primary_key=True)
+    hash = Column(String(25))
+    acc_id = Column(Integer)
+    broadcaster_id = Column(Integer, ForeignKey('broadcaster.id'))
+    cache = Column(String(100))
 
 
 @app.route("/", methods=["GET"])
-def index():
-    return render_template("index.html")
+async def index():
+    await render_template("index.html")
 
 
 if __name__ == "__main__":

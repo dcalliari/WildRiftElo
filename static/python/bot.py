@@ -32,7 +32,7 @@ class Bot(commands.Bot):
         print(f'Id de usuário é | {self.user_id}')
         conn = []
         j = 0
-        channels = mod.get_channels()
+        channels = await mod.get_channels()
         len_channels = len(channels)
         for i in range(int(len_channels/20)+1):
             if i < int(len(channels)/20):
@@ -67,19 +67,18 @@ class Bot(commands.Bot):
     async def command_account(self, ctx: commands.Context):
         if ctx.message.content.split(' ')[1:] != [] and (ctx.author.is_mod or ctx.author.name in mod.lang()['global']['admin']):
             canal = ctx.channel.name
-            lang = mod.lang()[mod.get_lang(canal)]['account']
+            lang = mod.lang()[await mod.get_lang(canal)]['account']
             id = ctx.message.content.split(' ', 1)[0][-1]
-            id = 0 if id == 'a' else id
-            id = 0 if id == 't' else id
-            id = 0 if id == 'o' else id
-            id = 0 if id == 'm' else id
-            id = 0 if id == 'e' else id
+            try:
+                id = int(id)
+            except:
+                id = 0
             riotId = ctx.message.content.split(' ', 1)[1:][0]
-            if mod.idCheck(riotId):
+            if await mod.idCheck(riotId):
                 await ctx.reply(lang['delay'])
-                accId = mod.createHash(riotId)
+                accId = await mod.createHash(riotId)
                 if accId != 'gameid':
-                    mod.update_riot_id(id, accId, canal)
+                    await mod.update_riot_id(id, accId, canal)
                     id = '' if id == 0 else id
                     await ctx.reply(lang['updated'] % (id, riotId))
                 else:
@@ -90,14 +89,13 @@ class Bot(commands.Bot):
     @commands.command(name='delaccount', aliases=mod.lang()['global']['delaccount']['aliases'])
     async def command_delete(self, ctx: commands.Context):
         canal = ctx.channel.name
-        lang = mod.lang()[mod.get_lang(canal)]['delaccount']
+        lang = mod.lang()[await mod.get_lang(canal)]['delaccount']
         id = ctx.message.content.split(' ', 1)[0][-1]
-        id = 0 if id == 'a' else id
-        id = 0 if id == 't' else id
-        id = 0 if id == 'o' else id
-        id = 0 if id == 'm' else id
-        id = 0 if id == 'e' else id
-        if mod.del_account(id, canal):
+        try:
+            id = int(id)
+        except:
+            id = 0
+        if await mod.del_account(id, canal):
             id = '' if id == 0 else id
             await ctx.reply(lang['deleted'] % id)
         else:
@@ -110,19 +108,19 @@ class Bot(commands.Bot):
     async def command_elo(self, ctx: commands.Context):
         canal = ctx.channel.name
         if canal != 'loraakl':
-            lang = mod.lang()[mod.get_lang(canal)]['elo']
+            lang = mod.lang()[await mod.get_lang(canal)]['elo']
             id = ctx.message.content.split(' ', 1)[0][-1]
-            id = 0 if id == 'o' else id
-            id = 0 if id == 'n' else id
-            id = 0 if id == 'k' else id
-            id = 0 if id == 'r' else id
             id = 1 if id == 'f' else id
             try:
-                response = mod.get_elo(id, canal)
+                id = int(id)
+            except:
+                id = 0
+            try:
+                response = await mod.get_elo(id, canal)
                 await ctx.send(f'/me {response}')
             except AttributeError:
-                contas = mod.get_accounts(canal, 'elo')
-                id = mod.get_accounts(canal, 'id')
+                contas = await mod.get_accounts(canal, 'elo')
+                id = await mod.get_accounts(canal, 'id')
                 if len(contas) == 0:
                     await ctx.reply(lang['no_accounts'])
                 else:
@@ -138,15 +136,15 @@ class Bot(commands.Bot):
     async def command_elowr(self, ctx: commands.Context):
         canal = ctx.channel.name
         if canal == 'loraakl':
-            lang = mod.lang()[mod.get_lang(canal)]['elo']
+            lang = mod.lang()[await mod.get_lang(canal)]['elo']
             id = ctx.message.content.split(' ', 1)[0][-1]
             id = 0 if id == 'r' else id
             try:
-                response = mod.get_elo(id, canal)
+                response = await mod.get_elo(id, canal)
                 await ctx.send(f'/me {response}')
             except AttributeError:
-                contas = mod.get_accounts(canal, 'elo')
-                id = mod.get_accounts(canal, 'id')
+                contas = await mod.get_accounts(canal, 'elo')
+                id = await mod.get_accounts(canal, 'id')
                 if len(contas) == 0:
                     await ctx.reply(lang['no_accounts'])
                 else:
@@ -161,9 +159,9 @@ class Bot(commands.Bot):
     # @commands.cooldown(1, 5)
     async def command_elos(self, ctx: commands.Context):
         canal = ctx.channel.name
-        lang = mod.lang()[mod.get_lang(canal)]['elos']
+        lang = mod.lang()[await mod.get_lang(canal)]['elos']
         try:
-            contas = mod.get_accounts(canal, 'elo')
+            contas = await mod.get_accounts(canal, 'elo')
             if len(contas) > 1:
                 response = ' | '.join(contas)
                 await ctx.send(f'/me {response}')
@@ -176,7 +174,7 @@ class Bot(commands.Bot):
     @commands.command(name='elohelp', aliases=mod.lang()['global']['elohelp']['aliases'])
     # @commands.cooldown(1, 3)
     async def command_help(self, ctx: commands.Context):
-        lang = mod.lang()[mod.get_lang(ctx.channel.name)]['elohelp']
+        lang = mod.lang()[await mod.get_lang(ctx.channel.name)]['elohelp']
         if ctx.channel.name == BOT_NICK:
             await ctx.reply(lang['bot_channel'])
         else:
@@ -188,7 +186,7 @@ class Bot(commands.Bot):
     async def command_language(self, ctx: commands.Context):
         if ctx.author.is_mod or ctx.author.name in mod.lang()['global']['admin']:
             canal = ctx.channel.name
-            lang = mod.lang()[mod.get_lang(canal)]['lang']
+            lang = mod.lang()[await mod.get_lang(canal)]['lang']
             lang_keys = list(mod.lang().keys())[1:]
             key_string = ', '.join(lang_keys)
             try:
@@ -197,7 +195,7 @@ class Bot(commands.Bot):
                 await ctx.reply(lang['instructions'] % key_string)
                 return
             if l in lang_keys and l != 'global':
-                mod.change_lang(l, canal)
+                await mod.change_lang(l, canal)
                 await ctx.reply(lang['updated'] % l)
             else:
                 await ctx.reply(lang['wrong_lang'] % key_string)
@@ -214,10 +212,10 @@ class Bot(commands.Bot):
             except IndexError:
                 pass
         if ctx.channel.name == BOT_NICK:
-            if autor in mod.get_channels():
+            if autor in await mod.get_channels():
                 await ctx.send(f'/me Bot is already in the channel: {autor}. Send /vip WildRiftElo in your chat then !elohelp')
             else:
-                mod.add_channel(autor)
+                await mod.add_channel(autor)
                 await bot.join_channels([autor])
                 await ctx.send(f'/me Bot joined the channel: {autor}. Send /vip WildRiftElo in your chat then !elohelp')
 
@@ -232,10 +230,10 @@ class Bot(commands.Bot):
             except IndexError:
                 pass
         if ctx.channel.name == BOT_NICK:
-            if autor not in mod.get_channels():
+            if autor not in await mod.get_channels():
                 await ctx.send(f'/me Bot is not in the channel: {autor}')
             else:
-                mod.del_channel(autor)
+                await mod.del_channel(autor)
                 await ctx.send(f'/me Bot left the channel: {autor}')
 
     # Git Pull and reboot via chat
