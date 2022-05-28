@@ -149,7 +149,8 @@ async def update_riot_id(key, value, channel):
                 account.hash = value['hash']
                 account.region = value['region']
             else:
-                session.add(Account(hash=value, acc_id=key, broadcaster_id=id))
+                session.add(Account(
+                    hash=value['hash'], acc_id=key, broadcaster_id=id, region=value['region']))
         await session.commit()
     await engine.dispose()
 
