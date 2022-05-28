@@ -27,26 +27,6 @@
         "trem3"
       ]
     },
-    "region": {
-      "regions": { "na": 0, "eu": 1, "sea": 2 },
-      "aliases": [
-        "regiao",
-        "regiao1",
-        "regiao2",
-        "regiao3",
-        "region1",
-        "region2",
-        "region3",
-        "konto",
-        "konto1",
-        "konto2",
-        "konto3",
-        "paodequeijo",
-        "paodequeijo1",
-        "paodequeijo2",
-        "paodequeijo3"
-      ]
-    },
     "delaccount": {
       "aliases": [
         "delconta",

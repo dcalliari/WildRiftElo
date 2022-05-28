@@ -29,7 +29,7 @@ async def createHash(riotId):
     riotId = riotId.replace('#', '/')
     async with aiohttp.ClientSession() as session:
         resp = await session.get(f'{SCRAPED_URL}/{riotId}')
-        return await resp.text()
+        return await resp.json()
 
 
 async def get_channels():
@@ -91,7 +91,6 @@ async def get_elo(key, channel):
             hash = account.hash
             cache = account.cache
             lang = await get_lang(channel)
-    await engine.dispose()
     try:
         async with aiohttp.ClientSession() as req:
             resp = await req.get(f'{API_URL}/{hash}/{lang}')
@@ -99,11 +98,13 @@ async def get_elo(key, channel):
             if '#' in elo:
                 account.cache = elo
                 await session.commit()
-
+                await engine.dispose()
                 return elo
             else:
+                await engine.dispose()
                 return cache
     except:
+        await engine.dispose()
         return cache
 
 
@@ -144,7 +145,8 @@ async def update_riot_id(key, value, channel):
             result = await session.execute(query)
             account = result.scalars().first()
             if account:
-                account.hash = value
+                account.hash = value['hash']
+                account.region = value['region']
             else:
                 session.add(Account(hash=value, acc_id=key, broadcaster_id=id))
         await session.commit()

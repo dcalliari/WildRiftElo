@@ -77,7 +77,7 @@ class Bot(commands.Bot):
             if await mod.idCheck(riotId):
                 await ctx.reply(lang['delay'])
                 accId = await mod.createHash(riotId)
-                if accId != 'gameid':
+                if accId['hash'] != 'gameid':
                     await mod.update_riot_id(id, accId, canal)
                     id = '' if id == 0 else id
                     await ctx.reply(lang['updated'] % (id, riotId))

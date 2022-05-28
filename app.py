@@ -39,7 +39,6 @@ class Broadcaster(Base):
     is_active = Column(Boolean, default=True)
     accounts = relationship("Account", backref="broadcaster")
     lang = Column(String(25), default="en")
-    region = Column(Integer, default=0)
 
 
 class Account(Base):
@@ -49,6 +48,7 @@ class Account(Base):
     acc_id = Column(Integer)
     broadcaster_id = Column(Integer, ForeignKey('broadcaster.id'))
     cache = Column(String(100))
+    region = Column(String(3), default="na")
 
 
 @app.route("/", methods=["GET"])
