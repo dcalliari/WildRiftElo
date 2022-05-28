@@ -91,21 +91,21 @@ async def get_elo(key, channel):
             hash = account.hash
             cache = account.cache
             lang = await get_lang(channel)
-    try:
-        async with aiohttp.ClientSession() as req:
-            resp = await req.get(f'{API_URL}/{hash}/{lang}')
-            elo = await resp.text()
-            if '#' in elo:
-                account.cache = elo
-                await session.commit()
-                await engine.dispose()
-                return elo
-            else:
-                await engine.dispose()
-                return cache
-    except:
-        await engine.dispose()
-        return cache
+        try:
+            async with aiohttp.ClientSession() as req:
+                resp = await req.get(f'{API_URL}/{hash}/{lang}')
+                elo = await resp.text()
+                if '#' in elo:
+                    account.cache = elo
+                    await session.commit()
+                    await engine.dispose()
+                    return elo
+                else:
+                    await engine.dispose()
+                    return cache
+        except:
+            await engine.dispose()
+            return cache
 
 
 async def get_accounts(channel, type):
