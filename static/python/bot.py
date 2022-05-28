@@ -268,7 +268,7 @@ class Bot(commands.Bot):
     async def command_update(self, ctx: commands.Context):
         if ctx.author.name in mod.lang()['global']['admin']:
             await ctx.send('/me Updating!')
-            os.system("git pull")
+            os.system("/usr/bin/git pull")
             print("Updating and rebooting...")
             os.system("python3 main.py")
             exit()
