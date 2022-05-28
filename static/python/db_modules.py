@@ -89,11 +89,12 @@ async def get_elo(key, channel):
             result = await session.execute(query)
             account = result.scalars().first()
             hash = account.hash
+            region = account.region
             cache = account.cache
             lang = await get_lang(channel)
         try:
             async with aiohttp.ClientSession() as req:
-                resp = await req.get(f'{API_URL}/{hash}/{lang}')
+                resp = await req.get(f'{API_URL}/{hash}/{lang}/{region}')
                 elo = await resp.text()
                 if '#' in elo:
                     account.cache = elo
