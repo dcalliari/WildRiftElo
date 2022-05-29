@@ -110,14 +110,12 @@ class Bot(commands.Bot):
         channel = ctx.message.content.split(' ')[1:]
         lang = mod.lang()[await mod.get_lang(ctx.channel.name)]['elo']
         if channel != []:
-            canal = channel[0].lower()
-        else:
-            pass
-        if canal != 'loraakl':
             try:
-                lang = mod.lang()[await mod.get_lang(canal)]['elo']
+                lang = mod.lang()[await mod.get_lang(channel[0].lower())]['elo']
+                canal = channel[0].lower()
             except AttributeError:
-                await ctx.reply(lang['not_found'])
+                lang = mod.lang()[await mod.get_lang(canal)]['elo']
+        if canal != 'loraakl':
             id = ctx.message.content.split(' ', 1)[0][-1]
             id = 1 if id == 'f' else id
             try:
