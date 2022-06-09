@@ -107,12 +107,12 @@ class Bot(commands.Bot):
     @commands.cooldown(1, 5)
     async def command_elo(self, ctx: commands.Context):
         canal = ctx.channel.name
-        channel = ctx.message.content.split(' ')[1:].lower()
+        channel = ctx.message.content.split(' ')[1:]
         lang = mod.lang()[await mod.get_lang(ctx.channel.name)]['elo']
         if channel != []:
             try:
-                lang = mod.lang()[await mod.get_lang(channel[0])]['elo']
-                canal = channel[0]
+                lang = mod.lang()[await mod.get_lang(channel[0].lower())]['elo']
+                canal = channel[0].lower()
             except AttributeError:
                 lang = mod.lang()[await mod.get_lang(canal)]['elo']
         if canal != 'loraakl':
@@ -145,10 +145,10 @@ class Bot(commands.Bot):
     # @commands.cooldown(1, 5)
     async def command_elowr(self, ctx: commands.Context):
         canal = ctx.channel.name
-        channel = ctx.message.content.split(' ')[1:].lower()
+        channel = ctx.message.content.split(' ')[1:]
         lang = mod.lang()[await mod.get_lang(ctx.channel.name)]['elo']
         if channel != []:
-            canal = channel[0]
+            canal = channel[0].lower()
         else:
             pass
         if canal == 'loraakl':
@@ -233,7 +233,7 @@ class Bot(commands.Bot):
         autor = ctx.author.name
         if autor in mod.lang()['global']['admin']:
             try:
-                autor = ctx.message.content.split()[1].lower()
+                autor = ctx.message.content.split()[1]
             except IndexError:
                 pass
         if ctx.channel.name == BOT_NICK:
@@ -251,7 +251,7 @@ class Bot(commands.Bot):
         autor = ctx.author.name
         if autor in mod.lang()['global']['admin']:
             try:
-                autor = ctx.message.content.split()[1].lower()
+                autor = ctx.message.content.split()[1]
             except IndexError:
                 pass
         if ctx.channel.name == BOT_NICK:
