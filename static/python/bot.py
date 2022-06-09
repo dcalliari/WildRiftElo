@@ -63,7 +63,7 @@ class Bot(commands.Bot):
 
     # Add or edit account
     @commands.command(name='account', aliases=mod.lang()['global']['account']['aliases'])
-    # @commands.cooldown(1, 1)
+    @commands.cooldown(1, 1)
     async def command_account(self, ctx: commands.Context):
         if ctx.message.content.split(' ')[1:] != [] and (ctx.author.is_mod or ctx.author.name in mod.lang()['global']['admin']):
             canal = ctx.channel.name
@@ -87,6 +87,7 @@ class Bot(commands.Bot):
                 await ctx.reply(lang['invalid'])
 
     @commands.command(name='delaccount', aliases=mod.lang()['global']['delaccount']['aliases'])
+    @commands.cooldown(1, 1)
     async def command_delete(self, ctx: commands.Context):
         canal = ctx.channel.name
         lang = mod.lang()[await mod.get_lang(canal)]['delaccount']
@@ -142,7 +143,7 @@ class Bot(commands.Bot):
 
     # For streamers who opt for elowr
     @commands.command(name='elowr', aliases=["elowr1", "elowr2", "elowr3"])
-    # @commands.cooldown(1, 5)
+    @commands.cooldown(1, 5)
     async def command_elowr(self, ctx: commands.Context):
         canal = ctx.channel.name
         channel = ctx.message.content.split(' ')[1:]
@@ -181,7 +182,7 @@ class Bot(commands.Bot):
 
     # Show elos from all accounts
     @commands.command(name='elos', aliases=mod.lang()['global']['elos']['aliases'])
-    # @commands.cooldown(1, 5)
+    @commands.cooldown(1, 5)
     async def command_elos(self, ctx: commands.Context):
         canal = ctx.channel.name
         lang = mod.lang()[await mod.get_lang(canal)]['elos']
@@ -197,7 +198,7 @@ class Bot(commands.Bot):
 
     # Send instructions
     @commands.command(name='elohelp', aliases=mod.lang()['global']['elohelp']['aliases'])
-    # @commands.cooldown(1, 3)
+    @commands.cooldown(1, 3)
     async def command_help(self, ctx: commands.Context):
         lang = mod.lang()[await mod.get_lang(ctx.channel.name)]['elohelp']
         if ctx.channel.name == BOT_NICK:
@@ -207,7 +208,7 @@ class Bot(commands.Bot):
 
     # Change bot language
     @commands.command(name='lang')
-    # @commands.cooldown(1, 3)
+    @commands.cooldown(1, 3)
     async def command_language(self, ctx: commands.Context):
         if ctx.author.is_mod or ctx.author.name in mod.lang()['global']['admin']:
             canal = ctx.channel.name
