@@ -233,7 +233,7 @@ class Bot(commands.Bot):
         autor = ctx.author.name
         if autor in mod.lang()['global']['admin']:
             try:
-                autor = ctx.message.content.split()[1]
+                autor = ctx.message.content.split()[1].lower()
             except IndexError:
                 pass
         if ctx.channel.name == BOT_NICK:
@@ -251,7 +251,7 @@ class Bot(commands.Bot):
         autor = ctx.author.name
         if autor in mod.lang()['global']['admin']:
             try:
-                autor = ctx.message.content.split()[1]
+                autor = ctx.message.content.split()[1].lower()
             except IndexError:
                 pass
         if ctx.channel.name == BOT_NICK:
