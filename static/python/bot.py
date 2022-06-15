@@ -112,9 +112,9 @@ class Bot(commands.Bot):
         lang = mod.lang()[await mod.get_lang(ctx.channel.name)]['elo']
         if channel != []:
             try:
-                lang = mod.lang()[await mod.get_lang(channel[0].lower())]['elo']
                 canal = channel[0].lower()
                 canal = canal[1:] if canal[0] == '@' else canal
+                lang = mod.lang()[await mod.get_lang(channel[0].lower())]['elo']
             except AttributeError:
                 lang = mod.lang()[await mod.get_lang(canal)]['elo']
         if canal != 'loraakl':
@@ -151,9 +151,9 @@ class Bot(commands.Bot):
         lang = mod.lang()[await mod.get_lang(ctx.channel.name)]['elo']
         if channel != []:
             try:
-                lang = mod.lang()[await mod.get_lang(channel[0].lower())]['elo']
                 canal = channel[0].lower()
                 canal = canal[1:] if canal[0] == '@' else canal
+                lang = mod.lang()[await mod.get_lang(channel[0].lower())]['elo']
             except AttributeError:
                 lang = mod.lang()[await mod.get_lang(canal)]['elo']
         if canal == 'loraakl':
