@@ -108,16 +108,16 @@ class Bot(commands.Bot):
     @commands.cooldown(1, 5)
     async def command_elo(self, ctx: commands.Context):
         canal = ctx.channel.name
-        channel = ctx.message.content.split(' ')[1:]
-        lang = mod.lang()[await mod.get_lang(ctx.channel.name)]['elo']
-        if channel != []:
-            try:
-                canal = channel[0].lower()
-                canal = canal[1:] if canal[0] == '@' else canal
-                lang = mod.lang()[await mod.get_lang(channel[0].lower())]['elo']
-            except AttributeError:
-                lang = mod.lang()[await mod.get_lang(canal)]['elo']
         if canal != 'loraakl':
+            channel = ctx.message.content.split(' ')[1:]
+            lang = mod.lang()[await mod.get_lang(ctx.channel.name)]['elo']
+            if channel != []:
+                try:
+                    canal = channel[0].lower()
+                    canal = canal[1:] if canal[0] == '@' else canal
+                    lang = mod.lang()[await mod.get_lang(channel[0].lower())]['elo']
+                except AttributeError:
+                    lang = mod.lang()[await mod.get_lang(canal)]['elo']
             id = ctx.message.content.split(' ', 1)[0][-1]
             id = 1 if id == 'f' else id
             try:
@@ -147,16 +147,16 @@ class Bot(commands.Bot):
     @commands.cooldown(1, 5)
     async def command_elowr(self, ctx: commands.Context):
         canal = ctx.channel.name
-        channel = ctx.message.content.split(' ')[1:]
-        lang = mod.lang()[await mod.get_lang(ctx.channel.name)]['elo']
-        if channel != []:
-            try:
-                canal = channel[0].lower()
-                canal = canal[1:] if canal[0] == '@' else canal
-                lang = mod.lang()[await mod.get_lang(channel[0].lower())]['elo']
-            except AttributeError:
-                lang = mod.lang()[await mod.get_lang(canal)]['elo']
         if canal == 'loraakl':
+            channel = ctx.message.content.split(' ')[1:]
+            lang = mod.lang()[await mod.get_lang(ctx.channel.name)]['elo']
+            if channel != []:
+                try:
+                    canal = channel[0].lower()
+                    canal = canal[1:] if canal[0] == '@' else canal
+                    lang = mod.lang()[await mod.get_lang(channel[0].lower())]['elo']
+                except AttributeError:
+                    lang = mod.lang()[await mod.get_lang(canal)]['elo']
             id = ctx.message.content.split(' ', 1)[0][-1]
             try:
                 id = int(id)
